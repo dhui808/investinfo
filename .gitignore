@@ -1,0 +1,11 @@
+download/
+**/bin
+.~lock*
+cftcSource/
+marketmakers/
+staging/
+preanalysis/
+products/
+charts/**/*.png
+**/target/
+**/.settings/

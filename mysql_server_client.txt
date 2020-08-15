@@ -1,0 +1,30 @@
+To query or update the database manually:
+
+cd C:\software\mysql-8.0.12-winx64\bin
+
+mysql -u root -p --local-infile financial_products
+
+source <ROOT_OF_CFTC_PROJECT>\cftc\sql\mysql.sql;
+
+source <ROOT_OF_CFTC_PROJECT>\cftc\sql\load_price_csv.sql;
+
+source <ROOT_OF_CFTC_PROJECT>\cftc\sql\extract_price.sql;
+
+select * from investing_com_staging_usd_cad;
+
+insert into update_date values("investing_com","20181007");
+
+update investing_com set year_month_date="20181007" where year_month_date="20181009";
+
+To shut down the database:
+
+mysqladmin -u root -p shutdown
+
+
+To update price into the database manually in the case you fail to run the application on time:
+
+insert into investing_com_history values ('20191126', 'OIL','20191124', 55.17);
+insert into investing_com_history values ('20191126', 'NG','20191124', 2.281);
+insert into investing_com_history values ('20191126', 'GOLD','20191124', 1472.70);
+insert into investing_com_history values ('20191126', 'USD_INDEX','20191124', 98.202);
+insert into investing_com_history values ('20191126', 'USD_CAD','20191124', 1.3277);

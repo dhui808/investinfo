@@ -1,0 +1,12 @@
+[
+	{
+		"vendorName": "investing_com",
+		"baseUrl": "https://www.investing.com",
+		"products": {
+			"ng": "/commodities/natural-gas",
+			"oil": "/commodities/crude-oil",
+			"usd_index": "/quotes/us-dollar-index",
+			"usd_cad": "/currencies/usd-cad"
+		}
+	}
+]

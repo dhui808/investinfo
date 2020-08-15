@@ -1,0 +1,64 @@
+package cftc.vendor.investingcom;
+
+import static cftc.utils.Constants.STAGING_INVESTING_COM_PATH;
+
+import com.sun.star.uno.RuntimeException;
+
+import cftc.PriceAndIndexHistoryService;
+import cftc.vendor.VendorName;
+
+public class InvestingComPriceIndexHistoryService extends PriceAndIndexHistoryService {
+
+	public InvestingComPriceIndexHistoryService() throws Exception {
+		wao = new InvestingComPriceIndexWao();
+		dao = new InvestingComPriceIndexDao();
+	}
+	public void updateAllPriceIndexHistory() throws RuntimeException, Exception {
+		updatePriceIndexHistory(VendorName.INVESTING_COM);
+	}
+	
+	public void loadAllPriceIndexHistory() throws RuntimeException, Exception {
+		//download .csv files from investing.com into database staging tables
+		
+		//clear all staging and history tables
+		dao.clearStagingAndHistoryTables();
+		
+		//load price/Index history .csv files into staging tables.
+		loadCsvIntoStagingTables();
+		
+		//extract price/index data into investing.com history tables
+		loadPriceIndexIntoHistoryTables();
+	}
+
+	private void loadCsvIntoStagingTables() throws Exception {
+		
+		for (InvestingComFilename filename : InvestingComFilename.values()) {
+		
+			String csvFilePath = STAGING_INVESTING_COM_PATH + "/" + filename.getCsvName();
+			InvestingComTablename tablename = Enum.valueOf(InvestingComTablename.class, filename.name());
+			dao.loadInventoryHistoryStaging(csvFilePath, tablename.getTablename(), filename.isInclugingVolume());
+		}
+	}
+
+	
+	private void loadPriceIndexIntoHistoryTables() throws Exception {
+		
+		String history = InvestingComTablename.HISTORY.name();
+		String historyTablename = InvestingComTablename.HISTORY.getTablename();
+		for (InvestingComTablename tablename : InvestingComTablename.values()) {
+			
+			String instrument = tablename.name();
+			
+			if (history.equals(instrument)) {
+				continue;
+			}
+			
+			dao.loadPriceIndexdesHistory(tablename.getTablename(), historyTablename, instrument);
+		}
+		
+	}
+
+	protected String getHistoryTablename() {
+		return InvestingComTablename.HISTORY.getTablename();
+	}
+}

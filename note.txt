@@ -1,0 +1,30 @@
+To add an new instrument:
+
+InstrumentName
+InvestingComInstrument
+InvestingComFilename
+InvestingComHtmlExtractor
+InvestingComTablename
+
+mysql.sql
+ProductList
+VendorWebModel
+InstrumentUtils
+vendor.json
+
+download Gold Futures Historical Data.csv
+
+https://www.nasdaq.com/markets/
+https://www.cmegroup.com
+https://www.marketwatch.com/investing
+https://www.theice.com/index
+https://www.nyse.com
+https://quotes.ino.com/
+http://futures.tradingcharts.com/marketquotes/index.php3?sectorname=nymex
+
+Each categorey have one or more instruments
+(forex, metal,energy)
+(usd_cad, usd_index, gold, ng, oil)
+Each instrument maps to one or more CFTC instruments.
+
+
