@@ -28,3 +28,9 @@ insert into investing_com_history values ('20191126', 'NG','20191124', 2.281);
 insert into investing_com_history values ('20191126', 'GOLD','20191124', 1472.70);
 insert into investing_com_history values ('20191126', 'USD_INDEX','20191124', 98.202);
 insert into investing_com_history values ('20191126', 'USD_CAD','20191124', 1.3277);
+
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'OIL',  		'20200816','42.3400');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'NG',   		'20200816','2.4480');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'GOLD', 		'20200816','1947.0000');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'USD_INDEX', '20200816','93.2050');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'USD_CAD',	'20200816','1.3175');
