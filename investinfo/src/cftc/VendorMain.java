@@ -114,6 +114,8 @@ public abstract class VendorMain {
 			return;
 		}
 		
+		PrepareFolders.prepareFolders();
+		
 		// add documents
 		if (argList.contains("ad") || argList.contains("adddoc")) {
 			
@@ -280,7 +282,6 @@ public abstract class VendorMain {
 		}
 		
 		System.out.println("update all, force download? " + forceDownload);
-		PrepareFolders.prepareFolders();
 		String cftcDate =(null == date)? DateUtils.getCurrentWeekTuesdayDate() : date;
 		
 		updateAll(forceDownload, cftcDate);

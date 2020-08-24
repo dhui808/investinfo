@@ -6,21 +6,22 @@ import java.io.File;
 
 public class PrepareFolders {
 	
-	private static File downloadFolder = new File(downloadUrl.substring(0, downloadUrl.length() - 1));
-	private static File downloadCftcFolder = new File(downloadCftcUrl.substring(0, downloadCftcUrl.length() - 1));
-	private static File downloadEiaFolder = new File(downloadEiaUrl.substring(0, downloadEiaUrl.length() - 1));
-	private static File preanalysisFolder = new File(preanalysisUrl.substring(0, preanalysisUrl.length() - 1));
-	private static File productsFolder = new File(productsUrl.substring(0, productsUrl.length() - 1));
+	private static File downloadCftcFolder = new File(DOWNLOAD_CFTC_PATH);
+	private static File downloadEiaFolder = new File(DOWNLOAD_EIA_PATH);
+	private static File preanalysisFolder = new File(PREANALYSIS_PATH);
+	private static File productsFolder = new File(PRODUCTS_PATH);
 	private static File cftcSourceFolder = new File(cftcSourceUrl.substring(0, cftcSourceUrl.length() - 1));
 	private static File stagingEiaFolder = new File(STAGING_EIA_PATH);
 	private static File stagingInvestingComFolder = new File(STAGING_INVESTING_COM_PATH);
 	private static File inventoryFolder = new File(inventoryUrl.substring(0, inventoryUrl.length() - 1));
 	
 	public static void prepareFolders() {
-		
-		if (!downloadFolder.exists() ) {
-			downloadFolder.mkdirs();
+
+		if (!downloadCftcFolder.exists() ) {
 			downloadCftcFolder.mkdirs();
+		}
+		
+		if (!downloadEiaFolder.exists() ) {
 			downloadEiaFolder.mkdirs();
 		}
 		

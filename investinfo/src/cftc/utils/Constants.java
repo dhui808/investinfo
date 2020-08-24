@@ -29,6 +29,10 @@ public class Constants {
 	public static final String forexZipFilename = "fut_fin_xls_" + CURRENT_YEAR + ".zip";
 	public static final String NG_HISTORY_XLS_FILENAME = "ngshistory.xls";
 	public static final String OIL_HISTORY_XLS_FILENAME = "WCESTUS1w.xls";
+	public static final String DOWNLOAD_CFTC_PATH = PROJECT_PATH + "/download/cftc";
+	public static final String DOWNLOAD_EIA_PATH = PROJECT_PATH + "/download/eia";
+	public static final String PREANALYSIS_PATH = PROJECT_PATH + "/preanalysis";
+	public static final String PRODUCTS_PATH = PROJECT_PATH + "/products";
 	public static final String STAGING_EIA_PATH = PROJECT_PATH + "/staging/eia";
 	public static final String STAGING_INVESTING_COM_PATH = PROJECT_PATH + "/staging/investing_com";
     public static final String VENDOR_FILE_PATH = "resources/vendor.json";
