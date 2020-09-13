@@ -1,4 +1,12 @@
 # Usage
+To build the application:
+
+1. Create two symbolic links to "C:/Program Files/LibreOffice/program/classes"
+2. from jloputility, 
+mvn clean install
+3. from investinfo,
+mvn clean package
+
 To run the application:
 
 1. Start MySql database
