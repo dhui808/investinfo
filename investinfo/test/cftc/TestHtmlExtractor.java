@@ -14,5 +14,7 @@ public class TestHtmlExtractor {
 		System.out.println("USDCAD price:" + price);
 		price =  new InvestingComHtmlExtractor().fetchUsdIndex();
 		System.out.println("USD Index:" + price);
+		price =  new InvestingComHtmlExtractor().fetchEuroFutures();
+		System.out.println("Euro FX:" + price);
 	}
 }

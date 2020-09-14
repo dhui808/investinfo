@@ -25,6 +25,9 @@ public class InstrumentUtils {
 		case "USD_INDEX":
 			cftc = new CftcInstrument[] {new UsdIndex()};
 			break;
+		case "EURO_FX":
+			cftc = new CftcInstrument[] {new EuroFutures()};
+			break;
 		default:
 			throw new RuntimeException("Invalid instrument: " + instrument.name());
 		}

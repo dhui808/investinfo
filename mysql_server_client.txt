@@ -34,3 +34,5 @@ replace into investing_com_history (release_week_tuesday, instrument, week_start
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'GOLD', 		'20200816','1947.0000');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'USD_INDEX', '20200816','93.2050');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20200818',   'USD_CAD',	'20200816','1.3175');
+
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20181231',   'EURO_FX',	'20181230','1.1467');

@@ -33,3 +33,12 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 ROWS
 (date_str, price, open, high, low, change_percentage);
+
+LOAD DATA LOCAL INFILE  
+'C:\\Users\\danny.hui\\research\\github\\investinfo\\investinfo\\staging\\investing_com\\Euro Futures Historical Data.csv'
+INTO TABLE investing_com_staging_euro_fx 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS
+(date_str, price, open, high, low, vol, change_percentage);

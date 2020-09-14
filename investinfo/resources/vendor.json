@@ -7,7 +7,8 @@
 			"oil": "/commodities/crude-oil",
 			"gold": "/commodities/gold",
 			"usd_index": "/currencies/us-dollar-index",
-			"usd_cad": "/currencies/usd-cad"
+			"usd_cad": "/currencies/usd-cad",
+			"euro_fx": "/currencies/eur-futures"
 		}
 	}
 ]

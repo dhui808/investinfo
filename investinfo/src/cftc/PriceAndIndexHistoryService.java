@@ -19,6 +19,7 @@ import cftc.model.table.CftcTableName;
 import cftc.utils.DateUtils;
 import cftc.utils.UnzipCftc;
 import cftc.vendor.VendorName;
+import cftc.vendor.investingcom.InvestingComTablename;
 import cftc.wao.PriceIndexWao;
 
 public abstract class PriceAndIndexHistoryService {
@@ -29,7 +30,9 @@ public abstract class PriceAndIndexHistoryService {
 	
 	public abstract void updateAllPriceIndexHistory() throws RuntimeException, Exception;
 	
-	public abstract  void loadAllPriceIndexHistory() throws RuntimeException, Exception;
+	public abstract void loadAllPriceIndexHistory() throws RuntimeException, Exception;
+
+	public abstract void loadPriceIndexHistoryForProduct(String product) throws RuntimeException, Exception;
 	
 	protected abstract String getHistoryTablename();
 	
@@ -133,4 +136,5 @@ public abstract class PriceAndIndexHistoryService {
 			//TODO is it possible that the last release against positions in Wednesday?
 		}
 	}
+	
 }

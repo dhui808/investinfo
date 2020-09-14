@@ -17,6 +17,7 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 			case "GOLD": return fetchGoldPrice();
 			case "USD_INDEX": return fetchUsdIndex();
 			case "USD_CAD": return fetchCadFutures();
+			case "EURO_FX": return fetchEuroFutures();
 			default: return null;
 		}
 	}
@@ -44,6 +45,11 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 	public String fetchCadFutures() throws IOException {
 		
 		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/usd-cad");
+	}
+
+	public String fetchEuroFutures() throws IOException {
+		
+		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/eur-futures");
 	}
 
 	public String fetchPriceOrIndexFromUrl(String url) throws IOException {

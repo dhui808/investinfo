@@ -85,7 +85,9 @@ run
 	
 	5.6 Update the last week price/index to current year all instrument sheets (run -date 20190702 p) where date is the eia release date)
 	
-	5.7 TODO - download investing.com price/index history for each instrument
+	5.7 TODO Load investing.com price/index history for one instrument (run -instrument euro_fx -load  -history p)
+	
+	5.8 TODO - download investing.com price/index history for each instrument
 	
 6. Update all documents with the latest CFTC, EIA, Investing.com data for the week 
 

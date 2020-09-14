@@ -17,7 +17,7 @@ public class AbstractDao {
 		Map<String, String> dbMap = CftcDatabase.getDatabaseProperties();
 		dbUrl = "jdbc:mysql://localhost/" + dbMap.get("databaseName") + "?"
 	            + "user=" + dbMap.get("user") + "&password=" + dbMap.get("password")
-	            + "&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true";
+	            + "&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&allowLoadLocalInfile=true";
 	}
 	protected void executeStatementUpdate(String query) throws Exception{
 		executeStatementUpdate(new String[] {query});
@@ -34,6 +34,7 @@ public class AbstractDao {
 			connect = createConnection();
 			statement = connect.createStatement();
 			for (String query : queries ) {
+				System.out.println("query=" + query);
 				statement.executeUpdate(query);
 			}
 			

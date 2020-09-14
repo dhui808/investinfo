@@ -6,7 +6,8 @@ public enum InstrumentName {
 	OIL(InstrumentCategory.ENERGY),
 	GOLD(InstrumentCategory.METAL),
 	USD_INDEX(InstrumentCategory.FOREX),
-	USD_CAD(InstrumentCategory.FOREX);
+	USD_CAD(InstrumentCategory.FOREX),
+	EURO_FX(InstrumentCategory.FOREX);
 	
 	private InstrumentCategory category;
 

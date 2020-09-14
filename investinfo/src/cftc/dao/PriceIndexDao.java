@@ -12,6 +12,8 @@ public abstract class PriceIndexDao extends AbstractDao {
 	
 	protected abstract String[] getVendorPriceIndexTablenames();
 	
+	protected abstract String getVendorPriceIndexTablenameForProduct(String product);
+	
 	/**
 	 * Clears staging tables and history tables.
 	 */
@@ -36,7 +38,7 @@ public abstract class PriceIndexDao extends AbstractDao {
 	 */
 	public void loadInventoryHistoryStaging(String csvFilePath, String table, boolean includingVolume) throws Exception {
 
-	    String loadInventoryCsvFile = "LOAD DATA LOCAL INFILE '" + csvFilePath + "' INTO TABLE " + table + " FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 ROWS (date_str, price, open, high, low," + (includingVolume? " vol," : "")  + " change_percentage) ";
+	    String loadInventoryCsvFile = "LOAD DATA LOCAL INFILE '" + csvFilePath + "' INTO TABLE " + table + " FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n' IGNORE 1 ROWS (date_str, price, open, high, low," + (includingVolume? " vol," : "")  + " change_percentage) ";
 	    
 		executeStatementUpdate(loadInventoryCsvFile);
 	}
@@ -176,5 +178,14 @@ public abstract class PriceIndexDao extends AbstractDao {
 	    String updateNgInventoryHistory = "UPDATE " + historyTablename + " SET release_week_tuesday = " + firstReleaseDate + " WHERE instrument = '" + instrument + "' and release_week_tuesday = '" + firstReleaseTuesdayDate + "'";
 
 		executeStatementUpdate(updateNgInventoryHistory);
+	}
+
+	public void clearStagingAndHistoryTable(String tablename) throws Exception {
+		
+		String[] loadInventoryCsvFileQueries = new String[1];
+		
+		loadInventoryCsvFileQueries[0] = "DELETE FROM " + tablename;
+		
+		executeStatementUpdate(loadInventoryCsvFileQueries);
 	}
 }

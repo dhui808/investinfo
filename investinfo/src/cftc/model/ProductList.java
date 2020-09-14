@@ -45,6 +45,7 @@ public class ProductList {
 		List<CftcInstrument> productList  = new ArrayList<CftcInstrument>();
 		productList.add(new UsdIndex());
 		productList.add(new CadFutures());
+		productList.add(new EuroFutures());
 		
 		return productList;
 	}

@@ -6,7 +6,8 @@
 			"ng": "/commodities/natural-gas",
 			"oil": "/commodities/crude-oil",
 			"usd_index": "/quotes/us-dollar-index",
-			"usd_cad": "/currencies/usd-cad"
+			"usd_cad": "/currencies/usd-cad",
+			"euro_fx": "/currencies/eur-futures"
 		}
 	}
 ]

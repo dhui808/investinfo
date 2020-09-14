@@ -15,4 +15,13 @@ public class InvestingComPriceIndexDao extends PriceIndexDao {
 		
 		return tablenames;
 	}
+
+	@Override
+	protected String getVendorPriceIndexTablenameForProduct(String product) {
+		
+		InvestingComTablename ivTablename = InvestingComTablename.valueOf(product.toUpperCase());
+		
+		return ivTablename.getTablename();
+	}
+
 }

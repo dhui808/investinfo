@@ -33,35 +33,34 @@ import cftc.utils.UnzipCftc;
 import cftc.vendor.VendorName;
 
 public abstract class VendorMain {
-	
+
 	protected CftcHistoryService cftcHistoryService = new CftcHistoryService();
 	protected InventoryHistoryService inventoryHistoryService = new InventoryHistoryService();
-	
+
 	protected AddYearSheet addPreviousYearSheetForex = new AddYearSheetForex();
 	protected AddYearSheet addPreviousYearSheetCommodity = new AddYearSheetCommodity();
-	protected InstrumentCategoryVisitorAddYearSheet visitorAddPreviousYearSheet = 
-			new InstrumentCategoryVisitorAddYearSheet(addPreviousYearSheetForex,
-					addPreviousYearSheetCommodity);
-	
+	protected InstrumentCategoryVisitorAddYearSheet visitorAddPreviousYearSheet = new InstrumentCategoryVisitorAddYearSheet(
+			addPreviousYearSheetForex, addPreviousYearSheetCommodity);
+
 	protected AbstractChartsHandler commodityChartsHandler = new CommodityChartsHandler();
 	protected AbstractChartsHandler forexChartsHandler = new ForexChartsHandler();
-	protected InstrumentCategoryVisitorChartsHandler visitorChartsHandler= 
-			new InstrumentCategoryVisitorChartsHandler(forexChartsHandler, commodityChartsHandler);
-	
+	protected InstrumentCategoryVisitorChartsHandler visitorChartsHandler = new InstrumentCategoryVisitorChartsHandler(
+			forexChartsHandler, commodityChartsHandler);
+
 	protected InventoryHandler updateSheetInventory = new InventoryHandler();
 	protected UpdateEnergyAnalysis updateEnergyAnalysis = new UpdateEnergyAnalysis();
-	
+
 	protected UpdateCommodifiesAnalysis updateCommodifiesAnalysis;
 	protected UpdateForexAnalysis updateForexAnalysis;
 	protected PriceAndIndexHistoryService priceAndIndexHistoryService;
 	protected PriceAndIndexHandler updateSheetPriceIndex;
-	
+
 	protected VendorName vendorName;
-	
+
 	public void parse(String[] args, List<String> argList) {
-		
+
 		Date start = new Date();
-		
+
 		try {
 			LO.connect();
 			parseAndExecute(args, argList);
@@ -70,14 +69,14 @@ public abstract class VendorMain {
 		} finally {
 			LO.disconnect();
 		}
-		
+
 		Date end = new Date();
-		
+
 		System.out.println("Time cost:" + (end.getTime() - start.getTime()) / 1000 + " sec.");
 	}
-	
+
 	private void parseAndExecute(String[] args, List<String> argList) throws Exception {
-		
+
 		String instrument = null;
 		boolean allyears = false;
 		String category = null;
@@ -88,37 +87,37 @@ public abstract class VendorMain {
 		int idxCat = argList.indexOf("-category");
 		int idxYear = argList.indexOf("-year");
 		int idxDate = argList.indexOf("-date");
-		
+
 		if (idxIns >= 0) {
 			instrument = argList.get(idxIns + 1);
 		}
-		
+
 		if (idxAllYears >= 0) {
 			allyears = true;
 		}
-		
+
 		if (idxCat >= 0) {
 			category = argList.get(idxCat + 1);
 		}
-		
+
 		if (idxYear >= 0) {
 			year = argList.get(idxYear + 1);
 		}
-		
+
 		if (idxDate >= 0) {
 			date = argList.get(idxDate + 1);
 		}
-		
+
 		if (null != instrument && null != category) {
 			System.out.println("Should not specify both instrument and category.");
 			return;
 		}
-		
+
 		PrepareFolders.prepareFolders();
-		
+
 		// add documents
 		if (argList.contains("ad") || argList.contains("adddoc")) {
-			
+
 			if (null != instrument) {
 				addProduct(instrument, allyears);
 			} else if (null != category) {
@@ -126,18 +125,18 @@ public abstract class VendorMain {
 			} else {
 				addAllProducts(allyears);
 			}
-			
+
 			return;
 		}
-		
+
 		// remove sheets
 		if (argList.contains("rs") || argList.contains("removesheet")) {
-			
+
 			if (idxYear < 0) {
 				System.out.println("The year must be specified for deleting the sheet.");
 				return;
 			}
-			
+
 			if (null != instrument) {
 				removeSheetByInstrumentYear(instrument, year);
 			} else if (null != category) {
@@ -145,18 +144,18 @@ public abstract class VendorMain {
 			} else {
 				removeSheetByYear(year);
 			}
-			
+
 			return;
 		}
-		
+
 		// add sheets
 		if (argList.contains("as") || argList.contains("addsheet")) {
-			
+
 			if (idxYear < 0) {
 				System.out.println("The year must be specified for adding the sheet.");
 				return;
 			}
-			
+
 			if (null != instrument) {
 				addSheetByInstrumentYear(instrument, year);
 			} else if (null != category) {
@@ -164,18 +163,18 @@ public abstract class VendorMain {
 			} else {
 				addSheetByYear(year);
 			}
-			
+
 			return;
 		}
-		
+
 		int idxHistory = argList.indexOf("-history");
 		int idxLoad = argList.indexOf("-load");
 		int idxUpdate = argList.indexOf("-update");
 		int idxAdjust = argList.indexOf("-adjust");
-		
+
 		// update inventory
 		if (argList.contains("i") || argList.contains("inventory")) {
-			
+
 			if (idxHistory >= 0) {
 				if (idxLoad >= 0) {
 					System.out.println("Load commodity inventory history into database");
@@ -187,27 +186,32 @@ public abstract class VendorMain {
 					System.out.println("Should specify either -load or -update option.");
 					return;
 				}
-			} else if (idxAdjust >= 0){
+			} else if (idxAdjust >= 0) {
 				System.out.println("adjust inventory history for " + year);
 				adjustInventoryHistory(year);
-			} else if (idxYear >= 0){
+			} else if (idxYear >= 0) {
 				System.out.println("add inventory to sheet " + year);
 				addSheetInventory(year);
 			} else {
 				System.out.println("update commodity inventory in spreadsheet");
 				upateInventoryInSpreadsheet(date);
 			}
-			
+
 			return;
 		}
-		
+
 		// update price/index
 		if (argList.contains("p") || argList.contains("price")) {
-			
+
 			if (idxHistory >= 0) {
 				if (idxLoad >= 0) {
-					System.out.println("Load Price/Index history into database");
-					loadPriceIndexHistory();
+					if (null != instrument) {
+						System.out.println("Load Price/Index history into database for instrument " + instrument);
+						loadPriceIndexHistoryForProduct(instrument);
+					} else {
+						System.out.println("Load Price/Index history into database");
+						loadPriceIndexHistory();
+					}
 				} else if (idxUpdate >= 0) {
 					System.out.println("Update price/index history in database");
 					updatePriceIndexHistory();
@@ -215,55 +219,55 @@ public abstract class VendorMain {
 					System.out.println("Should specify either -load or -update option.");
 					return;
 				}
-			} else if (idxAdjust >= 0){
+			} else if (idxAdjust >= 0) {
 				System.out.println("adjust price/index history for " + year);
 				adjustPriceHistory(year);
-			} else if (idxYear >= 0){
+			} else if (idxYear >= 0) {
 				System.out.println("add Price/index to sheet " + year);
 				addSheetPrice(year);
 			} else {
 				System.out.println("update price/index in spreadsheet");
 				upatePriceOrIndexInSpreadsheet(date);
 			}
-			
+
 			return;
 		}
 
 		// delete a row for a specific date
 		if (argList.contains("d") || argList.contains("delete")) {
-			
+
 			int idxDelete = argList.indexOf("d");
-			
+
 			if (idxDelete < 0) {
 				idxDelete = argList.indexOf("delete");
 			}
-			
+
 			String deleteDate = argList.get(idxDelete + 1);
-			
+
 			System.out.println("delete a row for " + deleteDate);
-			
+
 			deleteCftcRowByDate(deleteDate);
-			
+
 			return;
 		}
 
 		// update CFTC release history
 		if (argList.contains("cftc")) {
-			
-			if (idxYear >= 0){
+
+			if (idxYear >= 0) {
 				System.out.println("add CFTC release history for " + year);
 				addCftcHistory(year);
 			} else {
 				System.out.println("add CFTC release history for all years.");
 				addAllCftcHistory();
 			}
-			
+
 			return;
 		}
-		
-		//export charts
+
+		// export charts
 		if (argList.contains("c") || argList.contains("chart")) {
-			
+
 			if (null != instrument) {
 				exportChartByInstrumentYear(instrument, year);
 			} else if (null != category) {
@@ -271,76 +275,77 @@ public abstract class VendorMain {
 			} else {
 				exportChartByYear(year);
 			}
-			
+
 			return;
 		}
-		
+
 		// update all sheets with the latest CFTC release.
 		boolean forceDownload = false;
 		if (argList.contains("-f") || argList.contains("-forcedownload")) {
 			forceDownload = true;
 		}
-		
+
 		System.out.println("update all, force download? " + forceDownload);
-		String cftcDate =(null == date)? DateUtils.getCurrentWeekTuesdayDate() : date;
-		
+		String cftcDate = (null == date) ? DateUtils.getCurrentWeekTuesdayDate() : date;
+
 		updateAll(forceDownload, cftcDate);
 	}
-	
+
 	public void updateAll(boolean forceDownload, String date) throws RuntimeException, Exception {
-		
+
 		DownloadCftc.downloadCftcZipFiles(forceDownload, date);
 		UnzipCftc.unzipCftcFilesByDate(date);
-		
-		//load the latest inventory into the database
+
+		// load the latest inventory into the database
 		updateCommodityInventoryHistory();
-		
-		//loads the latest price to the database
+
+		// loads the latest price to the database
 		updatePriceIndexHistory();
-		
+
 		updateCommodifiesAnalysis.updateDataAnalysisByDate(date);
 		updateCommodifiesAnalysis.updateCharts();
 		updateCommodifiesAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 		updateEnergyAnalysis.upateInventoryInSpreadsheet(date);
-		
+
 		updateForexAnalysis.updateDataAnalysisByDate(date);
 		updateForexAnalysis.updateCharts();
 		updateForexAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 	}
-	
+
 	public void upatePriceOrIndexInSpreadsheet(String date) throws RuntimeException, Exception {
 
 		updatePriceIndexHistory();
-		
+
 		updateCommodifiesAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
-		
+
 		updateForexAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 	}
 
 	public void upateInventoryInSpreadsheet(String date) throws RuntimeException, Exception {
-		
+
 		updateEnergyAnalysis.upateInventoryInSpreadsheet(date);
 	}
 
 	public void deleteCftcRowByDate(String columnValue) throws RuntimeException, Exception {
-		
+
 		updateCommodifiesAnalysis.deleteByDate(columnValue);
 		updateForexAnalysis.deleteByDate(columnValue);
 	}
-	
+
 	public void addSheet(CftcInstrument cftc, String year) throws RuntimeException, Exception {
-		
+
 		DownloadCftc.downloadCftcZipFilesByYear(false, year);
 		UnzipCftc.unzipCftcFilesYear(year);
 
-		AddYearSheet addPreviousYearSheet = InstrumentCategoryVisitable.accept(cftc.getCategory(), visitorAddPreviousYearSheet);
+		AddYearSheet addPreviousYearSheet = InstrumentCategoryVisitable.accept(cftc.getCategory(),
+				visitorAddPreviousYearSheet);
 		addPreviousYearSheet.addDataAnalysis(cftc, year);
-		if(("" + CURRENT_YEAR).equals(year)) {
+		if (("" + CURRENT_YEAR).equals(year)) {
 			addPreviousYearSheet.addDataChartsCurrentYear(cftc, year);
 		} else {
 			addPreviousYearSheet.addDataChartsPreviousYear(cftc, year);
 		}
-		
+
 		updateSheetInventory.updateInventory(cftc, year);
 		updateSheetPriceIndex.updatePriceOrIndex(cftc, year);
 	}
@@ -348,37 +353,37 @@ public abstract class VendorMain {
 	public void addSheetByInstrumentYear(String product, String year) throws RuntimeException, Exception {
 
 		InstrumentName instrument = InstrumentName.valueOf(product.toUpperCase());
-		
+
 		addSheetByInstrumentYear(instrument, year);
 	}
-	
+
 	private void addSheetByInstrumentYear(InstrumentName instrument, String year) throws RuntimeException, Exception {
 
 		CftcInstrument[] cftcArray = InstrumentUtils.getCftcInstrument(instrument);
-		
+
 		for (CftcInstrument cftc : cftcArray) {
-			
+
 			addSheet(cftc, year);
 		}
 	}
-	
+
 	public void addSheetByCategoryYear(String category, String year) throws RuntimeException, Exception {
 
 		InstrumentCategory cat = InstrumentCategory.valueOf(category.toUpperCase());
-		
+
 		for (InstrumentName inst : InstrumentName.values()) {
 			if (inst.getCategory().equals(cat)) {
 				addSheetByInstrumentYear(inst, year);
 			}
 		}
 	}
-	
+
 	public void addSheetByYear(String year) throws RuntimeException, Exception {
-		
+
 		DownloadCftc.downloadCftcZipFilesByYear(false, year);
 		UnzipCftc.unzipCftcFilesYear(year);
 
-		if(("" + CURRENT_YEAR).equals(year)) {
+		if (("" + CURRENT_YEAR).equals(year)) {
 			addPreviousYearSheetCommodity.addDataAnalysis(year);
 			addPreviousYearSheetCommodity.addDataChartsCurrentYear(year);
 
@@ -391,11 +396,11 @@ public abstract class VendorMain {
 			addPreviousYearSheetForex.addDataAnalysis(year);
 			addPreviousYearSheetForex.addDataChartsPreviousYear(year);
 		}
-		
+
 		updateSheetInventory.updateInventory(year);
 		updateSheetPriceIndex.updatePriceOrIndex(year);
 	}
-	
+
 	public void addSheetInventory(String year) throws RuntimeException, Exception {
 
 		updateSheetInventory.updateInventory(year);
@@ -409,34 +414,35 @@ public abstract class VendorMain {
 	public void removeSheetByInstrumentYear(String product, String year) throws RuntimeException, Exception {
 
 		InstrumentName instrument = InstrumentName.valueOf(product.toUpperCase());
-		
+
 		removeSheetByInstrumentYear(instrument, year);
 	}
-	
-	private void removeSheetByInstrumentYear(InstrumentName instrument, String year) throws RuntimeException, Exception {
+
+	private void removeSheetByInstrumentYear(InstrumentName instrument, String year)
+			throws RuntimeException, Exception {
 
 		CftcInstrument[] cftcArray = InstrumentUtils.getCftcInstrument(instrument);
 		AddYearSheet addPreviousYearSheet = null;
-		
+
 		for (CftcInstrument cftc : cftcArray) {
-			
+
 			addPreviousYearSheet = InstrumentCategoryVisitable.accept(cftc.getCategory(), visitorAddPreviousYearSheet);
 			addPreviousYearSheet.removeDataAnalysis(cftc, year);
 			addPreviousYearSheet.removeCharts(cftc, year);
 		}
 	}
-	
+
 	public void removeSheetByCategoryYear(String category, String year) throws RuntimeException, Exception {
 
 		InstrumentCategory cat = InstrumentCategory.valueOf(category.toUpperCase());
-		
+
 		for (InstrumentName inst : InstrumentName.values()) {
 			if (inst.getCategory().equals(cat)) {
 				removeSheetByInstrumentYear(inst, year);
 			}
 		}
 	}
-	
+
 	public void removeSheetByYear(String year) throws RuntimeException, Exception {
 
 		addPreviousYearSheetCommodity.removeDataAnalysis(year);
@@ -445,83 +451,94 @@ public abstract class VendorMain {
 		addPreviousYearSheetForex.removeDataAnalysis(year);
 		addPreviousYearSheetForex.removeCharts(year);
 	}
-	
+
 	public void loadPriceIndexHistory() throws RuntimeException, Exception {
 
 		priceAndIndexHistoryService.loadAllPriceIndexHistory();
 		priceAndIndexHistoryService.adjustPriceHistory("2013");
 		priceAndIndexHistoryService.adjustPriceHistory("2019");
 	}
-	
+
+	public void loadPriceIndexHistoryForProduct(String product) throws RuntimeException, Exception {
+
+		priceAndIndexHistoryService.loadPriceIndexHistoryForProduct(product);
+		priceAndIndexHistoryService.adjustPriceHistory("2013");
+		priceAndIndexHistoryService.adjustPriceHistory("2019");
+	}
+
 	public void updatePriceIndexHistory() throws RuntimeException, Exception {
-		
+
 		priceAndIndexHistoryService.updateAllPriceIndexHistory();
 	}
-	
+
 	public void loadCommodityInventoryHistory() throws RuntimeException, Exception {
 
 		inventoryHistoryService.loadAllInventoryHistory();
 		inventoryHistoryService.adjustInventoryHistory("2013");
 		inventoryHistoryService.adjustInventoryHistory("2019");
 	}
-	
+
 	public void updateCommodityInventoryHistory() throws RuntimeException, Exception {
-		
+
 		InventoryHistoryService loadHistory = new InventoryHistoryService();
 		loadHistory.updateAllInventoryHistory();
 	}
-	
+
 	/**
-	 * Adjusts inventory history, considering CFTC release may not report the instrument positions for Tuesday.
+	 * Adjusts inventory history, considering CFTC release may not report the
+	 * instrument positions for Tuesday.
+	 * 
 	 * @throws Exception
 	 */
 	public void adjustInventoryHistory(String year) throws Exception {
 
 		inventoryHistoryService.adjustInventoryHistory(year);
 	}
-	
+
 	/**
-	 * Adjusts inventory history, considering CFTC release may not report the instrument positions for Tuesday.
+	 * Adjusts inventory history, considering CFTC release may not report the
+	 * instrument positions for Tuesday.
+	 * 
 	 * @throws Exception
 	 */
 	public void adjustPriceHistory(String year) throws Exception {
-		
+
 		priceAndIndexHistoryService.adjustPriceHistory(year);
 	}
-	
+
 	public void addCftcHistory(String year) throws Exception {
-		
+
 		cftcHistoryService.updateCftcReleaseHistory(year);
 	}
-	
+
 	public void addAllCftcHistory() throws Exception {
-		
+
 		cftcHistoryService.updateAllReleaseHistory();
 	}
-	
+
 	private void addCftcProduct(CftcInstrument cftc) throws RuntimeException, Exception {
-		
+
 		DownloadCftc.downloadCftcZipFiles(false);
 		UnzipCftc.unzipCurrentYearCftcFiles();
 		String year = "" + CURRENT_YEAR;
-		
+
 		AbstractProductDocumentHandler productDocumentHanlder = getProductDocumentHandler(cftc.getCategory().name());
-		
+
 		productDocumentHanlder.addProductDocument(cftc);
 		updateSheetPriceIndex.updatePriceOrIndex(cftc, year);
 		updateSheetInventory.updateInventory(cftc, year);
 	}
 
 	public void addProduct(String product, boolean allyears) throws RuntimeException, Exception {
-		
-        InstrumentName instrument = InstrumentName.valueOf(product.toUpperCase());
+
+		InstrumentName instrument = InstrumentName.valueOf(product.toUpperCase());
 		CftcInstrument[] cftcArray = InstrumentUtils.getCftcInstrument(instrument);
-		
+
 		for (CftcInstrument cftc : cftcArray) {
-			
+
 			addCftcProduct(cftc);
 		}
-		
+
 		if (allyears) {
 			for (int year = CURRENT_YEAR - 1; year > 2010; year--) {
 				for (CftcInstrument cftc : cftcArray) {
@@ -530,29 +547,29 @@ public abstract class VendorMain {
 			}
 		}
 	}
-	
+
 	public void addProductCategory(String category, boolean allyears) throws Exception {
-		
+
 		InstrumentCategory cat = InstrumentCategory.valueOf(category.toUpperCase());
-		
+
 		for (InstrumentName inst : InstrumentName.values()) {
 			if (inst.getCategory().equals(cat)) {
 				addProduct(inst.name(), allyears);
 			}
 		}
 	}
-	
+
 	public void addAllProducts(boolean allyears) throws RuntimeException, Exception {
 
 		for (InstrumentCategory category : InstrumentCategory.values()) {
 			addProductCategory(category.name(), allyears);
 		}
 	}
-	
+
 	private AbstractProductDocumentHandler getProductDocumentHandler(String category) {
-		
+
 		AbstractProductDocumentHandler productDocumentHanlder = null;
-		
+
 		switch (category.toUpperCase()) {
 		case "METAL":
 			productDocumentHanlder = new MetalDocumentHandler();
@@ -569,41 +586,43 @@ public abstract class VendorMain {
 
 		return productDocumentHanlder;
 	}
-	
+
 	public void exportChartByInstrumentYear(String product, String year) throws RuntimeException, Exception {
 
 		InstrumentName instrument = InstrumentName.valueOf(product.toUpperCase());
-		
+
 		exportChartByInstrumentYear(instrument, year);
 	}
-	
-	private void exportChartByInstrumentYear(InstrumentName instrument, String year) throws RuntimeException, Exception {
+
+	private void exportChartByInstrumentYear(InstrumentName instrument, String year)
+			throws RuntimeException, Exception {
 
 		CftcInstrument[] cftcArray = InstrumentUtils.getCftcInstrument(instrument);
-		
+
 		for (CftcInstrument cftc : cftcArray) {
-			
+
 			exportChartByInstrumentYear(cftc, year);
 		}
 	}
-	
+
 	public void exportChartByInstrumentYear(CftcInstrument cftc, String year) throws RuntimeException, Exception {
 
-		AbstractChartsHandler chatrsHandler = InstrumentCategoryVisitable.accept(cftc.getCategory(), visitorChartsHandler);
+		AbstractChartsHandler chatrsHandler = InstrumentCategoryVisitable.accept(cftc.getCategory(),
+				visitorChartsHandler);
 		chatrsHandler.exportChartAsImage(cftc, year);
 	}
-	
+
 	public void exportChartByCategoryYear(String category, String year) throws RuntimeException, Exception {
 
 		InstrumentCategory cat = InstrumentCategory.valueOf(category.toUpperCase());
-		
+
 		for (InstrumentName inst : InstrumentName.values()) {
 			if (inst.getCategory().equals(cat)) {
 				exportChartByInstrumentYear(inst, year);
 			}
 		}
 	}
-	
+
 	public void exportChartByYear(String year) throws RuntimeException, Exception {
 
 		commodityChartsHandler.exportChartAsImage(year);
