@@ -1,7 +1,5 @@
 package cftc.model;
 
-import com.sun.star.uno.RuntimeException;
-
 public class InstrumentUtils {
 
 	

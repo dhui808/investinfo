@@ -3,8 +3,6 @@ package cftc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.star.uno.RuntimeException;
-
 import cftc.vendor.VendorName;
 
 public class Main {

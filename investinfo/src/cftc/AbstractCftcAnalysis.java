@@ -18,7 +18,6 @@ import com.sun.star.sheet.XSpreadsheets;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XCellRange;
 import com.sun.star.text.XTextRange;
-import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 
 import cftc.model.CftcInstrument;

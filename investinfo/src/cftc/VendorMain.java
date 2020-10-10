@@ -5,8 +5,6 @@ import static cftc.utils.Constants.CURRENT_YEAR;
 import java.util.Date;
 import java.util.List;
 
-import com.sun.star.uno.RuntimeException;
-
 import cftc.charts.AbstractChartsHandler;
 import cftc.charts.CommodityChartsHandler;
 import cftc.charts.ForexChartsHandler;

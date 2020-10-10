@@ -6,7 +6,6 @@ import java.util.List;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
-import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 
 import cftc.dao.CftcDao;

@@ -6,14 +6,12 @@ import java.util.ListIterator;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
-import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 
 import cftc.dao.InventoryDao;
 import cftc.model.CftcInstrument;
 import cftc.model.InstrumentCategory;
 import cftc.model.InventoryDto;
-import cftc.model.PriceIndexDto;
 import cftc.model.ProductList;
 import cftc.model.table.EiaTableName;
 import jloputility.Lo;

@@ -2,8 +2,6 @@ package cftc.vendor.investingcom;
 
 import static cftc.utils.Constants.STAGING_INVESTING_COM_PATH;
 
-import com.sun.star.uno.RuntimeException;
-
 import cftc.PriceAndIndexHistoryService;
 import cftc.model.CftcInstrument;
 import cftc.vendor.VendorName;

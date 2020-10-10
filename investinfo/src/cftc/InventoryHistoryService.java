@@ -11,7 +11,6 @@ import java.util.List;
 import com.sun.star.sheet.XCellRangeFormula;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
-import com.sun.star.uno.RuntimeException;
 
 import cftc.dao.CftcDao;
 import cftc.dao.InventoryDao;

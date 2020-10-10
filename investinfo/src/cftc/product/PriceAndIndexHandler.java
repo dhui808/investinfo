@@ -1,7 +1,5 @@
 package cftc.product;
 
-import com.sun.star.uno.RuntimeException;
-
 import cftc.model.CftcInstrument;
 import cftc.sheet.UpdateSheetPriceIndex;
 

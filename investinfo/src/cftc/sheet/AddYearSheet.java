@@ -21,7 +21,6 @@ import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XTableCharts;
 import com.sun.star.table.XTableChartsSupplier;
-import com.sun.star.uno.RuntimeException;
 import com.sun.star.uno.UnoRuntime;
 
 import cftc.model.CftcInstrument;

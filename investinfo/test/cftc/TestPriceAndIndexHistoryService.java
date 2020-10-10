@@ -2,8 +2,6 @@ package cftc;
 
 import java.util.List;
 
-import com.sun.star.uno.RuntimeException;
-
 import cftc.model.PriceIndexDto;
 import cftc.vendor.VendorName;
 import cftc.vendor.investingcom.InvestingComPriceIndexHistoryService;
