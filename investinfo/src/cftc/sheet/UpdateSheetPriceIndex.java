@@ -26,7 +26,7 @@ public abstract class UpdateSheetPriceIndex extends AbstractHandleYearSheet {
 	protected PriceIndexDao dao;
 	protected VendorName vendorName;
 	
-	protected void updatePriceOrIndex(String year) throws RuntimeException, Exception {
+	protected void updatePriceOrIndex(String year) throws Exception {
 		
 		List<CftcInstrument> productList = getProductList();
 		
@@ -35,7 +35,7 @@ public abstract class UpdateSheetPriceIndex extends AbstractHandleYearSheet {
 		}
 	}
 
-	protected void updatePriceOrIndex(CftcInstrument cftc, String year) throws RuntimeException, Exception {
+	protected void updatePriceOrIndex(CftcInstrument cftc, String year) throws Exception {
 		
 		List<PriceIndexDto> priceList = dao.retrievePriceIndex(vendorName.getPriceHistoryTablename(), cftc.getInstrumentName(), year);
 		

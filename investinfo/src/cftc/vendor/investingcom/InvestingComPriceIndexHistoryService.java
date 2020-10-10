@@ -12,11 +12,11 @@ public class InvestingComPriceIndexHistoryService extends PriceAndIndexHistorySe
 		wao = new InvestingComPriceIndexWao();
 		dao = new InvestingComPriceIndexDao();
 	}
-	public void updateAllPriceIndexHistory() throws RuntimeException, Exception {
+	public void updateAllPriceIndexHistory() throws Exception {
 		updatePriceIndexHistory(VendorName.INVESTING_COM);
 	}
 	
-	public void loadAllPriceIndexHistory() throws RuntimeException, Exception {
+	public void loadAllPriceIndexHistory() throws Exception {
 		//download .csv files from investing.com into database staging tables
 		
 		//clear all staging and history tables
@@ -62,7 +62,7 @@ public class InvestingComPriceIndexHistoryService extends PriceAndIndexHistorySe
 	}
 	
 	@Override
-	public void loadPriceIndexHistoryForProduct(String product) throws RuntimeException, Exception {
+	public void loadPriceIndexHistoryForProduct(String product) throws Exception {
 		//download .csv files from investing.com into database staging table
 		
 		InvestingComTablename icTablename = InvestingComTablename.valueOf(product.toUpperCase());

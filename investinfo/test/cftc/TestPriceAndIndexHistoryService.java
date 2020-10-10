@@ -8,7 +8,7 @@ import cftc.vendor.investingcom.InvestingComPriceIndexHistoryService;
 
 public class TestPriceAndIndexHistoryService {
 	
-	public static void main(String[] args) throws RuntimeException, Exception {
+	public static void main(String[] args) throws Exception {
 		
 		PriceAndIndexHistoryService service = new InvestingComPriceIndexHistoryService();
 		List<PriceIndexDto> list = service.retrieveLatestWeeklyClosePriceIndex(VendorName.INVESTING_COM);

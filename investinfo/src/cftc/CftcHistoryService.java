@@ -20,7 +20,7 @@ public class CftcHistoryService extends AbstractCftcAnalysis {
 
 	private CftcDao dao = new CftcDao();
 	
-	public void updateCftcReleaseHistory(String year) throws RuntimeException, Exception {
+	public void updateCftcReleaseHistory(String year) throws Exception {
 		
 		UnzipCftc.unzipCftcFilesYear(year);
 
@@ -45,7 +45,7 @@ public class CftcHistoryService extends AbstractCftcAnalysis {
 		Lo.closeDoc(sourceDocument);
 	}
 	
-	public void updateAllReleaseHistory() throws RuntimeException, Exception {
+	public void updateAllReleaseHistory() throws Exception {
 		
 		LocalDate ld = LocalDate.now();
 		int year = ld.getYear();

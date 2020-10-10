@@ -24,7 +24,7 @@ public abstract class UpdateSheetInventory extends AbstractHandleYearSheet {
 		dao = new InventoryDao();
 	}
 	
-	protected void updateInventory(String year) throws RuntimeException, Exception {
+	protected void updateInventory(String year) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 		
@@ -34,7 +34,7 @@ public abstract class UpdateSheetInventory extends AbstractHandleYearSheet {
 		}
 	}
 	
-	protected void updateInventory(CftcInstrument cftc, String year) throws RuntimeException, Exception {
+	protected void updateInventory(CftcInstrument cftc, String year) throws Exception {
 		
 		if (!InstrumentCategory.ENERGY.equals(cftc.getCategory())) {
 			System.out.println(cftc.getInstrumentName() + " is not in energy category and does not have inventory.");

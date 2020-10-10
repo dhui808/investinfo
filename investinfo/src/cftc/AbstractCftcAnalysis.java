@@ -31,7 +31,7 @@ public abstract class AbstractCftcAnalysis {
 	 * 
 	 * @return The XSpreadsheetDocument interface of the document.
 	 */
-	protected XSpreadsheetDocument loadCftcSourceDocument(String year) throws RuntimeException, Exception {
+	protected XSpreadsheetDocument loadCftcSourceDocument(String year) throws Exception {
 	
 		String sourceFile = cftcSourceUrl + year + "/" + getSourceFilename();
 		
@@ -43,7 +43,7 @@ public abstract class AbstractCftcAnalysis {
 	 * 
 	 * @return The XSpreadsheetDocument interface of the document.
 	 */
-	protected XSpreadsheetDocument loadSourceDocument(String sourceUrl) throws RuntimeException, Exception {
+	protected XSpreadsheetDocument loadSourceDocument(String sourceUrl) throws Exception {
 		com.sun.star.beans.PropertyValue[] propertyValue = new com.sun.star.beans.PropertyValue[2];
 		propertyValue[0] = new com.sun.star.beans.PropertyValue();
 		propertyValue[0].Name = "Hidden";
@@ -66,7 +66,7 @@ public abstract class AbstractCftcAnalysis {
 	 * 
 	 * @return The XSpreadsheetDocument interface of the document.
 	 */
-	protected XSpreadsheetDocument loadDestDocument(String destFilePath) throws RuntimeException, Exception {
+	protected XSpreadsheetDocument loadDestDocument(String destFilePath) throws Exception {
 		com.sun.star.beans.PropertyValue[] propertyValue = new com.sun.star.beans.PropertyValue[2];
 		propertyValue[0] = new com.sun.star.beans.PropertyValue();
 		propertyValue[0].Name = "Hidden";
@@ -88,7 +88,7 @@ public abstract class AbstractCftcAnalysis {
 	 * 
 	 * @return The XSpreadsheetDocument interface of the document.
 	 */
-	protected XSpreadsheetDocument loadTemplateDocument(String templatePath) throws RuntimeException, Exception {
+	protected XSpreadsheetDocument loadTemplateDocument(String templatePath) throws Exception {
 		com.sun.star.beans.PropertyValue[] propertyValue = new com.sun.star.beans.PropertyValue[2];
 		propertyValue[0] = new com.sun.star.beans.PropertyValue();
 		propertyValue[0].Name = "Hidden";

@@ -37,7 +37,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	 * @throws Exception
 	 * @throws RuntimeException
 	 */
-	public void addDataAnalysis(CftcInstrument cftc, String year) throws RuntimeException, Exception {
+	public void addDataAnalysis(CftcInstrument cftc, String year) throws Exception {
 
 		XSpreadsheetDocument sourceDocument = loadCftcSourceDocument(year);
 		XSpreadsheet srcSheet = getSpreadsheet(sourceDocument, 0);
@@ -101,7 +101,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	 * @throws Exception
 	 * @throws RuntimeException
 	 */
-	public void addDataAnalysis(String year) throws RuntimeException, Exception {
+	public void addDataAnalysis(String year) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 
@@ -111,11 +111,11 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 		}
 	}
 	
-	public void addDataChartsPreviousYear(CftcInstrument cftc, String year) throws RuntimeException, Exception {
+	public void addDataChartsPreviousYear(CftcInstrument cftc, String year) throws Exception {
 		addDataCharts(cftc, year, "" + CURRENT_YEAR, BASE_YEAR_CHARTS_DATA_SHEET, BASE_YEAR_CHARTS_SHEET);
 	}
 	
-	public void addDataChartsCurrentYear(CftcInstrument cftc, String year) throws RuntimeException, Exception {
+	public void addDataChartsCurrentYear(CftcInstrument cftc, String year) throws Exception {
 		addDataCharts(cftc, year, "" + (CURRENT_YEAR - 1), PREVIOUS_YEAR_CHARTS_DATA_SHEET, PREVIOUS_YEAR_CHARTS_SHEET);
 	}
 	
@@ -125,7 +125,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	 * @throws Exception
 	 * @throws RuntimeException
 	 */
-	public void addDataCharts(CftcInstrument cftc, String year, String baseYear, String baseYearChartsDataSheet, String baseYearChartsSheet) throws RuntimeException, Exception {
+	public void addDataCharts(CftcInstrument cftc, String year, String baseYear, String baseYearChartsDataSheet, String baseYearChartsSheet) throws Exception {
 
 		String analysisFilePath = cftc.getAnalysisFilePath();
 		XSpreadsheetDocument analysisDocument = loadDestDocument(analysisFilePath);
@@ -167,7 +167,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	 * @throws Exception
 	 * @throws RuntimeException
 	 */
-	public void addDataChartsPreviousYear(String year) throws RuntimeException, Exception {
+	public void addDataChartsPreviousYear(String year) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 
@@ -177,7 +177,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 		}
 	}
 
-	public void addDataChartsCurrentYear(String year) throws RuntimeException, Exception {
+	public void addDataChartsCurrentYear(String year) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 
@@ -204,7 +204,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	 * @throws Exception
 	 */
 	protected int updateDataSheet(XSpreadsheet srcSheet, XSpreadsheet destSheet, String[] filters, String year)
-			throws RuntimeException, Exception {
+			throws Exception {
 
 		// copy the first row - headers
 		XCellRange xRange0 = srcSheet.getCellRangeByPosition(0, 0, getSourceColumnLength() - 1, 0);
@@ -236,7 +236,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	}
 
 	protected XSpreadsheet updateAnalysisSheet(XSpreadsheet templateSheet, XSpreadsheet destSheet, String year )
-			throws RuntimeException, Exception {
+			throws Exception {
 
 		XCellRange xRange0 = templateSheet.getCellRangeByPosition(0, 0, getTemplateColumnLength() - 1, 53);
 		XCellRangeFormula crFormula0 = Lo.qi(XCellRangeFormula.class, xRange0);
@@ -285,7 +285,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 		crFormula.setDataArray(formulaArray);
 	}
 
-	public void removeDataAnalysis(CftcInstrument cftc, String year) throws RuntimeException, Exception {
+	public void removeDataAnalysis(CftcInstrument cftc, String year) throws Exception {
 		
 		String destFilePath = cftc.getAnalysisFilePath();
 		XSpreadsheetDocument destDocument = loadDestDocument(destFilePath);
@@ -302,7 +302,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 		Lo.closeDoc(destDocument);
 	}
 	
-	public void removeDataAnalysis(String year) throws RuntimeException, Exception {
+	public void removeDataAnalysis(String year) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 
@@ -312,7 +312,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 		}
 	}
 	
-	public void removeCharts(CftcInstrument cftc, String year) throws RuntimeException, Exception {
+	public void removeCharts(CftcInstrument cftc, String year) throws Exception {
 		
 		String destFilePath = cftc.getChartsFilePath();
 		XSpreadsheetDocument destDocument = loadDestDocument(destFilePath);
@@ -329,7 +329,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 		Lo.closeDoc(destDocument);
 	}
 	
-	public void removeCharts(String year) throws RuntimeException, Exception {
+	public void removeCharts(String year) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 
@@ -349,7 +349,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	 * @throws Exception
 	 */
 	protected int updateChartsDataSheet(XSpreadsheet analysisSheet, XSpreadsheet chartsDataSheet)
-			throws RuntimeException, Exception {
+			throws Exception {
 
 		int rows = getNumberOfRows(analysisSheet);
 		XCellRange xRange0 = analysisSheet.getCellRangeByPosition(0, 1, getTemplateColumnLength() - 1, rows - 1);

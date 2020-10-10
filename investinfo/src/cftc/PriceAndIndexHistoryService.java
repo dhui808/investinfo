@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.sun.star.uno.RuntimeException;
+
 import cftc.dao.CftcDao;
 import cftc.dao.PriceIndexDao;
 import cftc.model.CftcInstrument;
@@ -15,6 +19,7 @@ import cftc.model.table.CftcTableName;
 import cftc.utils.DateUtils;
 import cftc.utils.UnzipCftc;
 import cftc.vendor.VendorName;
+import cftc.vendor.investingcom.InvestingComTablename;
 import cftc.wao.PriceIndexWao;
 
 public abstract class PriceAndIndexHistoryService {
@@ -23,11 +28,11 @@ public abstract class PriceAndIndexHistoryService {
 	
 	protected PriceIndexDao dao;
 	
-	public abstract void updateAllPriceIndexHistory() throws RuntimeException, Exception;
+	public abstract void updateAllPriceIndexHistory() throws Exception;
 	
-	public abstract void loadAllPriceIndexHistory() throws RuntimeException, Exception;
+	public abstract void loadAllPriceIndexHistory() throws Exception;
 
-	public abstract void loadPriceIndexHistoryForProduct(String product) throws RuntimeException, Exception;
+	public abstract void loadPriceIndexHistoryForProduct(String product) throws Exception;
 	
 	protected abstract String getHistoryTablename();
 	

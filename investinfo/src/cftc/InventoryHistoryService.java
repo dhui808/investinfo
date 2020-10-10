@@ -39,12 +39,12 @@ public class InventoryHistoryService extends AbstractCftcAnalysis {
 	
 	private InventoryDao inventoryDao = new InventoryDao();
 
-	public void updateAllInventoryHistory() throws RuntimeException, Exception {
+	public void updateAllInventoryHistory() throws Exception {
 		updateNgInventoryHistory();
 		updateOilInventoryHistory();
 	}
 	
-	public void loadAllInventoryHistory() throws RuntimeException, Exception {
+	public void loadAllInventoryHistory() throws Exception {
 		
 		DownloadEia.downloadNgInventoryHistory();
 		DownloadEia.downloaOilInventoryHistory();
@@ -55,7 +55,7 @@ public class InventoryHistoryService extends AbstractCftcAnalysis {
 		loadInventoryHistory(new OilLightSweet());
 	}
 	
-	private void loadInventoryHistory(Energy commodity) throws RuntimeException, Exception {
+	private void loadInventoryHistory(Energy commodity) throws Exception {
 		
 		String sourceUrl = downloadEiaUrl + commodity.getInventoryHistoryXlsFilename();
 		XSpreadsheetDocument sourceDocument = loadSourceDocument(sourceUrl);
@@ -102,7 +102,7 @@ public class InventoryHistoryService extends AbstractCftcAnalysis {
 		inventoryDao.loadInventoryHistory(stagingTableName, historyTableName, commodity.getInstrumentName());
 	}
 	
-	private void updateNgInventoryHistory() throws RuntimeException, Exception {
+	private void updateNgInventoryHistory() throws Exception {
 		String[] ngInv = EiaNgInventoryExtractor.retrieveNgInventory();
 		String cftcDate = DateUtils.getLatestEiaReleaseTuesdayDate();
 		String ngHistoryTablename =  EiaTableName.EIA_HISTORY.getName();
@@ -111,7 +111,7 @@ public class InventoryHistoryService extends AbstractCftcAnalysis {
 		inventoryDao.updateInventoryHistory(ngHistoryTablename, cftcDate, instrument, ngInv[0]);
 	}
 	
-	private void updateOilInventoryHistory() throws RuntimeException, Exception {
+	private void updateOilInventoryHistory() throws Exception {
 		String[] ngInv = EiaOilInventoryExtractor.retrieveOilInventory();
 		String cftcDate = DateUtils.getLatestEiaReleaseTuesdayDate();
 		String oilHistoryTablename =  EiaTableName.EIA_HISTORY.getName();
@@ -140,7 +140,7 @@ public class InventoryHistoryService extends AbstractCftcAnalysis {
 	 * @throws RuntimeException
 	 * @throws Exception
 	 */
-	public void adjustInventoryHistory(String year) throws RuntimeException, Exception {
+	public void adjustInventoryHistory(String year) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 		

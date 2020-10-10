@@ -38,7 +38,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 	 * @throws Exception 
 	 * @throws RuntimeException 
 	 */
-	public void updateDataAnalysisCharts() throws RuntimeException, Exception {
+	public void updateDataAnalysisCharts() throws Exception {
 		
 		String year = "" + CURRENT_YEAR;
 		
@@ -72,12 +72,12 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 	 * @throws Exception 
 	 * @throws RuntimeException 
 	 */
-	public void updateDataAnalysisByDate(String date) throws RuntimeException, Exception {
+	public void updateDataAnalysisByDate(String date) throws Exception {
 		String year = date.substring(0, 4);
 		updateDataAnalysis(year);
 	}
 	
-	private void updateDataAnalysis(String year) throws RuntimeException, Exception {
+	private void updateDataAnalysis(String year) throws Exception {
 		
 		XSpreadsheetDocument sourceDocument = loadCftcSourceDocument(year);
 		XSpreadsheet srcSheet = getSpreadsheet(sourceDocument, 0);
@@ -99,7 +99,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		Lo.closeDoc(sourceDocument);
 	}
 
-	public void updateDataAnalysis() throws RuntimeException, Exception {
+	public void updateDataAnalysis() throws Exception {
 		
 		String year = "" + CURRENT_YEAR;
 		updateDataAnalysis(year);
@@ -110,7 +110,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 	 * @throws Exception 
 	 * @throws RuntimeException 
 	 */
-	public void updateCharts() throws RuntimeException, Exception {
+	public void updateCharts() throws Exception {
 		
 		List<CftcInstrument> productList = getProductList();
 		
@@ -131,7 +131,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		}
 	}
 	
-	public void upatePriceOrIndexInSpreadsheet(VendorName vendor, String date) throws RuntimeException, Exception {
+	public void upatePriceOrIndexInSpreadsheet(VendorName vendor, String date) throws Exception {
 			
 			List<CftcInstrument> productList = getProductList();
 			
@@ -178,7 +178,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 			}
 	}
 
-	public void upateInventoryInSpreadsheet(String date) throws RuntimeException, Exception {
+	public void upateInventoryInSpreadsheet(String date) throws Exception {
 
 		List<CftcInstrument> productList = getProductList();
 		
@@ -229,7 +229,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		}
 	}
 
-	protected void updateData(XSpreadsheet srcSheet, XSpreadsheetDocument destDocument, String[] filters) throws RuntimeException, Exception {
+	protected void updateData(XSpreadsheet srcSheet, XSpreadsheetDocument destDocument, String[] filters) throws Exception {
 		// copy row
 		XSpreadsheet destSheet = getSpreadsheet(destDocument, 1);
 		XCellRange xRange1 = getFirstCftcRow(srcSheet, filters);
@@ -244,7 +244,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		destData.setDataArray(xData.getDataArray());
 	}
 	
-	protected XSpreadsheet updateAnalysis(XSpreadsheet srcSheet, XSpreadsheetDocument destDocument, String[] filters) throws RuntimeException, Exception {
+	protected XSpreadsheet updateAnalysis(XSpreadsheet srcSheet, XSpreadsheetDocument destDocument, String[] filters) throws Exception {
 		
 		XSpreadsheet destSheet2 = getSpreadsheet(destDocument, 2);
 		Calc.insertRow(destSheet2, 1);
@@ -268,7 +268,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		destRange.setFormulaArray(formula);
 	}
 	
-	protected XSpreadsheet updateCharts(XSpreadsheet analysisSheet, XSpreadsheetDocument destDocument) throws RuntimeException, Exception {
+	protected XSpreadsheet updateCharts(XSpreadsheet analysisSheet, XSpreadsheetDocument destDocument) throws Exception {
 		
 		//insert to the chart sheet too
 		XSpreadsheet destSheet3 = getSpreadsheet(destDocument, 0);
@@ -288,7 +288,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		return analysisSheet;
 	}
 
-	protected void updateChartsNetLong(XSpreadsheetDocument destDocument) throws RuntimeException, Exception {
+	protected void updateChartsNetLong(XSpreadsheetDocument destDocument) throws Exception {
 		
 		XSpreadsheet destSheet3 = getSpreadsheet(destDocument, 0);
 		int row = getNumberOfRows(destSheet3);
@@ -332,7 +332,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		return xRange;
 	}
 
-	public void deleteByDate(String columnValue) throws RuntimeException, Exception {
+	public void deleteByDate(String columnValue) throws Exception {
 		
 		List<CftcInstrument> productList = getProductList();
 		
