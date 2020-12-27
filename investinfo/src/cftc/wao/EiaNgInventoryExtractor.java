@@ -24,7 +24,7 @@ public class EiaNgInventoryExtractor {
 	 */
 	public static String[] retrieveNgInventory() throws IOException {
 
-		URL url = new URL("http://ir.eia.gov/ngs/wngsr.txt");
+		URL url = new URL("https://ir.eia.gov/ngs/wngsr.txt");
 		String content = IOUtils.toString(new InputStreamReader(url.openStream()));
 
 		
