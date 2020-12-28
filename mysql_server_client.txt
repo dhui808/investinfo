@@ -10,6 +10,10 @@ source <ROOT_OF_CFTC_PROJECT>\cftc\sql\load_price_csv.sql;
 
 source <ROOT_OF_CFTC_PROJECT>\cftc\sql\extract_price.sql;
 
+show tables;
+
+desc investing_com_history;
+
 select * from investing_com_staging_usd_cad;
 
 insert into update_date values("investing_com","20181007");
