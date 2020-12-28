@@ -93,7 +93,7 @@ run
 
 	3.1 Manual (run) - (after 6:00 PM Friday and before 2:00 PM Sunday)
 	
-	3.1 Manual (run -date 20190702) - (after 2:00 PM Sunday and before 6:00 PM Friday)
+	3.1 Manual (run -f -date 20190702) - (after 2:00 PM Sunday and before 6:00 PM Friday)
 	
 	3.3 Scheduler -TODO
 	
