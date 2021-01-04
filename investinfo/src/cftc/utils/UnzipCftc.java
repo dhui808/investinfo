@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.IsoFields;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -69,6 +71,11 @@ public class UnzipCftc {
     		if (diff < 100) {
     			return true;
     		}
+    	}
+    	
+    	// if it is the first week of the year, we need to download file.
+    	if ( 1 == LocalDate.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)) {
+    		return true;
     	}
     	
     	return false;

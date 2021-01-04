@@ -134,6 +134,13 @@ public class InventoryHistoryService extends AbstractCftcAnalysis {
 		return 188;
 	}
 
+	public void adjustInventoryHistory(String[] years) throws Exception {
+		
+		for(String year: years) {
+			adjustInventoryHistory(year);
+		}
+	}
+	
 	/**
 	 * Sometimes CFTC release is against Monday instead of Tuesday positions.
 	 * @param year

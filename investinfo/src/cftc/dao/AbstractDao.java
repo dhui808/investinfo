@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cftc.utils.CftcProperties;
+
 public class AbstractDao {
 
 	protected String dbUrl;
 
 	public AbstractDao() {
-		Map<String, String> dbMap = CftcDatabase.getDatabaseProperties();
+		Map<String, String> dbMap = CftcProperties.getCftcProperties();
 		dbUrl = "jdbc:mysql://localhost/" + dbMap.get("databaseName") + "?"
 	            + "user=" + dbMap.get("user") + "&password=" + dbMap.get("password")
 	            + "&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&allowLoadLocalInfile=true";

@@ -25,6 +25,7 @@ import cftc.sheet.AddYearSheet;
 import cftc.sheet.AddYearSheetCommodity;
 import cftc.sheet.AddYearSheetForex;
 import cftc.sheet.InstrumentCategoryVisitorAddYearSheet;
+import cftc.utils.CftcProperties;
 import cftc.utils.DateUtils;
 import cftc.utils.PrepareFolders;
 import cftc.utils.UnzipCftc;
@@ -54,6 +55,8 @@ public abstract class VendorMain {
 	protected PriceAndIndexHandler updateSheetPriceIndex;
 
 	protected VendorName vendorName;
+	
+	protected String[] yearsNeedAdjusting;
 
 	public void parse(String[] args, List<String> argList) {
 
@@ -113,6 +116,8 @@ public abstract class VendorMain {
 
 		PrepareFolders.prepareFolders();
 
+		yearsNeedAdjusting = CftcProperties.getYearsNeedAdjusting();
+		
 		// add documents
 		if (argList.contains("ad") || argList.contains("adddoc")) {
 
@@ -455,6 +460,7 @@ public abstract class VendorMain {
 		priceAndIndexHistoryService.loadAllPriceIndexHistory();
 		priceAndIndexHistoryService.adjustPriceHistory("2013");
 		priceAndIndexHistoryService.adjustPriceHistory("2019");
+		//priceAndIndexHistoryService.adjustPriceHistory(yearsNeedAdjusting);
 	}
 
 	public void loadPriceIndexHistoryForProduct(String product) throws Exception {
@@ -462,6 +468,7 @@ public abstract class VendorMain {
 		priceAndIndexHistoryService.loadPriceIndexHistoryForProduct(product);
 		priceAndIndexHistoryService.adjustPriceHistory("2013");
 		priceAndIndexHistoryService.adjustPriceHistory("2019");
+		//priceAndIndexHistoryService.adjustPriceHistory(yearsNeedAdjusting);
 	}
 
 	public void updatePriceIndexHistory() throws Exception {
@@ -474,6 +481,7 @@ public abstract class VendorMain {
 		inventoryHistoryService.loadAllInventoryHistory();
 		inventoryHistoryService.adjustInventoryHistory("2013");
 		inventoryHistoryService.adjustInventoryHistory("2019");
+		//inventoryHistoryService.adjustInventoryHistory(yearsNeedAdjusting);
 	}
 
 	public void updateCommodityInventoryHistory() throws Exception {

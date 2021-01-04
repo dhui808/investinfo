@@ -106,6 +106,13 @@ public abstract class PriceAndIndexHistoryService {
 		return priceList;
 	}
 	
+	public void adjustPriceHistory(String[] years) throws Exception {
+		
+		for(String year: years) {
+			adjustPriceHistory(year);
+		}
+	}
+	
 	public void adjustPriceHistory(String year) throws Exception {
 		
 		UnzipCftc.unzipCftcFilesYear(year);
