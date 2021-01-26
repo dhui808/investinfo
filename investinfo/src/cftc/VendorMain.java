@@ -313,6 +313,9 @@ public abstract class VendorMain {
 		updateForexAnalysis.updateDataAnalysisByDate(date);
 		updateForexAnalysis.updateCharts();
 		updateForexAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
+		
+		//add cftc release history
+		cftcHistoryService.addCftcReleaseHistory();
 	}
 
 	public void upatePriceOrIndexInSpreadsheet(String date) throws Exception {

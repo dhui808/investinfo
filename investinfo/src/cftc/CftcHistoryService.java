@@ -1,5 +1,7 @@
 package cftc;
 
+import static cftc.utils.Constants.CURRENT_YEAR;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,6 +21,34 @@ import jloputility.Lo;
 public class CftcHistoryService extends AbstractCftcAnalysis {
 
 	private CftcDao dao = new CftcDao();
+	
+	/**
+	 * Adds the latest CFTC release date to CftcReleaseHistory table.
+	 * @throws Exception
+	 */
+	public void addCftcReleaseHistory() throws Exception {
+		
+		String year = "" + CURRENT_YEAR;
+
+		XSpreadsheetDocument sourceDocument = loadCftcSourceDocument(year);
+		XSpreadsheet srcSheet = getSpreadsheet(sourceDocument, 0);
+		
+		XCellRange xRange1 = srcSheet.getCellRangeByPosition(0, 1, getSourceColumnLength() - 1, 1);
+		
+		com.sun.star.sheet.XCellRangeData xData = UnoRuntime.queryInterface(com.sun.star.sheet.XCellRangeData.class,
+				xRange1);
+		Object[][] xDataArray = xData.getDataArray();
+		
+		String[] releaseDates = new String[xDataArray.length];
+		
+		for (int i = 0; i < xDataArray.length; i++) {
+			releaseDates[i] = DateUtils.converCftcDateIntoFormatedDate(xDataArray[i][1].toString().substring(0, 6));
+		}
+		
+		dao.updateCftcReleaseHistory(CftcTableName.CFTC_RELEASE_HISTORY.getName(), year, releaseDates);
+		
+		Lo.closeDoc(sourceDocument);
+	}
 	
 	public void updateCftcReleaseHistory(String year) throws Exception {
 		
