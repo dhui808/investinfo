@@ -180,11 +180,20 @@ public abstract class PriceIndexDao extends AbstractDao {
 		executeStatementUpdate(updateNgInventoryHistory);
 	}
 
-	public void clearStagingAndHistoryTable(String tablename) throws Exception {
+	public void clearStagingTable(String tablename) throws Exception {
 		
 		String[] loadInventoryCsvFileQueries = new String[1];
 		
 		loadInventoryCsvFileQueries[0] = "DELETE FROM " + tablename;
+		
+		executeStatementUpdate(loadInventoryCsvFileQueries);
+	}
+	
+	public void clearHistoryTable(String instrument, String tablename) throws Exception {
+		
+		String[] loadInventoryCsvFileQueries = new String[1];
+		
+		loadInventoryCsvFileQueries[0] = "DELETE FROM " + tablename + " WHERE instrument = '" + instrument + "'";
 		
 		executeStatementUpdate(loadInventoryCsvFileQueries);
 	}

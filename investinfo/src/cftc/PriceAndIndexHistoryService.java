@@ -133,7 +133,7 @@ public abstract class PriceAndIndexHistoryService {
 			List<PriceIndexDto> priceList = dao.retrievePriceIndex(getHistoryTablename(), cftc.getInstrumentName(), year);
 			String firstReleaseTuesdayDate = priceList.get(priceList.size() - 1).releaseTuesdayDate;
 			
-			System.out.println("Datebase first relase date for " + year + ": " + firstReleaseTuesdayDate);
+			System.out.println("Datebase first release date for " + cftc.getInstrumentName() + " for " + year + ": " + firstReleaseTuesdayDate);
 			
 			if (!firstReleaseDate.equals(firstReleaseTuesdayDate)) {
 				

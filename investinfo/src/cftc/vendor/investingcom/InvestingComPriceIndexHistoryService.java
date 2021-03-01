@@ -65,10 +65,13 @@ public class InvestingComPriceIndexHistoryService extends PriceAndIndexHistorySe
 	public void loadPriceIndexHistoryForProduct(String product) throws Exception {
 		//download .csv files from investing.com into database staging table
 		
-		InvestingComTablename icTablename = InvestingComTablename.valueOf(product.toUpperCase());
+		String instrument = product.toUpperCase();
 		
-		//clear all staging and history table
-		dao.clearStagingAndHistoryTable(icTablename.getTablename());
+		InvestingComTablename icTablename = InvestingComTablename.valueOf(instrument);
+		
+		//clears staging and history tables
+		dao.clearStagingTable(icTablename.getTablename());
+		dao.clearHistoryTable(instrument, getHistoryTablename());
 		
 		//load price/Index history .csv files into staging table.
 		loadCsvIntoStagingTable(icTablename);

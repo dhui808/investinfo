@@ -7,7 +7,7 @@ public enum InvestingComFilename {
 	GOLD("Gold Futures Historical Data.csv", true),
 	USD_INDEX("US Dollar Index Futures Historical Data.csv", true),
 	USD_CAD("USD_CAD Historical Data.csv", false),
-	EURO_FX("Euro Futures Historical Data.csv", true);
+	EURO_FX("EUR_USD Historical Data.csv", false);
 	
 	private String csvName;
 	private boolean inclugingVolume;

@@ -49,7 +49,7 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 
 	public String fetchEuroFutures() throws IOException {
 		
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/eur-futures");
+		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/eur-usd");
 	}
 
 	public String fetchPriceOrIndexFromUrl(String url) throws IOException {

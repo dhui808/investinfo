@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <eclipse-userlibraries version="2">
     <library name="LibreOffice603" systemlibrary="false">
-        <archive path="C:/Program Files/LibreOffice/program/classes/juh.jar"/>
-        <archive path="C:/Program Files/LibreOffice/program/classes/jurt.jar"/>
         <archive path="C:/Program Files/LibreOffice/program/classes/officebean.jar"/>
-        <archive path="C:/Program Files/LibreOffice/program/classes/ridl.jar"/>
-        <archive path="C:/Program Files/LibreOffice/program/classes/unoil.jar"/>
         <archive path="C:/Program Files/LibreOffice/program/classes/unoloader.jar"/>
+        <archive path="C:/Program Files/LibreOffice/program/classes/libreoffice.jar"/>
     </library>
 </eclipse-userlibraries>

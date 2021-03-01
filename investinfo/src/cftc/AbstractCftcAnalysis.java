@@ -25,6 +25,8 @@ import cftc.utils.DateUtils;
 import jloputility.Calc;
 
 public abstract class AbstractCftcAnalysis {
+	
+	String x = "s";
 
 	/**
 	 * Load CFTC source spreadsheet document.
@@ -202,8 +204,10 @@ public abstract class AbstractCftcAnalysis {
 		LOOP2:
 		for (index = lastRow; index > row; index--) {
 			xCell = xSheet.getCellByPosition(0, index);
+			String value = xCell.getFormula();
 			for (int i = 0; i < filters.length; i++) {
-				if (filters[i].equals(xCell.getFormula()) || xCell.getFormula().contains(filters[i])) {
+				String filter = filters[i];
+				if (filter.equals(value) || value.substring(0, filter.length()).equals(filter)) {
 					break LOOP2;
 				}
 			}

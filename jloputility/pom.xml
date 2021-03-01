@@ -33,27 +33,12 @@
 		<!-- LibreOffice -->
 		<dependency>
 			<groupId>libreoffice</groupId>
-			<artifactId>juh</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>libreoffice</groupId>
-			<artifactId>jurt</artifactId>
+			<artifactId>libreoffice</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>libreoffice</groupId>
 			<artifactId>officebean</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>libreoffice</groupId>
-			<artifactId>ridl</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>libreoffice</groupId>
-			<artifactId>unoil</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
@@ -92,38 +77,6 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>install-external-libreoffice-juh</id>
-						<phase>clean</phase>
-						<configuration>
-							<repositoryLayout>default</repositoryLayout>
-							<groupId>libreoffice</groupId>
-							<artifactId>juh</artifactId>
-							<version>1.0</version>
-							<file>lib/juh.jar</file>
-							<packaging>jar</packaging>
-							<generatePom>true</generatePom>
-						</configuration>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>install-external-libreoffice-jurt</id>
-						<phase>clean</phase>
-						<configuration>
-							<repositoryLayout>default</repositoryLayout>
-							<groupId>libreoffice</groupId>
-							<artifactId>jurt</artifactId>
-							<version>1.0</version>
-							<file>lib/jurt.jar</file>
-							<packaging>jar</packaging>
-							<generatePom>true</generatePom>
-						</configuration>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>install-external-libreoffice-officebean</id>
 						<phase>clean</phase>
 						<configuration>
@@ -140,30 +93,14 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>install-external-libreoffice-ridl</id>
+						<id>install-external-libreoffice-libreoffice</id>
 						<phase>clean</phase>
 						<configuration>
 							<repositoryLayout>default</repositoryLayout>
 							<groupId>libreoffice</groupId>
-							<artifactId>ridl</artifactId>
+							<artifactId>libreoffice</artifactId>
 							<version>1.0</version>
-							<file>lib/ridl.jar</file>
-							<packaging>jar</packaging>
-							<generatePom>true</generatePom>
-						</configuration>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>install-external-libreoffice-unoil</id>
-						<phase>clean</phase>
-						<configuration>
-							<repositoryLayout>default</repositoryLayout>
-							<groupId>libreoffice</groupId>
-							<artifactId>unoil</artifactId>
-							<version>1.0</version>
-							<file>lib/unoil.jar</file>
+							<file>lib/libreoffice.jar</file>
 							<packaging>jar</packaging>
 							<generatePom>true</generatePom>
 						</configuration>
