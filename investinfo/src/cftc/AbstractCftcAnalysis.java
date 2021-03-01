@@ -25,8 +25,6 @@ import cftc.utils.DateUtils;
 import jloputility.Calc;
 
 public abstract class AbstractCftcAnalysis {
-	
-	String x = "s";
 
 	/**
 	 * Load CFTC source spreadsheet document.
