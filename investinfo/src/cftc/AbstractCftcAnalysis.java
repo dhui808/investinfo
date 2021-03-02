@@ -205,7 +205,7 @@ public abstract class AbstractCftcAnalysis {
 			String value = xCell.getFormula();
 			for (int i = 0; i < filters.length; i++) {
 				String filter = filters[i];
-				if (filter.equals(value) || value.substring(0, filter.length()).equals(filter)) {
+				if (filter.equals(value) || (value.length() >= filter.length() && value.substring(0, filter.length()).equals(filter))) {
 					break LOOP2;
 				}
 			}
