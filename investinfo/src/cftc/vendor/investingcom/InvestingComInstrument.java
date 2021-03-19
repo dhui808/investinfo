@@ -9,7 +9,8 @@ public enum InvestingComInstrument {
 	GOLD(InstrumentName.GOLD.name(), InvestingComFilename.GOLD.getCsvName(), InvestingComTablename.GOLD.getTablename(), InvestingComTablename.HISTORY.getTablename()),
 	USD_INDEX(InstrumentName.USD_INDEX.name(), InvestingComFilename.USD_INDEX.getCsvName(), InvestingComTablename.USD_INDEX.getTablename(), InvestingComTablename.HISTORY.getTablename()),
 	USD_CAD(InstrumentName.USD_CAD.name(), InvestingComFilename.USD_CAD.getCsvName(), InvestingComTablename.USD_CAD.getTablename(), InvestingComTablename.HISTORY.getTablename()),
-	EURO_FX(InstrumentName.EURO_FX.name(), InvestingComFilename.EURO_FX.getCsvName(), InvestingComTablename.EURO_FX.getTablename(), InvestingComTablename.HISTORY.getTablename());
+	EURO_FX(InstrumentName.EURO_FX.name(), InvestingComFilename.EURO_FX.getCsvName(), InvestingComTablename.EURO_FX.getTablename(), InvestingComTablename.HISTORY.getTablename()),
+	US10Y(InstrumentName.US10Y.name(), InvestingComFilename.US10Y.getCsvName(), InvestingComTablename.US10Y.getTablename(), InvestingComTablename.HISTORY.getTablename());
 	
 	private String instrumentName;
 	private String priceIndexCsvName;

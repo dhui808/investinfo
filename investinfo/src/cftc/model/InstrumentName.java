@@ -7,7 +7,8 @@ public enum InstrumentName {
 	GOLD(InstrumentCategory.METAL),
 	USD_INDEX(InstrumentCategory.FOREX),
 	USD_CAD(InstrumentCategory.FOREX),
-	EURO_FX(InstrumentCategory.FOREX);
+	EURO_FX(InstrumentCategory.FOREX),
+	US10Y(InstrumentCategory.FOREX);
 	
 	private InstrumentCategory category;
 

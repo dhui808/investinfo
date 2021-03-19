@@ -8,7 +8,8 @@
 			"gold": "/commodities/gold",
 			"usd_index": "/currencies/us-dollar-index",
 			"usd_cad": "/currencies/usd-cad",
-			"euro_fx": "/currencies/eur-futures"
+			"euro_fx": "/currencies/eur-usd",
+			"us10y": "/rates-bonds/u.s.-10-year-bond-yield"
 		}
 	}
 ]

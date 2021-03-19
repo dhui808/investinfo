@@ -46,6 +46,7 @@ public class ProductList {
 		productList.add(new UsdIndex());
 		productList.add(new CadFutures());
 		productList.add(new EuroFutures());
+		productList.add(new Us10YearNotes());
 		
 		return productList;
 	}
