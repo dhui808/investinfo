@@ -18,6 +18,9 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 			case "USD_INDEX": return fetchUsdIndex();
 			case "USD_CAD": return fetchCadFutures();
 			case "EURO_FX": return fetchEuroFutures();
+			case "SPX500": return fetchSPX500Index();
+			case "NASDAQ": return fetchNASDAQIndex();
+			case "DOW30": return fetchDow30Index();
 			case "US10Y": return fetchUs10YFutures();
 			default: return null;
 		}
@@ -52,7 +55,22 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 		
 		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/eur-usd");
 	}
+	
+	public String fetchSPX500Index() throws IOException {
+		
+		return fetchPriceOrIndexFromUrl("https://www.investing.com/indices/us-spx-500");
+	}
 
+	public String fetchNASDAQIndex() throws IOException {
+		
+		return fetchPriceOrIndexFromUrl("https://www.investing.com/indices/nasdaq-composite");
+	}
+	
+	public String fetchDow30Index() throws IOException {
+		
+		return fetchPriceOrIndexFromUrl("https://www.investing.com/indices/us-30");
+	}
+	
 	public String fetchUs10YFutures() throws IOException {
 		
 		return fetchPriceOrIndexFromUrl("https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield");

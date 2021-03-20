@@ -175,7 +175,7 @@ public abstract class PriceIndexDao extends AbstractDao {
 	
 	public void updateFirstCtfcReleaseDate(String historyTablename, String firstReleaseDate, String firstReleaseTuesdayDate, String instrument) throws Exception {
 
-	    String updateNgInventoryHistory = "UPDATE " + historyTablename + " SET release_week_tuesday = " + firstReleaseDate + " WHERE instrument = '" + instrument + "' and release_week_tuesday = '" + firstReleaseTuesdayDate + "'";
+	    String updateNgInventoryHistory = "UPDATE " + historyTablename + " SET release_week_tuesday = '" + firstReleaseDate + "' WHERE instrument = '" + instrument + "' and release_week_tuesday = '" + firstReleaseTuesdayDate + "'";
 
 		executeStatementUpdate(updateNgInventoryHistory);
 	}

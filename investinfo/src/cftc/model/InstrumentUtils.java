@@ -1,7 +1,17 @@
 package cftc.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class InstrumentUtils {
 
+	public static List<CftcInstrument> getCftcInstrument(String product) {
+		
+		InstrumentName instrument = InstrumentName.valueOf(product.toUpperCase());
+		CftcInstrument[] cftcArray = InstrumentUtils.getCftcInstrument(instrument);
+		
+		return Arrays.asList(cftcArray);
+	}
 	
 	public static CftcInstrument[] getCftcInstrument(InstrumentName instrument) {
 		
@@ -25,6 +35,15 @@ public class InstrumentUtils {
 			break;
 		case "EURO_FX":
 			cftc = new CftcInstrument[] {new EuroFutures()};
+			break;
+		case "SPX500":
+			cftc = new CftcInstrument[] {new SPX500()};
+			break;
+		case "NASDAQ":
+			cftc = new CftcInstrument[] {new NASDAQ()};
+			break;
+		case "DOW30":
+			cftc = new CftcInstrument[] {new Dow30()};
 			break;
 		case "US10Y":
 			cftc = new CftcInstrument[] {new Us10YearNotes()};

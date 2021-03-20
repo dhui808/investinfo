@@ -6,20 +6,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.sun.star.uno.RuntimeException;
-
 import cftc.dao.CftcDao;
 import cftc.dao.PriceIndexDao;
 import cftc.model.CftcInstrument;
+import cftc.model.InstrumentUtils;
 import cftc.model.PriceIndexDto;
 import cftc.model.ProductList;
 import cftc.model.table.CftcTableName;
 import cftc.utils.DateUtils;
 import cftc.utils.UnzipCftc;
 import cftc.vendor.VendorName;
-import cftc.vendor.investingcom.InvestingComTablename;
 import cftc.wao.PriceIndexWao;
 
 public abstract class PriceAndIndexHistoryService {
@@ -106,18 +102,29 @@ public abstract class PriceAndIndexHistoryService {
 		return priceList;
 	}
 	
-	public void adjustPriceHistory(String[] years) throws Exception {
-		
-		for(String year: years) {
-			adjustPriceHistory(year);
-		}
-	}
+//	public void adjustPriceHistory(String[] years) throws Exception {
+//		
+//		for(String year: years) {
+//			adjustPriceHistory(year);
+//		}
+//	}
 	
 	public void adjustPriceHistory(String year) throws Exception {
 		
-		UnzipCftc.unzipCftcFilesYear(year);
-		
 		List<CftcInstrument> productList = ProductList.getAllProductList();
+		adjustPriceHistory(year, productList);
+	}
+
+	public void adjustPriceHistory(String year, String product) throws Exception {
+		
+		List<CftcInstrument> cftcArray = InstrumentUtils.getCftcInstrument(product);
+		
+		adjustPriceHistory(year, cftcArray);
+	}
+	
+	private void adjustPriceHistory(String year, List<CftcInstrument> productList) throws Exception {
+		
+		UnzipCftc.unzipCftcFilesYear(year);
 		
 		CftcDao cftcDao = new CftcDao();
 		
@@ -125,8 +132,8 @@ public abstract class PriceAndIndexHistoryService {
 		String lastYear = String.valueOf(Integer.parseInt(year) - 1);
 		String lastReleaseDateLastYear = cftcDao.retrieveLastReleaseDate(CftcTableName.CFTC_RELEASE_HISTORY.getName(), lastYear);
 		
-		System.out.println("CFTC first relase date for " + year + ": " + firstReleaseDate);
-		System.out.println("CFTC last relase date for " + lastYear + ": " + lastReleaseDateLastYear);
+		System.out.println("CFTC first release date for " + year + ": " + firstReleaseDate);
+		System.out.println("CFTC last release date for " + lastYear + ": " + lastReleaseDateLastYear);
 		
 		for (CftcInstrument cftc : productList) {
 			
@@ -142,6 +149,5 @@ public abstract class PriceAndIndexHistoryService {
 			
 			//TODO is it possible that the last release against positions in Wednesday?
 		}
-	}
-	
+	}	
 }

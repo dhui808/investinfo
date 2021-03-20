@@ -469,8 +469,8 @@ public abstract class VendorMain {
 	public void loadPriceIndexHistoryForProduct(String product) throws Exception {
 
 		priceAndIndexHistoryService.loadPriceIndexHistoryForProduct(product);
-		priceAndIndexHistoryService.adjustPriceHistory("2013");
-		priceAndIndexHistoryService.adjustPriceHistory("2019");
+		priceAndIndexHistoryService.adjustPriceHistory("2013", product);
+		priceAndIndexHistoryService.adjustPriceHistory("2019", product);
 		//priceAndIndexHistoryService.adjustPriceHistory(yearsNeedAdjusting);
 	}
 

@@ -46,6 +46,9 @@ public class ProductList {
 		productList.add(new UsdIndex());
 		productList.add(new CadFutures());
 		productList.add(new EuroFutures());
+		productList.add(new SPX500());
+		productList.add(new NASDAQ());
+		productList.add(new Dow30());
 		productList.add(new Us10YearNotes());
 		
 		return productList;

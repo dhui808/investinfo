@@ -6,6 +6,9 @@ drop table investing_com_staging_ng;
 drop table investing_com_staging_usd_index;
 drop table investing_com_staging_usd_cad;
 drop table investing_com_staging_euro_fx;
+drop table investing_com_staging_spx500;
+drop table investing_com_staging_nasdaq;
+drop table investing_com_staging_dow30;
 drop table investing_com_staging_us10y;
 drop table eia_staging_ng;
 drop table eia_staging_oil;
@@ -22,6 +25,9 @@ create table  investing_com_history (release_week_tuesday char(8) not null, inst
     PARTITION USD_INDEX VALUES IN('USD_INDEX'),
     PARTITION USD_CAD VALUES IN('USD_CAD'),
     PARTITION EURO_FX VALUES IN('EURO_FX'),
+    PARTITION SPX500 VALUES IN('SPX500'),
+    PARTITION NASDAQ VALUES IN('NASDAQ'),
+    PARTITION DOW30 VALUES IN('DOW30'),
     PARTITION US10Y VALUES IN('US10Y')
 );
 
@@ -31,11 +37,23 @@ create table investing_com_staging_gold (date_str varchar(12), price varchar(12)
 create table investing_com_staging_usd_index (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_usd_cad (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_euro_fx (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
+create table investing_com_staging_spx500 (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
+create table investing_com_staging_nasdaq (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
+create table investing_com_staging_dow30 (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_us10y (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table update_date (vendor varchar(50) not null, update_date char(8) not null, primary key (vendor));
 
 # add euro_fx partition
 ALTER TABLE investing_com_history ADD PARTITION (PARTITION EURO_FX VALUES IN('EURO_FX'));
+
+# add spx500 partition
+ALTER TABLE investing_com_history ADD PARTITION (PARTITION SPX500 VALUES IN('SPX500'));
+
+# add nasdaq partition
+ALTER TABLE investing_com_history ADD PARTITION (PARTITION NASDAQ VALUES IN('NASDAQ'));
+
+# add dow30 partition
+ALTER TABLE investing_com_history ADD PARTITION (PARTITION DOW30 VALUES IN('DOW30'));
 
 # add us10y partition
 ALTER TABLE investing_com_history ADD PARTITION (PARTITION US10Y VALUES IN('US10Y'));

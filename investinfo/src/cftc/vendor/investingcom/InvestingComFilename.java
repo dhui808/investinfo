@@ -8,6 +8,9 @@ public enum InvestingComFilename {
 	USD_INDEX("US Dollar Index Futures Historical Data.csv", true),
 	USD_CAD("USD_CAD Historical Data.csv", false),
 	EURO_FX("EUR_USD Historical Data.csv", false),
+	SPX500("S&P 500 Historical Data.csv", false),
+	NASDAQ("NASDAQ Composite Historical Data.csv", false),
+	DOW30("Dow Jones Industrial Average Historical Data.csv", false),
 	US10Y("United States 10-Year Bond Yield Historical Data.csv", false);
 	
 	private String csvName;
