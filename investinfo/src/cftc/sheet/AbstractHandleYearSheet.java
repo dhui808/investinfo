@@ -1,10 +1,11 @@
 package cftc.sheet;
 
+import static cftc.utils.Constants.CURRENT_YEAR;
+
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 
 import cftc.AbstractCftcAnalysis;
-import static cftc.utils.Constants.*;
 
 public  abstract class AbstractHandleYearSheet extends AbstractCftcAnalysis {
 

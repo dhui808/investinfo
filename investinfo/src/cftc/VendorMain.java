@@ -10,6 +10,7 @@ import cftc.charts.CommodityChartsHandler;
 import cftc.charts.ForexChartsHandler;
 import cftc.charts.InstrumentCategoryVisitorChartsHandler;
 import cftc.download.DownloadCftc;
+import cftc.marketchart.MarketAnalysis;
 import cftc.model.CftcInstrument;
 import cftc.model.InstrumentCategory;
 import cftc.model.InstrumentCategoryVisitable;
@@ -58,6 +59,8 @@ public abstract class VendorMain {
 	
 	protected String[] yearsNeedAdjusting;
 
+	protected MarketAnalysis marketAnalysis = new MarketAnalysis();
+	
 	public void parse(String[] args, List<String> argList) {
 
 		Date start = new Date();
@@ -174,7 +177,8 @@ public abstract class VendorMain {
 		int idxLoad = argList.indexOf("-load");
 		int idxUpdate = argList.indexOf("-update");
 		int idxAdjust = argList.indexOf("-adjust");
-
+		int idxCreate = argList.indexOf("-create");
+		
 		// update inventory
 		if (argList.contains("i") || argList.contains("inventory")) {
 
@@ -270,7 +274,6 @@ public abstract class VendorMain {
 
 		// export charts
 		if (argList.contains("c") || argList.contains("chart")) {
-
 			if (null != instrument) {
 				exportChartByInstrumentYear(instrument, year);
 			} else if (null != category) {
@@ -281,7 +284,20 @@ public abstract class VendorMain {
 
 			return;
 		}
+		
+		// creates/updates market chart
+		if (argList.contains("mc") || argList.contains("marketchart")) {
+			if (0 <= idxCreate) {
+				// creates market chart
+				createMarketChart();
+			} else {
+				// updates market chart
+				updateMarketChart();
+			}
 
+			return;
+		}
+		
 		// update all sheets with the latest CFTC release.
 		boolean forceDownload = false;
 		if (argList.contains("-f") || argList.contains("-forcedownload")) {
@@ -637,5 +653,15 @@ public abstract class VendorMain {
 		commodityChartsHandler.exportChartAsImage(year);
 
 		forexChartsHandler.exportChartAsImage(year);
+	}
+	
+	private void createMarketChart() throws Exception {
+		
+		marketAnalysis.createMarketChart();
+	}
+	
+	private void updateMarketChart() throws Exception {
+		
+		marketAnalysis.updateMarketChart();
 	}
 }

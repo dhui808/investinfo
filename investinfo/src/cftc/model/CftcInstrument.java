@@ -1,5 +1,7 @@
 package cftc.model;
 
+import static cftc.utils.Constants.productsUrl;
+
 public abstract class CftcInstrument {
 	
 	public abstract String getAnalysisFilePath();

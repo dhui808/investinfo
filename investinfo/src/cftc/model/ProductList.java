@@ -61,4 +61,16 @@ public class ProductList {
 		
 		return productList;
 	}
+	
+	public static List<CftcInstrument> getMarketProductList() {
+		
+		List<CftcInstrument> productList  = new ArrayList<CftcInstrument>();
+		productList.add(new UsdIndex());
+		productList.add(new SPX500());
+		productList.add(new NASDAQ());
+		productList.add(new Dow30());
+		productList.add(new Us10YearNotes());
+		
+		return productList;
+	}
 }
