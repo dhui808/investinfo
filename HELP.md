@@ -118,7 +118,10 @@ run
 11. Charts
 		11.1 export chart for an instrument (run -instrument gold -year 2018 chart)
 		
-		
+12. Market charts
+	12.1 Create Marcket charts from scratch (run -create mc)
+	12.2 Update Marchet chatrs with this week's release (run -update mc)
+	
 Usage:
 
 run help

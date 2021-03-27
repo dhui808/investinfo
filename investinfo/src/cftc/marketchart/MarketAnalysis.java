@@ -9,16 +9,30 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import com.sun.star.beans.XPropertySet;
+import com.sun.star.chart2.ScaleData;
+import com.sun.star.chart2.XAxis;
+import com.sun.star.chart2.XChartDocument;
+import com.sun.star.chart2.XDataSeries;
+import com.sun.star.chart2.data.XDataProvider;
+import com.sun.star.chart2.data.XDataSequence;
+import com.sun.star.chart2.data.XDataSource;
+import com.sun.star.chart2.data.XLabeledDataSequence;
 import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
+import com.sun.star.table.XTableCharts;
+import com.sun.star.table.XTableChartsSupplier;
+import com.sun.star.uno.UnoRuntime;
 
 import cftc.AbstractCftcAnalysis;
 import cftc.InvestInfoException;
 import cftc.model.CftcInstrument;
 import cftc.model.ProductList;
+import jloputility.Chart2;
 import jloputility.Lo;
+import jloputility.Props;
 
 public class MarketAnalysis extends AbstractCftcAnalysis {
 
@@ -46,7 +60,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		
 		MarketData marketData = marketDao.retrieveAllMarketData();
 		XSpreadsheetDocument chartsDocument = createMarketDocument();
-		XSpreadsheet chartsDataSheet = createMarketDataSheet(chartsDocument);
+		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
 
 		//copy marketData to charts-data sheet
 		updateMarketChartsDataSheet(marketData, chartsDataSheet);
@@ -116,6 +130,13 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 			throw new InvestInfoException("Error in copyTemplateToMarketChart().");
 		}
 		
+		XSpreadsheetDocument chartsDocument = loadMarketDocument();
+
+		return chartsDocument;
+	}
+
+	private XSpreadsheetDocument loadMarketDocument() {
+		
 		try {
 			String chartsFilePath = getMarketChartsFilePath();
 			XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
@@ -126,20 +147,141 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		}
 	}
 	
-	private XSpreadsheet createMarketDataSheet(XSpreadsheetDocument chartsDocument) {
+	private XSpreadsheet getMarketDataSheet(XSpreadsheetDocument chartsDocument) {
+		
+		return getMarketSheet(chartsDocument, 0);
+	}
+
+	private XSpreadsheet getMarketChartsSheet(XSpreadsheetDocument chartsDocument) {
+		
+		return getMarketSheet(chartsDocument, 1);
+	}
+
+	private XSpreadsheet getMarketSheet(XSpreadsheetDocument chartsDocument, int index) {
 		
 		try {
-			XSpreadsheet chartsDataSheet = getSpreadsheet(chartsDocument, 0);
+			XSpreadsheet chartsDataSheet = getSpreadsheet(chartsDocument, index);
 			return chartsDataSheet;
 		} catch (IndexOutOfBoundsException | WrappedTargetException e) {
 			e.printStackTrace();
 			throw new InvestInfoException("Error in getSpreadsheet().");
 		}
 	}
-
-	public void updateMarketChart() {
+	
+	public void updateMarketChart() throws Exception {
 		
+		MarketCurrentData marketCurrentData = marketDao.retrieveCurrentMarketData();
+		XSpreadsheetDocument chartsDocument = loadMarketDocument();
+		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
 
+		//copy marketCurrentData to charts-data sheet
+		updateMarketChartsDataSheet(marketCurrentData, chartsDataSheet);
+		
+		XSpreadsheet chartsSheet = getMarketChartsSheet(chartsDocument);
+		updateMarketChartsSheet(chartsSheet);
+		
+		Lo.save(chartsDocument);
+		Lo.closeDoc(chartsDocument);
+	}
+
+	private void updateMarketChartsSheet(XSpreadsheet chartsSheet) {
+		
+		XTableChartsSupplier chartsSupplier = Lo.qi(XTableChartsSupplier.class, chartsSheet);
+		XTableCharts tableCharts = chartsSupplier.getCharts();
+		String[] chartNames = tableCharts.getElementNames();
+
+		for (String chartName : chartNames) {
+			updateChartByName(chartsSheet, chartName);
+		}
+	}
+
+	private void updateChartByName(XSpreadsheet chartsSheet, String chartName) {
+		
+		XChartDocument chartDoc = Chart2.getChartDoc(chartsSheet, chartName);
+
+		XDataSeries[] ds = Chart2.getDataSeries(chartDoc);
+
+		for (int i = 0; i < ds.length; i++) {
+			
+			XDataSeries dsi = ds[i];
+			
+			// y values
+			XDataSource xDataSource = (XDataSource) UnoRuntime.queryInterface(XDataSource.class, dsi);
+			XLabeledDataSequence[] xLabeledDS = xDataSource.getDataSequences();
+			XLabeledDataSequence xLabeledDS0 = xLabeledDS[0];
+			XDataSequence xDSLabel = xLabeledDS0.getLabel();
+			XDataSequence xDSValues = xLabeledDS0.getValues();
+			
+			String dataRange1 = getDataRange(xDSValues.getSourceRangeRepresentation());
+			String dataRange2 = incrementDataRange(dataRange1);
+			
+			String valuesRange = xDSValues.getSourceRangeRepresentation().replace(dataRange1, dataRange2);
+			String labelRange = xDSLabel.getSourceRangeRepresentation().replace(dataRange1, dataRange2);
+			XDataProvider dp = chartDoc.getDataProvider();
+			XDataSequence dataSeq = dp.createDataSequenceByRangeRepresentation(valuesRange);
+			XDataSequence labelSeq = dp.createDataSequenceByRangeRepresentation(labelRange);
+			XPropertySet dsProps = Lo.qi(XPropertySet.class, dataSeq);
+			Props.setProperty(dsProps, "Role", "values-y"); // specify data role (type)
+			
+			xLabeledDS0.setValues(dataSeq);
+			xLabeledDS0.setLabel(labelSeq);
+
+			// categories
+			XAxis axis = Chart2.getAxis(chartDoc, Chart2.X_AXIS, 0);
+			ScaleData sd = axis.getScaleData();
+			XLabeledDataSequence cat = sd.Categories;
+			XDataSequence catValues = cat.getValues();
+			String catValuesRange = catValues.getSourceRangeRepresentation().replace(dataRange1, dataRange2);
+			XDataSequence catDataSeq = dp.createDataSequenceByRangeRepresentation(catValuesRange);
+			XPropertySet catDsProps = Lo.qi(XPropertySet.class, catDataSeq);
+			Props.setProperty(catDsProps, "Role", "categories"); // specify data role (type)
+			
+			cat.setValues(catDataSeq);
+		}
+	}
+	
+	private String getDataRange(String oldDataRange) {
+		return oldDataRange.substring(1 + oldDataRange.lastIndexOf("$"));
+	}
+	
+	// Increment the dataRange by 1
+	private String incrementDataRange(String oldDataRange) {
+		
+		int range = Integer.parseInt(oldDataRange);
+		String newDataRange = String.valueOf(1 + range);
+		
+		return newDataRange;
+	}
+	
+	private void updateMarketChartsDataSheet(MarketCurrentData marketCurrentData, XSpreadsheet chartsDataSheet) throws Exception {
+		
+		int rows = getNumberOfRows(chartsDataSheet);
+		Object[][] xFormulaArray0 = createFormulaArray(marketCurrentData);
+
+		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, rows,
+				5, rows);
+		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
+				destHeaderCellRange);
+
+		Object[][] x = new Object[1][6];
+		
+		x[0]=xFormulaArray0[0];
+
+	    crFormula.setDataArray(x);
+	}
+
+	private Object[][] createFormulaArray(MarketCurrentData marketCurrentData) {
+		
+		Object[][] xFormulaArray = new Object[1][6];
+		
+		xFormulaArray[0][0] = marketCurrentData.getReleaseDate();
+		xFormulaArray[0][1] = marketCurrentData.getUsdIndex();
+		xFormulaArray[0][2] = marketCurrentData.getUs10y();
+		xFormulaArray[0][3] = marketCurrentData.getSpx500();
+		xFormulaArray[0][4] = marketCurrentData.getDow30();
+		xFormulaArray[0][5] = marketCurrentData.getNasdaq();
+		
+		return xFormulaArray;
 	}
 
 	private void copyTemplateToMarketChart() throws IOException {

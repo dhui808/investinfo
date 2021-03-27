@@ -111,6 +111,37 @@ public class DateUtils {
 	}
 	
 	/**
+	 * After 6:00 PM of this week's Friday to 12:00 AM (exclusive) of the next week's Monday, returns
+	 * the date string in yyyyMMdd format of this week's starting Sunday. Otherwise returns the starting Sunday of the last week.  
+	 * @return
+	 */
+	public static String getLatestReleaseSundayDate() {
+		
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
+		LocalDate ld = LocalDate.now();
+		LocalDate nextStartingSunday = ld.with(DayOfWeek.SUNDAY);
+		LocalDate thisStartingSunday = nextStartingSunday.minusWeeks(1);
+		
+		LocalDate latestReleaseSunday = null;
+		String dateStr = null;
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		LocalDateTime thisFriday6PM = LocalDate.now().with(DayOfWeek.FRIDAY).atTime(18, 0);
+		int result = ldt.compareTo(thisFriday6PM);
+		if (result >= 0) {
+			//after 6:00 PM this Friday in this week.
+			latestReleaseSunday = thisStartingSunday;
+		} else {
+			latestReleaseSunday = thisStartingSunday.minusWeeks(1);
+		}
+		
+		dateStr = latestReleaseSunday.format(df);
+		System.out.println("latestReleaseSunday:" + dateStr);
+		
+		return dateStr;
+	}
+	
+	/**
 	 * From 10:30 AM of this week's EIA release date (mostly Thursday) to 10:30 AM (exclusive) of the next EIA release date, returns
 	 * the date string in yyyyMMdd format of this week's Tuesday. Otherwise returns the Tuesday of the last week.  
 	 * @return

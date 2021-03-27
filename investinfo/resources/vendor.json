@@ -9,7 +9,10 @@
 			"usd_index": "/currencies/us-dollar-index",
 			"usd_cad": "/currencies/usd-cad",
 			"euro_fx": "/currencies/eur-usd",
-			"us10y": "/rates-bonds/u.s.-10-year-bond-yield"
+			"us10y": "/rates-bonds/u.s.-10-year-bond-yield",
+			"dow30": "/indices/us-30",
+			"nasdaq": "/indices/nasdaq-composite",
+			"spx500": "/indices/us-spx-500"
 		}
 	}
 ]

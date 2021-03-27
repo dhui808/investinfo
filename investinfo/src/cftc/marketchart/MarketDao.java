@@ -1,6 +1,10 @@
 package cftc.marketchart;
 
 import java.sql.ResultSet;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +12,7 @@ import cftc.dao.AbstractDao;
 import cftc.dao.CftcQueryCallback;
 import cftc.model.InstrumentName;
 import cftc.model.PriceIndexDto;
+import cftc.utils.DateUtils;
 
 public class MarketDao extends AbstractDao {
 
@@ -107,9 +112,35 @@ public class MarketDao extends AbstractDao {
 		}
 	}
 	
-	public MarketData retrieveCurrentMarketData() {
-		// TODO Auto-generated method stub
-		return null;
+	public MarketCurrentData retrieveCurrentMarketData() throws Exception {
+		
+        String formatDateTime = DateUtils.getLatestReleaseSundayDate();
+        
+		String query = "SELECT instrument, close_price, week_starting from investing_com_history where instrument in ('USD_INDEX','US10Y', 'SPX500','NASDAQ','DOW30') and week_starting = '" + formatDateTime + "' order by instrument desc";
+	    
+	    CftcQueryCallback<ResultSet, PriceIndexDto> resultSetCallback = resultSet -> {
+	    	
+			Double price = resultSet.getDouble("close_price");
+			String instrument = resultSet.getString("instrument");
+			
+			PriceIndexDto result = new PriceIndexDto();
+			result.price = price;
+			result.instrument = instrument;
+			
+			return result;
+		};
+		
+		List<PriceIndexDto> list = executeStatementQuery(query, resultSetCallback);
+		
+		MarketCurrentData marketCurrentData =  new MarketCurrentData();
+		marketCurrentData.setUsdIndex(list.get(0).price);
+		marketCurrentData.setUs10y(list.get(1).price * 10);
+		marketCurrentData.setSpx500(list.get(2).price);
+		marketCurrentData.setNasdaq(list.get(3).price);
+		marketCurrentData.setDow30(list.get(4).price);
+		marketCurrentData.setReleaseDate(formatDateTime);
+		
+		return marketCurrentData;
 	}
 
 }
