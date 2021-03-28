@@ -26,12 +26,14 @@ public class MarketDao extends AbstractDao {
 		List<Double> spx500IndexList = new ArrayList<Double>();
 		List<Double> dow30IndexList = new ArrayList<Double>();
 		List<Double> nasdaqIndexList = new ArrayList<Double>();
+		List<Double> goldPriceList = new ArrayList<Double>();
 
 		retrieveIndexAndDate(InstrumentName.USD_INDEX, usdIndexList, dateList);
 		retrieveIndex(InstrumentName.DOW30, dow30IndexList);
 		retrieveIndex(InstrumentName.NASDAQ, nasdaqIndexList);
 		retrieveIndex(InstrumentName.SPX500, spx500IndexList);
 		retrieveIndex(InstrumentName.US10Y, us10yIndexList, 10);
+		retrieveIndex(InstrumentName.GOLD, goldPriceList);
 		
 		marketData.setReleaseDateList(dateList);
 		marketData.setDow30List(dow30IndexList);
@@ -39,6 +41,7 @@ public class MarketDao extends AbstractDao {
 		marketData.setSpx500List(spx500IndexList);
 		marketData.setUs10yList(us10yIndexList);
 		marketData.setUsdIndexList(usdIndexList);
+		marketData.setGoldPriceList(goldPriceList);
 		
 		return marketData;
 	}
@@ -116,7 +119,7 @@ public class MarketDao extends AbstractDao {
 		
         String formatDateTime = DateUtils.getLatestReleaseSundayDate();
         
-		String query = "SELECT instrument, close_price, week_starting from investing_com_history where instrument in ('USD_INDEX','US10Y', 'SPX500','NASDAQ','DOW30') and week_starting = '" + formatDateTime + "' order by instrument desc";
+		String query = "SELECT instrument, close_price, week_starting from investing_com_history where instrument in ('USD_INDEX','US10Y', 'SPX500','NASDAQ', 'GOLD', 'DOW30') and week_starting = '" + formatDateTime + "' order by instrument desc";
 	    
 	    CftcQueryCallback<ResultSet, PriceIndexDto> resultSetCallback = resultSet -> {
 	    	
@@ -137,7 +140,8 @@ public class MarketDao extends AbstractDao {
 		marketCurrentData.setUs10y(list.get(1).price * 10);
 		marketCurrentData.setSpx500(list.get(2).price);
 		marketCurrentData.setNasdaq(list.get(3).price);
-		marketCurrentData.setDow30(list.get(4).price);
+		marketCurrentData.setGoldPrice(list.get(4).price);
+		marketCurrentData.setDow30(list.get(5).price);
 		marketCurrentData.setReleaseDate(formatDateTime);
 		
 		return marketCurrentData;

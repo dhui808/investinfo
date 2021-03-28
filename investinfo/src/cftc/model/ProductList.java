@@ -70,6 +70,7 @@ public class ProductList {
 		productList.add(new NASDAQ());
 		productList.add(new Dow30());
 		productList.add(new Us10YearNotes());
+		productList.add(new Gold());
 		
 		return productList;
 	}

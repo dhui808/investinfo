@@ -36,6 +36,7 @@ import jloputility.Props;
 
 public class MarketAnalysis extends AbstractCftcAnalysis {
 
+	private int maxColumnIndex = 6;
 	private MarketDao marketDao = new MarketDao();
 	
 	@Override
@@ -75,12 +76,12 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		Object[][] xFormulaArray0 = createFormulaArray(marketData);
 
 		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, 0,
-				5, rows - 1);
+				maxColumnIndex, rows - 1);
 		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
 				destHeaderCellRange);
 
 		// not sure why need to copy data to another array.
-		Object[][] x = new Object[rows][6];
+		Object[][] x = new Object[rows][maxColumnIndex + 1];
 		
 		for (int i=0;i<rows;i++) {
 			x[i]=xFormulaArray0[i];
@@ -92,7 +93,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 	private Object[][] createFormulaArray(MarketData marketData) {
 
 		int rows = marketData.getReleaseDateList().size();
-		Object[][] xFormulaArray = new Object[1 + rows][6];
+		Object[][] xFormulaArray = new Object[1 + rows][maxColumnIndex + 1];
 		
 		xFormulaArray[0][0] = "Week Start Date";
 		xFormulaArray[0][1] = "USD Index";
@@ -100,6 +101,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		xFormulaArray[0][3] = "SPX500";
 		xFormulaArray[0][4] = "Dow30";
 		xFormulaArray[0][5] = "NASDAQ";
+		xFormulaArray[0][6] = "Gold";
 		
 		List<String> releaseDateList = marketData.getReleaseDateList();
 		List<Double> usdIndexList = marketData.getUsdIndexList();
@@ -107,6 +109,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		List<Double> spx500List = marketData.getSpx500List();
 		List<Double> dow30List = marketData.getDow30List();
 		List<Double> nasdaqList = marketData.getNasdaqList();
+		List<Double> goldPriceList = marketData.getGoldPriceList();
 		
 		for (int i = 1; i < rows; i++) {
 			xFormulaArray[i][0] = releaseDateList.get(i);
@@ -115,6 +118,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 			xFormulaArray[i][3] = spx500List.get(i);
 			xFormulaArray[i][4] = dow30List.get(i);
 			xFormulaArray[i][5] = nasdaqList.get(i);
+			xFormulaArray[i][6] = goldPriceList.get(i);
 		}
 		
 		return xFormulaArray;
@@ -259,11 +263,11 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		Object[][] xFormulaArray0 = createFormulaArray(marketCurrentData);
 
 		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, rows,
-				5, rows);
+				maxColumnIndex, rows);
 		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
 				destHeaderCellRange);
 
-		Object[][] x = new Object[1][6];
+		Object[][] x = new Object[1][maxColumnIndex + 1];
 		
 		x[0]=xFormulaArray0[0];
 
@@ -272,7 +276,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 
 	private Object[][] createFormulaArray(MarketCurrentData marketCurrentData) {
 		
-		Object[][] xFormulaArray = new Object[1][6];
+		Object[][] xFormulaArray = new Object[1][maxColumnIndex + 1];
 		
 		xFormulaArray[0][0] = marketCurrentData.getReleaseDate();
 		xFormulaArray[0][1] = marketCurrentData.getUsdIndex();
@@ -280,6 +284,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		xFormulaArray[0][3] = marketCurrentData.getSpx500();
 		xFormulaArray[0][4] = marketCurrentData.getDow30();
 		xFormulaArray[0][5] = marketCurrentData.getNasdaq();
+		xFormulaArray[0][6] = marketCurrentData.getGoldPrice();
 		
 		return xFormulaArray;
 	}

@@ -8,6 +8,7 @@ public class MarketCurrentData {
 	private Double spx500;
 	private Double dow30;
 	private Double nasdaq;
+	private Double goldPrice;
 	
 	public String getReleaseDate() {
 		return releaseDate;
@@ -44,5 +45,11 @@ public class MarketCurrentData {
 	}
 	public void setNasdaq(Double nasdaq) {
 		this.nasdaq = nasdaq;
+	}
+	public Double getGoldPrice() {
+		return goldPrice;
+	}
+	public void setGoldPrice(Double gold) {
+		this.goldPrice = gold;
 	}
 }

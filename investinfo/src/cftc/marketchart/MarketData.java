@@ -10,6 +10,7 @@ public class MarketData {
 	private List<Double> spx500List;
 	private List<Double> dow30List;
 	private List<Double> nasdaqList;
+	private List<Double> goldPriceList;
 	
 	public List<String> getReleaseDateList() {
 		return releaseDateList;
@@ -46,5 +47,11 @@ public class MarketData {
 	}
 	public void setNasdaqList(List<Double> nasdaqList) {
 		this.nasdaqList = nasdaqList;
+	}
+	public List<Double> getGoldPriceList() {
+		return goldPriceList;
+	}
+	public void setGoldPriceList(List<Double> goldPriceList) {
+		this.goldPriceList = goldPriceList;
 	}
 }
