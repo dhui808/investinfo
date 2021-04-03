@@ -49,15 +49,15 @@ public class MarketDao extends AbstractDao {
 	private void retrieveIndexAndDate(InstrumentName instrumentName, List<Double> indexList, List<String> dateList) throws Exception {
 		
 		String instrument = instrumentName.name();
-		String query = "SELECT close_price, week_starting from investing_com_history where instrument = '" + instrument + "' order by week_starting asc";
+		String query = "SELECT close_price, release_week_tuesday from investing_com_history where instrument = '" + instrument + "' order by week_starting asc";
 	    
 	    CftcQueryCallback<ResultSet, PriceIndexDto> resultSetCallback = resultSet -> {
 	    	
-	    	String weekStartDate = resultSet.getString("week_starting");
+	    	String relTuesdayDate = resultSet.getString("release_week_tuesday");
 			Double price = resultSet.getDouble("close_price");
 			
 			PriceIndexDto result = new PriceIndexDto();
-			result.weekStartDate = weekStartDate;
+			result.releaseTuesdayDate = relTuesdayDate;
 			result.price = price;
 			
 			return result;
@@ -67,7 +67,7 @@ public class MarketDao extends AbstractDao {
 		
 		for (PriceIndexDto dto : list) {
 			indexList.add(dto.price);
-			dateList.add(dto.weekStartDate);
+			dateList.add(dto.releaseTuesdayDate.substring(2));
 		}
 	}
 
@@ -119,16 +119,18 @@ public class MarketDao extends AbstractDao {
 		
         String formatDateTime = DateUtils.getLatestReleaseSundayDate();
         
-		String query = "SELECT instrument, close_price, week_starting from investing_com_history where instrument in ('USD_INDEX','US10Y', 'SPX500','NASDAQ', 'GOLD', 'DOW30') and week_starting = '" + formatDateTime + "' order by instrument desc";
+		String query = "SELECT instrument, close_price, release_week_tuesday from investing_com_history where instrument in ('USD_INDEX','US10Y', 'SPX500','NASDAQ', 'GOLD', 'DOW30') and week_starting = '" + formatDateTime + "' order by instrument desc";
 	    
 	    CftcQueryCallback<ResultSet, PriceIndexDto> resultSetCallback = resultSet -> {
 	    	
 			Double price = resultSet.getDouble("close_price");
 			String instrument = resultSet.getString("instrument");
+			String relTuesdayDate = resultSet.getString("release_week_tuesday");;
 			
 			PriceIndexDto result = new PriceIndexDto();
 			result.price = price;
 			result.instrument = instrument;
+			result.releaseTuesdayDate = relTuesdayDate;
 			
 			return result;
 		};
@@ -137,12 +139,14 @@ public class MarketDao extends AbstractDao {
 		
 		MarketCurrentData marketCurrentData =  new MarketCurrentData();
 		marketCurrentData.setUsdIndex(list.get(0).price);
+		//one thousandth.
 		marketCurrentData.setUs10y(list.get(1).price * 10);
 		marketCurrentData.setSpx500(list.get(2).price);
 		marketCurrentData.setNasdaq(list.get(3).price);
 		marketCurrentData.setGoldPrice(list.get(4).price);
 		marketCurrentData.setDow30(list.get(5).price);
-		marketCurrentData.setReleaseDate(formatDateTime);
+		//Removes the first two digits from year
+		marketCurrentData.setReleaseDate(list.get(0).releaseTuesdayDate.substring(2));
 		
 		return marketCurrentData;
 	}

@@ -332,6 +332,9 @@ public abstract class VendorMain {
 		
 		//add cftc release history
 		cftcHistoryService.addCftcReleaseHistory();
+		
+		// updates market chart
+		updateMarketChart();
 	}
 
 	public void upatePriceOrIndexInSpreadsheet(String date) throws Exception {
@@ -348,10 +351,11 @@ public abstract class VendorMain {
 		updateEnergyAnalysis.upateInventoryInSpreadsheet(date);
 	}
 
-	public void deleteCftcRowByDate(String columnValue) throws Exception {
+	public void deleteCftcRowByDate(String date) throws Exception {
 
-		updateCommodifiesAnalysis.deleteByDate(columnValue);
-		updateForexAnalysis.deleteByDate(columnValue);
+		updateCommodifiesAnalysis.deleteByDate(date);
+		updateForexAnalysis.deleteByDate(date);
+		marketAnalysis.deleteByDate(date);
 	}
 
 	public void addSheet(CftcInstrument cftc, String year) throws Exception {

@@ -22,8 +22,10 @@ import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
+import com.sun.star.table.XCell;
 import com.sun.star.table.XTableCharts;
 import com.sun.star.table.XTableChartsSupplier;
+import com.sun.star.table.XTableRows;
 import com.sun.star.uno.UnoRuntime;
 
 import cftc.AbstractCftcAnalysis;
@@ -95,9 +97,9 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		int rows = marketData.getReleaseDateList().size();
 		Object[][] xFormulaArray = new Object[1 + rows][maxColumnIndex + 1];
 		
-		xFormulaArray[0][0] = "Week Start Date";
+		xFormulaArray[0][0] = "Release Tue. Date";
 		xFormulaArray[0][1] = "USD Index";
-		xFormulaArray[0][2] = "US 10Y Yield * 1000";
+		xFormulaArray[0][2] = "US 10Y Yield ‰";
 		xFormulaArray[0][3] = "SPX500";
 		xFormulaArray[0][4] = "Dow30";
 		xFormulaArray[0][5] = "NASDAQ";
@@ -187,7 +189,32 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		Lo.save(chartsDocument);
 		Lo.closeDoc(chartsDocument);
 	}
-
+	
+	public void deleteByDate(String date) throws Exception {
+	
+		XSpreadsheetDocument chartsDocument = loadMarketDocument();
+		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
+		int row = getNumberOfRows(chartsDataSheet) - 1;
+		deleteRowFromSheet(chartsDataSheet, 0, row, date);
+		
+		Lo.save(chartsDocument);
+		Lo.closeDoc(chartsDocument);
+	}
+	
+	private void deleteRowFromSheet(XSpreadsheet xSheet, int sheetIndex, int row, String date) throws IndexOutOfBoundsException, WrappedTargetException {
+		
+		XCell xCell = xSheet.getCellByPosition(0, row);//date column
+		if (xCell.getFormula().contains(date) || Double.parseDouble(date) == xCell.getValue()) {
+			deleteRow(xSheet, row);
+		}
+	}
+	
+	private void deleteRow(XSpreadsheet sheet, int idx) {
+		com.sun.star.table.XColumnRowRange crRange = Lo.qi(com.sun.star.table.XColumnRowRange.class, sheet);
+		XTableRows rows = crRange.getRows();
+		rows.removeByIndex(idx, 1); // remove 1 row at idx position
+	}
+	
 	private void updateMarketChartsSheet(XSpreadsheet chartsSheet) {
 		
 		XTableChartsSupplier chartsSupplier = Lo.qi(XTableChartsSupplier.class, chartsSheet);

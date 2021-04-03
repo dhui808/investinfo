@@ -8,7 +8,6 @@ import cftc.model.ProductList;
 public class CommodityChartsHandler extends AbstractChartsHandler {
 
 	protected String getSourceFilename() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -17,7 +16,6 @@ public class CommodityChartsHandler extends AbstractChartsHandler {
 	}
 
 	protected int getSourceColumnLength() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

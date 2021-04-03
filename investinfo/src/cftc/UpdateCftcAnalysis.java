@@ -332,7 +332,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		return xRange;
 	}
 
-	public void deleteByDate(String columnValue) throws Exception {
+	public void deleteByDate(String date) throws Exception {
 		
 		List<CftcInstrument> productList = getProductList();
 		
@@ -343,7 +343,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 			XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
 			XSpreadsheet xSheet = getSpreadsheet(chartsDocument, 0);
 			int row = getNumberOfRows(xSheet) - 1;
-			deleteRowFromSheet(xSheet, 0, row, columnValue);
+			deleteRowFromSheet(xSheet, 0, row, date);
 			
 			Lo.save(chartsDocument);
 			Lo.closeDoc(chartsDocument);
@@ -354,7 +354,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 			//two sheets: data, analysis
 			for (int sheetIndex = 2; sheetIndex > 0; sheetIndex--) {
 				XSpreadsheet xSheet1 = getSpreadsheet(destDocument, sheetIndex);
-				deleteRowFromSheet(xSheet1, sheetIndex, 1, columnValue);
+				deleteRowFromSheet(xSheet1, sheetIndex, 1, date);
 			}
 			
 			Lo.save(destDocument);
