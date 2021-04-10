@@ -9,3 +9,4 @@ products/
 charts/**/*.png
 **/target/
 **/.settings/
+setup.bat
