@@ -593,6 +593,8 @@ public abstract class VendorMain {
 		for (InstrumentCategory category : InstrumentCategory.values()) {
 			addProductCategory(category.name(), allyears);
 		}
+		
+		createMarketChart();
 	}
 
 	private AbstractProductDocumentHandler getProductDocumentHandler(String category) {
