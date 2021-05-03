@@ -11,6 +11,7 @@ public class TestDateUtils {
 		testGetWeekStartDate();
 		testGetLatestReleaseTuesdayDate();
 		testDaysSince19700101();
+		testGetCurrentWeekTuesdayDate();
 	}
 	
 	public static void testIsCurrentYear() {
@@ -44,5 +45,10 @@ public class TestDateUtils {
 		Calendar cal = Calendar.getInstance();
 		cal.set(2010, 0, 1);
 		System.out.println("DateUtils.testDaysSince19700101():" + cal.getTime().getTime()/24/3600/1000);
+	}
+	
+	public static void testGetCurrentWeekTuesdayDate() {
+		String date = DateUtils.getCurrentWeekTuesdayDate();
+		System.out.println("current Tue.= " + date);
 	}
 }

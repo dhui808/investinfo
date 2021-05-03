@@ -61,7 +61,7 @@ run
 	
 4. Update energy inventory
 
-	4.1 Update database invenroty history with latest EIA weekly report (run -history -update i)
+	4.1 Update database inventory history with latest EIA weekly report (run -history -update i)
 	
 	4.2 Load the complete EIA invenroty history into database (run -history -load i)
 	

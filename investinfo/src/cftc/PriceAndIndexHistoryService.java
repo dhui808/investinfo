@@ -68,6 +68,7 @@ public abstract class PriceAndIndexHistoryService {
 		
 		String cftcDate = null;
 		String startDate =  null;
+		String previousCftDate = null;
 		
 		if((Calendar.SUNDAY == day && 14 <= hour) || 
 				(Calendar.SUNDAY < day && Calendar.FRIDAY > day) ||
@@ -77,7 +78,12 @@ public abstract class PriceAndIndexHistoryService {
 			System.out.println("Fetch last week close price / index.");
 			
 			cftcDate = DateUtils.getCurrentWeekTuesdayDate();
-			String previousCftDate = DateUtils.getPreviousWeekTuesdayDate(cftcDate);
+			if (Calendar.SUNDAY == day && 14 <= hour) {
+				previousCftDate = cftcDate;
+			} else {
+				previousCftDate = DateUtils.getPreviousWeekTuesdayDate(cftcDate);
+			}
+			
 			startDate =  DateUtils.getWeekStartDate(previousCftDate);
 			
 			priceList = retrievePriceList(vendor, cftcDate, startDate, false);

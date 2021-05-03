@@ -103,7 +103,7 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 		Elements tbodys = content.getElementsByTag("tbody");
 		Element tbody = tbodys.get(0);
 		Elements trs = tbody.getElementsByTag("tr");
-		Element tr = trs.get(index);
+		Element tr = trs.get(index);//it has to be before GMT 12:00 AM Monday, aka. before Sunday 8:00 PM EST. Complicated. Won't fix now.
 		Elements tds = tr.getElementsByTag("td");
 		Element td = tds.get(1);
 		
