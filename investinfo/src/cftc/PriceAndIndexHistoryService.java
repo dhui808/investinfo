@@ -66,18 +66,30 @@ public abstract class PriceAndIndexHistoryService {
 		
 		System.out.println("day:" + day + ", hour:" + hour);
 		
+		String cftcDate = null;
+		String startDate =  null;
+		
 		if((Calendar.SUNDAY == day && 14 <= hour) || 
 				(Calendar.SUNDAY < day && Calendar.FRIDAY > day) ||
 				(Calendar.FRIDAY == day && 18  > hour)) {
 			
-			System.out.println("Should retrieve price/index before 2:00 PM Sunday and after Friday 6:00 PM.");
-			return priceList;
+			//System.out.println("Should retrieve price/index before 2:00 PM Sunday and after Friday 6:00 PM.");
+			System.out.println("Fetch last week close price / index.");
+			
+			cftcDate = DateUtils.getCurrentWeekTuesdayDate();
+			String previousCftDate = DateUtils.getPreviousWeekTuesdayDate(cftcDate);
+			startDate =  DateUtils.getWeekStartDate(previousCftDate);
+			
+			priceList = retrievePriceList(vendor, cftcDate, startDate, false);
+			
+		} else {
+		
+			cftcDate = DateUtils.getLatestReleaseTuesdayDate();
+			startDate =  DateUtils.getWeekStartDate(cftcDate);
+			
+			priceList = retrievePriceList(vendor, cftcDate, startDate);
+		
 		}
-		
-		String cftcDate = DateUtils.getLatestReleaseTuesdayDate();
-		String startDate =  DateUtils.getWeekStartDate(cftcDate);
-		
-		priceList = retrievePriceList(vendor, cftcDate, startDate);
 		
 		return priceList;
 	}
@@ -87,6 +99,26 @@ public abstract class PriceAndIndexHistoryService {
 		List<PriceIndexDto> priceList = new ArrayList<PriceIndexDto>();
 
 		Map<String, Double> priceMap = wao.fetchPriceIndex(vendor);
+		
+		for (String instrumentName : priceMap.keySet()) {
+			Double price = priceMap.get(instrumentName);
+			PriceIndexDto dto = new PriceIndexDto();
+			dto.releaseTuesdayDate= cftcDate;
+			dto.weekStartDate = weekStartDate;
+			dto.instrument = instrumentName;
+			dto.price = Double.valueOf(price);
+			
+			priceList.add(dto);
+		}
+		
+		return priceList;
+	}
+
+	private List<PriceIndexDto> retrievePriceList(VendorName vendor, String cftcDate, String weekStartDate, boolean currentPrice) throws Exception {
+		
+		List<PriceIndexDto> priceList = new ArrayList<PriceIndexDto>();
+
+		Map<String, Double> priceMap = wao.fetchPriceIndex(vendor, currentPrice);
 		
 		for (String instrumentName : priceMap.keySet()) {
 			Double price = priceMap.get(instrumentName);

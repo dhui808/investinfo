@@ -5,11 +5,21 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import cftc.wao.AbstractHtmlExtractor;
 
 public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 	
+	@Override
+	public String fetchPriceOrIndex(String instrument, boolean currentPrice) throws IOException {
+		
+		String url = InvestingComHistoryDataUrl.valueOf(instrument).getUrl();
+		
+		return fetchLastWeekPriceOrIndexFromUrl(url, currentPrice);
+	}
+	
+	@Override
 	public String fetchPriceOrIndex(String instrument) throws IOException {
 		switch(instrument) {
 			case "NG": return fetchNgPrice();
@@ -25,7 +35,7 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 			default: return null;
 		}
 	}
-
+	
 	public String fetchNgPrice() throws IOException {
 				
 		return fetchPriceOrIndexFromUrl("https://www.investing.com/commodities/natural-gas");
@@ -85,4 +95,20 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 		return price;
 	}
 	
+	public String fetchLastWeekPriceOrIndexFromUrl(String url, boolean currentPrice) throws IOException {
+		
+		int index = currentPrice? 0 : 1;
+		Document doc = Jsoup.connect(url).get();
+		Element content = doc.getElementById("curr_table");
+		Elements tbodys = content.getElementsByTag("tbody");
+		Element tbody = tbodys.get(0);
+		Elements trs = tbody.getElementsByTag("tr");
+		Element tr = trs.get(index);
+		Elements tds = tr.getElementsByTag("td");
+		Element td = tds.get(1);
+		
+		String price = td.text();
+				
+		return price;
+	}
 }

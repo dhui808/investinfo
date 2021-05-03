@@ -56,4 +56,28 @@ public abstract class PriceIndexWao {
 		
 		return priceMap;
 	}
+	
+	public Map<String, Double> fetchPriceIndex(VendorName vendorName, boolean currentPrice) throws Exception {
+		
+		Map<String, Double> priceMap = new HashMap<String, Double>(); 
+		
+		Map<String, String> productUrlMap = null;
+		
+		for(VendorWebModel v : vendorProductsModels) {
+			if (v.getVendorName().toUpperCase().equals(vendorName.name())) {
+				productUrlMap = v.getProducts();
+				break;
+			}
+		}
+		
+		AbstractHtmlExtractor htmlExtractor = getHtmlExtractor();
+		
+		for (String key : productUrlMap.keySet()) {
+			String instrument = key.toUpperCase();
+			String price = htmlExtractor.fetchPriceOrIndex(instrument, currentPrice);
+			priceMap.put(instrument, Double.valueOf(price.replace(",", "")));
+		}
+		
+		return priceMap;
+	}
 }
