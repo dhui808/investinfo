@@ -12,10 +12,18 @@ public class InvestingComPriceIndexHistoryService extends PriceAndIndexHistorySe
 		wao = new InvestingComPriceIndexWao();
 		dao = new InvestingComPriceIndexDao();
 	}
+	
+	@Override
 	public void updateAllPriceIndexHistory() throws Exception {
 		updatePriceIndexHistory(VendorName.INVESTING_COM);
 	}
 	
+	@Override
+	public void updateAllPriceIndexHistory(String date) throws Exception {
+		updatePriceIndexHistory(VendorName.INVESTING_COM, date);
+	}
+	
+	@Override
 	public void loadAllPriceIndexHistory() throws Exception {
 		//download .csv files from investing.com into database staging tables
 		

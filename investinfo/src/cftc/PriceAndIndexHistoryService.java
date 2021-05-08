@@ -25,6 +25,8 @@ public abstract class PriceAndIndexHistoryService {
 	protected PriceIndexDao dao;
 	
 	public abstract void updateAllPriceIndexHistory() throws Exception;
+
+	public abstract void updateAllPriceIndexHistory(String date) throws Exception;
 	
 	public abstract void loadAllPriceIndexHistory() throws Exception;
 
@@ -52,13 +54,39 @@ public abstract class PriceAndIndexHistoryService {
 		dao.updateLatestWeeklyPriceIndex(vendor.getPriceHistoryTablename(), priceList);
 		dao.updateDate(vendor.getName(), priceDate);
 	}
+
+	protected void updatePriceIndexHistory(VendorName vendor, String date) throws Exception {
+		
+		List<PriceIndexDto> priceList = retrieveLatestWeeklyClosePriceIndex(vendor, date);
+		
+		if (0 == priceList.size()) {
+			return;
+		}
+		
+		
+		String updateDate = dao.retrieveUpdateDate(vendor.getName());
+		String priceDate = priceList.get(0).weekStartDate;
+		
+//		if (StringUtils.equals(updateDate, priceDate)) {
+//			System.out.println("price/index already updated for " + vendor + ", date:" + priceDate);
+//			return;
+//		}
+		
+		dao.updateLatestWeeklyPriceIndex(vendor.getPriceHistoryTablename(), priceList);
+		dao.updateDate(vendor.getName(), priceDate);
+	}
 	
 	public List<PriceIndexDto> retrieveLatestWeeklyClosePriceIndex(VendorName vendor) throws Exception {
 		
+		return retrieveLatestWeeklyClosePriceIndex(vendor, null);
+	}
+	
+	public List<PriceIndexDto> retrieveLatestWeeklyClosePriceIndex(VendorName vendor, String date) throws Exception {
+		
 		//do not retrieve price/index if it is after 2:00 PM Sunday EST when the markets may be open.
-		Date date = new Date();
+		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+		calendar.setTime(today);
 		int day = calendar.get(Calendar.DAY_OF_WEEK);
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		
@@ -74,7 +102,12 @@ public abstract class PriceAndIndexHistoryService {
 				(Calendar.SUNDAY < day && Calendar.FRIDAY > day) ||
 				(Calendar.FRIDAY == day && 18  > hour)) {
 			
-			//System.out.println("Should retrieve price/index before 2:00 PM Sunday and after Friday 6:00 PM.");
+			if (null == date) {
+				//for the latest cftc release before 5:00 PM Friday or after 2:00 PM Sunday
+				System.out.println("Should retrieve price/index before 2:00 PM Sunday and after Friday 6:00 PM.");
+				return priceList;
+			}
+			
 			System.out.println("Fetch last week close price / index.");
 			
 			cftcDate = DateUtils.getCurrentWeekTuesdayDate();
@@ -187,5 +220,5 @@ public abstract class PriceAndIndexHistoryService {
 			
 			//TODO is it possible that the last release against positions in Wednesday?
 		}
-	}	
+	}
 }

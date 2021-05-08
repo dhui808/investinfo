@@ -339,7 +339,7 @@ public abstract class VendorMain {
 
 	public void upatePriceOrIndexInSpreadsheet(String date) throws Exception {
 
-		updatePriceIndexHistory();
+		updatePriceIndexHistory(date);
 
 		updateCommodifiesAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 
@@ -494,11 +494,29 @@ public abstract class VendorMain {
 		//priceAndIndexHistoryService.adjustPriceHistory(yearsNeedAdjusting);
 	}
 
+	/**
+	 * Update price / index for the latest cftc release week after 6:00 PM Friday and before
+	 * 2:00 PM Sunday
+	 *  
+	 * @throws Exception
+	 */
 	public void updatePriceIndexHistory() throws Exception {
 
 		priceAndIndexHistoryService.updateAllPriceIndexHistory();
 	}
-
+	
+	/**
+	 * Update price / index for the week before the latest cftc release week before 6:00 PM Friday
+	 * and of the latest cftc release week or after 2:00 PM Sunday of the coming cftc release week.
+	 *  
+	 * @throws Exception
+	 */
+	private void updatePriceIndexHistory(String date) throws Exception {
+		
+		priceAndIndexHistoryService.updateAllPriceIndexHistory(date);
+		
+	}
+	
 	public void loadCommodityInventoryHistory() throws Exception {
 
 		inventoryHistoryService.loadAllInventoryHistory();
