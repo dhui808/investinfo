@@ -74,4 +74,13 @@ public class ProductList {
 		
 		return productList;
 	}
+	
+	public static List<CftcInstrument> getTechnicalAnalysisProductList() {
+		
+		List<CftcInstrument> productList  = new ArrayList<CftcInstrument>();
+		
+		productList.add(new EuroFutures());
+		
+		return productList;
+	}
 }

@@ -74,3 +74,20 @@ create table eia_history (release_week_tuesday char(8) not null, instrument varc
 create table cftc_release_history (release_date char(8) not null, primary key(release_date));
 
 # Note: load_price_csv.sql and extract_price.sql are no longer needed.
+
+create table cftc_release_financial_history (release_date char(8) not null, instrument varchar(20) not null, dealer_long int, dealer_short int, asset_mgr_long int, asset_mgr_short int, lev_money_long int, lev_money_short int, other_long int, other_short int, primary key(release_date, instrument));
+
+CREATE OR REPLACE VIEW cftc_forex_view
+AS
+SELECT  a.release_date,
+        a.instrument,
+        b.close_price,
+		a.dealer_long - a.dealer_short dealer_net_long,
+		a.asset_mgr_long - a.asset_mgr_short asset_mgr_net_long,
+		a.lev_money_long - a.lev_money_short lev_money_net_long,
+		a.other_long - a.other_short other_net_long
+FROM    cftc_release_financial_history a
+        LEFT JOIN investing_com_history b
+            ON a.release_date = b.release_week_tuesday and a.instrument = b.instrument
+		ORDER BY a.instrument, a.release_date;
+

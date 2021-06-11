@@ -26,6 +26,7 @@ import cftc.sheet.AddYearSheet;
 import cftc.sheet.AddYearSheetCommodity;
 import cftc.sheet.AddYearSheetForex;
 import cftc.sheet.InstrumentCategoryVisitorAddYearSheet;
+import cftc.tachart.TechnicalAnalysis;
 import cftc.utils.CftcProperties;
 import cftc.utils.DateUtils;
 import cftc.utils.PrepareFolders;
@@ -60,6 +61,9 @@ public abstract class VendorMain {
 	protected String[] yearsNeedAdjusting;
 
 	protected MarketAnalysis marketAnalysis = new MarketAnalysis();
+	
+	protected CftcFinancialHistoryService cftcFinancialHistoryService = new CftcFinancialHistoryService();
+	protected TechnicalAnalysis taAnalysis = new TechnicalAnalysis();
 	
 	public void parse(String[] args, List<String> argList) {
 
@@ -287,17 +291,33 @@ public abstract class VendorMain {
 		
 		// creates/updates market chart
 		if (argList.contains("mc") || argList.contains("marketchart")) {
-			if (0 <= idxCreate) {
-				// creates market chart
-				createMarketChart();
+			// creates market chart
+			createMarketChart();
+
+			return;
+		}
+		
+		// creates/updates technical analysis data
+		if (argList.contains("ta") || argList.contains("technicalanalysis")) {
+			if (idxYear >= 0) {
+				System.out.println("add technical analysis history for " + year);
+				cftcFinancialHistoryService.updateCftcFinancialHistory(year);
 			} else {
-				// updates market chart
-				updateMarketChart();
+				System.out.println("add technical analysis history for all years.");
+				cftcFinancialHistoryService.updateAllReleaseHistory();
 			}
 
 			return;
 		}
 		
+		// creates/updates technical analysis chart
+		if (argList.contains("tac") || argList.contains("technicalanalysischart")) {
+			// creates ta chart
+			taAnalysis.createTechnicalAnalysisChart();
+
+			return;
+		}
+				
 		// update all sheets with the latest CFTC release.
 		boolean forceDownload = false;
 		if (argList.contains("-f") || argList.contains("-forcedownload")) {
@@ -334,7 +354,13 @@ public abstract class VendorMain {
 		cftcHistoryService.addCftcReleaseHistory();
 		
 		// updates market chart
-		updateMarketChart();
+		marketAnalysis.updateMarketChart();
+		
+		// updates ta data
+		cftcFinancialHistoryService.addCftcFinancialHistory();
+				
+		// updates ta chart
+		taAnalysis.updateTaChart();
 	}
 
 	public void upatePriceOrIndexInSpreadsheet(String date) throws Exception {
@@ -356,6 +382,7 @@ public abstract class VendorMain {
 		updateCommodifiesAnalysis.deleteByDate(date);
 		updateForexAnalysis.deleteByDate(date);
 		marketAnalysis.deleteByDate(date);
+		taAnalysis.deleteByDate(date);
 	}
 
 	public void addSheet(CftcInstrument cftc, String year) throws Exception {
@@ -613,6 +640,9 @@ public abstract class VendorMain {
 		}
 		
 		createMarketChart();
+		
+		cftcFinancialHistoryService.updateAllReleaseHistory();
+		taAnalysis.createTechnicalAnalysisChart();
 	}
 
 	private AbstractProductDocumentHandler getProductDocumentHandler(String category) {
@@ -682,10 +712,5 @@ public abstract class VendorMain {
 	private void createMarketChart() throws Exception {
 		
 		marketAnalysis.createMarketChart();
-	}
-	
-	private void updateMarketChart() throws Exception {
-		
-		marketAnalysis.updateMarketChart();
 	}
 }

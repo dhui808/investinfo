@@ -119,8 +119,15 @@ run
 		11.1 export chart for an instrument (run -instrument gold -year 2018 chart)
 		
 12. Market charts
-	12.1 Create Marcket charts from scratch (run -create mc)
-	12.2 Update Marchet chatrs with this week's release (run -update mc)
+	12.1 Create Marcket charts from scratch (run mc)
+
+13. Update technical analysis
+
+	13.1 Add technical analysis data for a spacific year (run -year 2018 ta)
+	
+	13.2 Add technical analysis data for all years (run ta) 
+	
+	13.3 Create technical analysis charts (run tac)
 	
 Usage:
 

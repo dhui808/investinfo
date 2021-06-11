@@ -1,4 +1,4 @@
-package cftc.marketchart;
+package cftc.tachart;
 
 import static cftc.utils.Constants.productsUrl;
 import static cftc.utils.Constants.templateUrl;
@@ -32,14 +32,15 @@ import cftc.AbstractCftcAnalysis;
 import cftc.InvestInfoException;
 import cftc.model.CftcInstrument;
 import cftc.model.ProductList;
+import jloputility.Calc;
 import jloputility.Chart2;
 import jloputility.Lo;
 import jloputility.Props;
 
-public class MarketAnalysis extends AbstractCftcAnalysis {
+public class TechnicalAnalysis extends AbstractCftcAnalysis {
 
 	private int maxColumnIndex = 6;
-	private MarketDao marketDao = new MarketDao();
+	private TechnicalAnalysisDao marketDao = new TechnicalAnalysisDao();
 	
 	@Override
 	protected String getSourceFilename() {
@@ -50,7 +51,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 	@Override
 	protected List<CftcInstrument> getProductList() {
 		
-		return ProductList.getMarketProductList();
+		return ProductList.getTechnicalAnalysisProductList();
 	}
 
 	@Override
@@ -59,31 +60,31 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		return 0;
 	}
 
-	public void createMarketChart() throws Exception {
+	public void createTechnicalAnalysisChart() throws Exception {
 		
-		MarketData marketData = marketDao.retrieveAllMarketData();
-		XSpreadsheetDocument chartsDocument = createMarketDocument();
-		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
+		TechnicalAnalysisData marketData = marketDao.retrieveAllTechnicalAnalysisData();
+		XSpreadsheetDocument chartsDocument = createTaDocumentFromTemplate();
+		XSpreadsheet chartsDataSheet = getTaDataSheet(chartsDocument);
 
 		//copy marketData to charts-data sheet
-		updateMarketChartsDataSheet(marketData, chartsDataSheet);
+		updateTechanicalAnalysisChartsDataSheet(marketData, chartsDataSheet);
 		
 		Lo.save(chartsDocument);
 		Lo.closeDoc(chartsDocument);
 	}
 
-	private void updateMarketChartsDataSheet(MarketData marketData, XSpreadsheet chartsDataSheet) throws Exception {
+	private void updateTechanicalAnalysisChartsDataSheet(TechnicalAnalysisData marketData, XSpreadsheet chartsDataSheet) throws Exception {
 
-		int rows = marketData.getReleaseDateList().size();
+		int rows = marketData.getEurusdList().size();
 		Object[][] xFormulaArray0 = createFormulaArray(marketData);
 
-		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, 0,
-				maxColumnIndex, rows - 1);
+		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, 1,
+				maxColumnIndex - 1, rows);
 		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
 				destHeaderCellRange);
 
 		// not sure why need to copy data to another array.
-		Object[][] x = new Object[rows][maxColumnIndex + 1];
+		Object[][] x = new Object[rows][maxColumnIndex];
 		
 		for (int i=0;i<rows;i++) {
 			x[i]=xFormulaArray0[i];
@@ -92,108 +93,112 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 	    crFormula.setDataArray(x);
 	}
 	
-	private Object[][] createFormulaArray(MarketData marketData) {
+	private Object[][] createFormulaArray(TechnicalAnalysisData marketData) {
 
-		int rows = marketData.getReleaseDateList().size();
-		Object[][] xFormulaArray = new Object[1 + rows][maxColumnIndex + 1];
+		int rows = marketData.getEurusdList().size();
+		Object[][] xFormulaArray = new Object[rows][maxColumnIndex];
 		
-		xFormulaArray[0][0] = "Release Tue. Date";
-		xFormulaArray[0][1] = "USD Index";
-		xFormulaArray[0][2] = "US 10Y Yield ‰";
-		xFormulaArray[0][3] = "SPX500";
-		xFormulaArray[0][4] = "Dow30";
-		xFormulaArray[0][5] = "NASDAQ";
-		xFormulaArray[0][6] = "Gold";
-		
-		List<String> releaseDateList = marketData.getReleaseDateList();
-		List<Double> usdIndexList = marketData.getUsdIndexList();
-		List<Double> us10yList = marketData.getUs10yList();
-		List<Double> spx500List = marketData.getSpx500List();
-		List<Double> dow30List = marketData.getDow30List();
-		List<Double> nasdaqList = marketData.getNasdaqList();
-		List<Double> goldPriceList = marketData.getGoldPriceList();
+		List<CftcForexAnalysisRecord> eurusdList = marketData.getEurusdList();
 		
 		for (int i = 0; i < rows; i++) {
-			xFormulaArray[i][0] = releaseDateList.get(i);
-			xFormulaArray[i][1] = usdIndexList.get(i);
-			xFormulaArray[i][2] = us10yList.get(i);
-			xFormulaArray[i][3] = spx500List.get(i);
-			xFormulaArray[i][4] = dow30List.get(i);
-			xFormulaArray[i][5] = nasdaqList.get(i);
-			xFormulaArray[i][6] = goldPriceList.get(i);
+			CftcForexAnalysisRecord rec = eurusdList.get(i);
+			xFormulaArray[i][0] = rec.getReleaseDate();
+			xFormulaArray[i][1] = rec.getPrice();
+			xFormulaArray[i][2] = rec.getDealerNetLong();
+			xFormulaArray[i][3] = rec.getAssetMgrNetLong();
+			xFormulaArray[i][4] = rec.getLevMoneyNetLong();
+			xFormulaArray[i][5] = rec.getOtherNetLong();
 		}
 		
 		return xFormulaArray;
 	}
 
-	// Creates market document from template.
-	private XSpreadsheetDocument createMarketDocument() {
+	// Creates ta document from template.
+	private XSpreadsheetDocument createTaDocumentFromTemplate() {
 		
 		try {
-			copyTemplateToMarketChart();
+			copyTemplateToTaChart();
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new InvestInfoException("Error in copyTemplateToMarketChart().");
+			throw new InvestInfoException("Error in createTaDocumentFromTemplate().");
 		}
 		
-		XSpreadsheetDocument chartsDocument = loadMarketDocument();
+		XSpreadsheetDocument chartsDocument = loadTaDocument();
 
 		return chartsDocument;
 	}
 
-	private XSpreadsheetDocument loadMarketDocument() {
+	private XSpreadsheetDocument loadTaDocument() {
 		
 		try {
-			String chartsFilePath = getMarketChartsFilePath();
+			String chartsFilePath = getTaChartFilePath();
 			XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
 			return chartsDocument;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new InvestInfoException("Error in loadDestDocument().");
+			throw new InvestInfoException("Error in loadTaDocument().");
 		}
 	}
 	
-	private XSpreadsheet getMarketDataSheet(XSpreadsheetDocument chartsDocument) {
+	private XSpreadsheet getTaDataSheet(XSpreadsheetDocument chartsDocument) {
 		
-		return getMarketSheet(chartsDocument, 0);
+		return getTaSheet(chartsDocument, 0);
 	}
 
-	private XSpreadsheet getMarketChartsSheet(XSpreadsheetDocument chartsDocument) {
+	private XSpreadsheet getTaChartSheet(XSpreadsheetDocument chartsDocument) {
 		
-		return getMarketSheet(chartsDocument, 1);
+		return getTaSheet(chartsDocument, 1);
 	}
 
-	private XSpreadsheet getMarketSheet(XSpreadsheetDocument chartsDocument, int index) {
+	private XSpreadsheet getTaSheet(XSpreadsheetDocument chartsDocument, int index) {
 		
 		try {
 			XSpreadsheet chartsDataSheet = getSpreadsheet(chartsDocument, index);
 			return chartsDataSheet;
 		} catch (IndexOutOfBoundsException | WrappedTargetException e) {
 			e.printStackTrace();
-			throw new InvestInfoException("Error in getSpreadsheet().");
+			throw new InvestInfoException("Error in getTaSheet().");
 		}
 	}
 	
-	public void updateMarketChart() throws Exception {
+	public void updateTaChart() throws Exception {
 		
-		MarketCurrentData marketCurrentData = marketDao.retrieveCurrentMarketData();
-		XSpreadsheetDocument chartsDocument = loadMarketDocument();
-		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
+		TechnicalAnalysisData marketCurrentData = marketDao.retrieveCurrentFinancialAnalysisData();
+		XSpreadsheetDocument chartsDocument = loadTaDocument();
+		XSpreadsheet chartsDataSheet = getTaDataSheet(chartsDocument);
 
 		//copy marketCurrentData to charts-data sheet
-		updateMarketChartsDataSheet(marketCurrentData, chartsDataSheet);
+		appendTechanicalAnalysisChartsDataSheet(marketCurrentData, chartsDataSheet);
 		
-		XSpreadsheet chartsSheet = getMarketChartsSheet(chartsDocument);
-		updateMarketChartsSheet(chartsSheet);
+		XSpreadsheet chartsSheet = getTaChartSheet(chartsDocument);
+		updateMarketChartSheet(chartsSheet);
 		
 		Lo.save(chartsDocument);
 		Lo.closeDoc(chartsDocument);
 	}
 	
+	private void appendTechanicalAnalysisChartsDataSheet(TechnicalAnalysisData marketData, XSpreadsheet chartsDataSheet) throws Exception {
+
+		Object[][] xFormulaArray0 = createFormulaArray(marketData);
+		int row = 1 + getNumberOfRows(chartsDataSheet);
+		
+		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByName(getLastRowCellRange(row));
+		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
+				destHeaderCellRange);
+
+		// not sure why need to copy data to another array.
+		Object[][] x = new Object[1][maxColumnIndex];
+		
+		x[0]=xFormulaArray0[0];
+
+		
+	    crFormula.setDataArray(x);
+	}
+	
 	public void deleteByDate(String date) throws Exception {
 	
-		XSpreadsheetDocument chartsDocument = loadMarketDocument();
-		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
+		XSpreadsheetDocument chartsDocument = loadTaDocument();
+		XSpreadsheet chartsDataSheet = getTaDataSheet(chartsDocument);
 		int row = getNumberOfRows(chartsDataSheet) - 1;
 		deleteRowFromSheet(chartsDataSheet, 0, row, date);
 		
@@ -215,7 +220,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		rows.removeByIndex(idx, 1); // remove 1 row at idx position
 	}
 	
-	private void updateMarketChartsSheet(XSpreadsheet chartsSheet) {
+	private void updateMarketChartSheet(XSpreadsheet chartsSheet) {
 		
 		XTableChartsSupplier chartsSupplier = Lo.qi(XTableChartsSupplier.class, chartsSheet);
 		XTableCharts tableCharts = chartsSupplier.getCharts();
@@ -283,54 +288,26 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		
 		return newDataRange;
 	}
-	
-	private void updateMarketChartsDataSheet(MarketCurrentData marketCurrentData, XSpreadsheet chartsDataSheet) throws Exception {
-		
-		int rows = getNumberOfRows(chartsDataSheet);
-		Object[][] xFormulaArray0 = createFormulaArray(marketCurrentData);
 
-		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, rows,
-				maxColumnIndex, rows);
-		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
-				destHeaderCellRange);
-
-		Object[][] x = new Object[1][maxColumnIndex + 1];
+	private void copyTemplateToTaChart() throws IOException {
 		
-		x[0]=xFormulaArray0[0];
-
-	    crFormula.setDataArray(x);
-	}
-
-	private Object[][] createFormulaArray(MarketCurrentData marketCurrentData) {
-		
-		Object[][] xFormulaArray = new Object[1][maxColumnIndex + 1];
-		
-		xFormulaArray[0][0] = marketCurrentData.getReleaseDate();
-		xFormulaArray[0][1] = marketCurrentData.getUsdIndex();
-		xFormulaArray[0][2] = marketCurrentData.getUs10y();
-		xFormulaArray[0][3] = marketCurrentData.getSpx500();
-		xFormulaArray[0][4] = marketCurrentData.getDow30();
-		xFormulaArray[0][5] = marketCurrentData.getNasdaq();
-		xFormulaArray[0][6] = marketCurrentData.getGoldPrice();
-		
-		return xFormulaArray;
-	}
-
-	private void copyTemplateToMarketChart() throws IOException {
-		
-		String chartsTemplatePath = getMarketChartsTemplatePath().substring(8);//remove file:///
-		String chartsFilePath = getMarketChartsFilePath().substring(8);
+		String chartsTemplatePath = getTaChartTemplatePath().substring(8);//remove file:///
+		String chartsFilePath = getTaChartFilePath().substring(8);
 		File chartsTemplateFile = new File(chartsTemplatePath);
 		File chartsFile = new File(chartsFilePath);
 
 		Files.copy(chartsTemplateFile.toPath(), chartsFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	}
 	
-	private String getMarketChartsTemplatePath() {
-		return templateUrl + "template-market-charts.ods";
+	private String getTaChartTemplatePath() {
+		return templateUrl + "template-ta-charts.ods";
 	}
 	
-	private String getMarketChartsFilePath() {
-		return productsUrl + "market-charts.ods";
+	private String getTaChartFilePath() {
+		return productsUrl + "ta-charts.ods";
+	}
+	
+	private String getLastRowCellRange(int row) {
+		return "A" + row + ":F" + row;
 	}
 }
