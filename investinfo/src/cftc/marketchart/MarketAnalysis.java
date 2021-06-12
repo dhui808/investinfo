@@ -45,7 +45,7 @@ import jloputility.Props;
 
 public class MarketAnalysis extends AbstractCftcAnalysis {
 
-	private int maxColumnIndex = 6;
+	private int maxColumnIndex = 7;
 	private MarketDao marketDao = new MarketDao();
 	private PriceIndexDao dao = new InvestingComPriceIndexDao();
 	
@@ -85,13 +85,13 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		int rows = marketData.getReleaseDateList().size();
 		Object[][] xFormulaArray0 = createFormulaArray(marketData);
 
-		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, 0,
-				maxColumnIndex, rows - 1);
+		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, 1,
+				maxColumnIndex - 1, rows);
 		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
 				destHeaderCellRange);
 
 		// not sure why need to copy data to another array.
-		Object[][] x = new Object[rows][maxColumnIndex + 1];
+		Object[][] x = new Object[rows][maxColumnIndex];
 		
 		for (int i=0;i<rows;i++) {
 			x[i]=xFormulaArray0[i];
@@ -103,7 +103,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 	private Object[][] createFormulaArray(MarketData marketData) {
 
 		int rows = marketData.getReleaseDateList().size();
-		Object[][] xFormulaArray = new Object[1 + rows][maxColumnIndex + 1];
+		Object[][] xFormulaArray = new Object[1 + rows][maxColumnIndex];
 		
 		xFormulaArray[0][0] = "Release Tue. Date";
 		xFormulaArray[0][1] = "USD Index";
@@ -298,11 +298,11 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		Object[][] xFormulaArray0 = createFormulaArray(marketCurrentData);
 
 		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, rows,
-				maxColumnIndex, rows);
+				maxColumnIndex - 1, rows);
 		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
 				destHeaderCellRange);
 
-		Object[][] x = new Object[1][maxColumnIndex + 1];
+		Object[][] x = new Object[1][maxColumnIndex];
 		
 		x[0]=xFormulaArray0[0];
 
@@ -311,7 +311,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 
 	private Object[][] createFormulaArray(MarketCurrentData marketCurrentData) {
 		
-		Object[][] xFormulaArray = new Object[1][maxColumnIndex + 1];
+		Object[][] xFormulaArray = new Object[1][maxColumnIndex];
 		
 		xFormulaArray[0][0] = marketCurrentData.getReleaseDate();
 		xFormulaArray[0][1] = marketCurrentData.getUsdIndex();
