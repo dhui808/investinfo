@@ -370,6 +370,9 @@ public abstract class VendorMain {
 		updateCommodifiesAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 
 		updateForexAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
+		
+		// updates ta chart data
+		taAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 	}
 
 	public void upateInventoryInSpreadsheet(String date) throws Exception {

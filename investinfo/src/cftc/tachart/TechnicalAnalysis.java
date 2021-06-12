@@ -5,9 +5,12 @@ import static cftc.utils.Constants.templateUrl;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.chart2.ScaleData;
@@ -30,8 +33,13 @@ import com.sun.star.uno.UnoRuntime;
 
 import cftc.AbstractCftcAnalysis;
 import cftc.InvestInfoException;
+import cftc.dao.InventoryDao;
+import cftc.dao.PriceIndexDao;
 import cftc.model.CftcInstrument;
 import cftc.model.ProductList;
+import cftc.utils.DateUtils;
+import cftc.vendor.VendorName;
+import cftc.vendor.investingcom.InvestingComPriceIndexDao;
 import jloputility.Calc;
 import jloputility.Chart2;
 import jloputility.Lo;
@@ -41,6 +49,7 @@ public class TechnicalAnalysis extends AbstractCftcAnalysis {
 
 	private int maxColumnIndex = 6;
 	private TechnicalAnalysisDao marketDao = new TechnicalAnalysisDao();
+	private PriceIndexDao dao = new InvestingComPriceIndexDao();
 	
 	@Override
 	protected String getSourceFilename() {
@@ -307,7 +316,41 @@ public class TechnicalAnalysis extends AbstractCftcAnalysis {
 		return productsUrl + "ta-charts.ods";
 	}
 	
-	private String getLastRowCellRange(int row) {
+	public void upatePriceOrIndexInSpreadsheet(VendorName vendor, String date) throws Exception {
+		
+		List<CftcInstrument> productList = getProductList();
+		
+		String cftcDate =(null == date)? DateUtils.getCurrentWeekTuesdayDate() : date;
+		String startDate =  DateUtils.getWeekStartDate(cftcDate);
+		
+		String tablename = "cftc_forex_view";
+		Map<String, Double> priceMap = dao.retrievePriceIndex(tablename, cftcDate);
+		
+		if (0 == priceMap.size()) {
+			System.out.println("No price/index data for " + startDate);
+			return;
+		}
+		
+		for (CftcInstrument cftc : productList) {
+			Double price = priceMap.get(cftc.getInstrumentName());
+			String chartsFilePath = getTaChartFilePath();
+			XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
+			XSpreadsheet destSheet3 = getSpreadsheet(chartsDocument, 0);
+			int row = getNumberOfRows(destSheet3);
+			Calc.setVal(destSheet3, getChartsPriceCellName(row), price);
+			
+			System.out.println(cftc.getInstrumentName() + " : " + price);
+			
+			Lo.save(chartsDocument);
+			Lo.closeDoc(chartsDocument);
+		}
+	}
+	
+	protected String getLastRowCellRange(int row) {
 		return "A" + row + ":F" + row;
+	}
+
+	protected String getChartsPriceCellName(int row) {
+		return "B" + row;
 	}
 }

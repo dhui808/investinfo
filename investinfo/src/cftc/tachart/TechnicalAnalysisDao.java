@@ -60,11 +60,11 @@ public class TechnicalAnalysisDao extends AbstractDao {
 	private List<CftcForexAnalysisRecord> retrieveIndex(InstrumentName instrumentName) throws Exception {
 		
 		String instrument = instrumentName.name();
-		String query = "SELECT * from cftc_forex_view where instrument = '" + instrument + "' order by release_date asc";
+		String query = "SELECT * from cftc_forex_view where instrument = '" + instrument + "' order by release_week_tuesday asc";
 	    
 	    CftcQueryCallback<ResultSet, CftcForexAnalysisRecord> resultSetCallback = resultSet -> {
 	    	
-	    	String date = resultSet.getString("release_date");
+	    	String date = resultSet.getString("release_week_tuesday");
 			Float price = resultSet.getFloat("close_price");
 			Integer dealerNetLong = resultSet.getInt("dealer_net_long");
 			Integer assetMgrNetLong = resultSet.getInt("asset_mgr_net_long");
@@ -93,11 +93,11 @@ public class TechnicalAnalysisDao extends AbstractDao {
 		
         String formatDateTime = DateUtils.getLatestEiaReleaseTuesdayDate();
         	    
-		String query = "SELECT * from cftc_forex_view where instrument in ('EURO_FX') and release_date = '" + formatDateTime + "'";
+		String query = "SELECT * from cftc_forex_view where instrument in ('EURO_FX') and release_week_tuesday = '" + formatDateTime + "'";
 	    
 	    CftcQueryCallback<ResultSet, CftcForexAnalysisRecord> resultSetCallback = resultSet -> {
 	    	
-	    	String date = resultSet.getString("release_date");
+	    	String date = resultSet.getString("release_week_tuesday");
 	    	String instrument = resultSet.getString("instrument");
 			Float price = resultSet.getFloat("close_price");
 			Integer dealerNetLong = resultSet.getInt("dealer_net_long");

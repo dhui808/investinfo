@@ -79,7 +79,7 @@ create table cftc_release_financial_history (release_date char(8) not null, inst
 
 CREATE OR REPLACE VIEW cftc_forex_view
 AS
-SELECT  a.release_date,
+SELECT  a.release_date release_week_tuesday,
         a.instrument,
         b.close_price,
 		a.dealer_long - a.dealer_short dealer_net_long,
@@ -89,5 +89,5 @@ SELECT  a.release_date,
 FROM    cftc_release_financial_history a
         LEFT JOIN investing_com_history b
             ON a.release_date = b.release_week_tuesday and a.instrument = b.instrument
-		ORDER BY a.instrument, a.release_date;
+		ORDER BY instrument, release_week_tuesday;
 
