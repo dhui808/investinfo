@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.chart2.ScaleData;
@@ -30,8 +31,14 @@ import com.sun.star.uno.UnoRuntime;
 
 import cftc.AbstractCftcAnalysis;
 import cftc.InvestInfoException;
+import cftc.dao.PriceIndexDao;
 import cftc.model.CftcInstrument;
 import cftc.model.ProductList;
+import cftc.utils.CftcException;
+import cftc.utils.DateUtils;
+import cftc.vendor.VendorName;
+import cftc.vendor.investingcom.InvestingComPriceIndexDao;
+import jloputility.Calc;
 import jloputility.Chart2;
 import jloputility.Lo;
 import jloputility.Props;
@@ -40,6 +47,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 
 	private int maxColumnIndex = 6;
 	private MarketDao marketDao = new MarketDao();
+	private PriceIndexDao dao = new InvestingComPriceIndexDao();
 	
 	@Override
 	protected String getSourceFilename() {
@@ -332,5 +340,59 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 	
 	private String getMarketChartsFilePath() {
 		return productsUrl + "market-charts.ods";
+	}
+
+	public void upatePriceOrIndexInSpreadsheet(VendorName vendor, String date) throws Exception {
+		
+		List<CftcInstrument> productList = getProductList();
+		
+		String cftcDate =(null == date)? DateUtils.getCurrentWeekTuesdayDate() : date;
+		String startDate =  DateUtils.getWeekStartDate(cftcDate);
+		
+		String tablename = vendor.getPriceHistoryTablename();
+		Map<String, Double> priceMap = dao.retrievePriceIndex(tablename, cftcDate);
+		
+		if (0 == priceMap.size()) {
+			System.out.println("No price/index data for " + startDate);
+			return;
+		}
+		
+		String chartsFilePath = getMarketChartsFilePath();
+		XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
+		XSpreadsheet destSheet3 = getSpreadsheet(chartsDocument, 0);
+		int row = getNumberOfRows(destSheet3);
+		
+		for (CftcInstrument cftc : productList) {
+			String instrument = cftc.getInstrumentName();
+			Double price = priceMap.get(instrument);
+			
+			Calc.setVal(destSheet3, getChartsPriceCellName(row, instrument), price);
+			
+			System.out.println(cftc.getInstrumentName() + " : " + price);
+		}
+		
+		// Update the market chart
+		XSpreadsheet chartsSheet = getMarketChartsSheet(chartsDocument);
+		updateMarketChartsSheet(chartsSheet);
+		
+		Lo.save(chartsDocument);
+		Lo.closeDoc(chartsDocument);
+	}
+
+	private String getChartsPriceCellName(int row, String instrumentName) {
+		
+		String col = "";
+		
+		switch (instrumentName) {
+			case "USD_INDEX": col = "B";break;
+			case "US10Y": col = "C";break;
+			case "SPX500": col = "D";break;
+			case "DOW30": col = "E";break;
+			case "NASDAQ": col = "F";break;
+			case "GOLD": col = "G";break;
+			default: throw new CftcException("Invalid instrument name:" + instrumentName);
+		}
+		
+		return col + row;
 	}
 }

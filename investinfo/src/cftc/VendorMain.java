@@ -371,6 +371,9 @@ public abstract class VendorMain {
 
 		updateForexAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 		
+		// updates Market chart data
+		marketAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
+		
 		// updates ta chart data
 		taAnalysis.upatePriceOrIndexInSpreadsheet(vendorName, date);
 	}

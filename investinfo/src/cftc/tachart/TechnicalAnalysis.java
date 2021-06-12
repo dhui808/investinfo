@@ -331,19 +331,24 @@ public class TechnicalAnalysis extends AbstractCftcAnalysis {
 			return;
 		}
 		
+		String chartsFilePath = getTaChartFilePath();
+		XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
+		
 		for (CftcInstrument cftc : productList) {
 			Double price = priceMap.get(cftc.getInstrumentName());
-			String chartsFilePath = getTaChartFilePath();
-			XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
 			XSpreadsheet destSheet3 = getSpreadsheet(chartsDocument, 0);
 			int row = getNumberOfRows(destSheet3);
 			Calc.setVal(destSheet3, getChartsPriceCellName(row), price);
 			
 			System.out.println(cftc.getInstrumentName() + " : " + price);
-			
-			Lo.save(chartsDocument);
-			Lo.closeDoc(chartsDocument);
 		}
+		
+		// updates technical analysis chart
+		XSpreadsheet chartsSheet = getTaChartSheet(chartsDocument);
+		updateMarketChartSheet(chartsSheet);
+		
+		Lo.save(chartsDocument);
+		Lo.closeDoc(chartsDocument);
 	}
 	
 	protected String getLastRowCellRange(int row) {
