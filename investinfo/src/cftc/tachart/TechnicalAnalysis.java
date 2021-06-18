@@ -170,9 +170,9 @@ public class TechnicalAnalysis extends AbstractCftcAnalysis {
 		}
 	}
 	
-	public void updateTaChart() throws Exception {
+	public void updateTaChart(String date) throws Exception {
 		
-		TechnicalAnalysisData marketCurrentData = marketDao.retrieveCurrentFinancialAnalysisData();
+		TechnicalAnalysisData marketCurrentData = marketDao.retrieveCurrentFinancialAnalysisData(date);
 		XSpreadsheetDocument chartsDocument = loadTaDocument();
 		XSpreadsheet chartsDataSheet = getTaDataSheet(chartsDocument);
 

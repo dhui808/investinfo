@@ -182,9 +182,9 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		}
 	}
 	
-	public void updateMarketChart() throws Exception {
+	public void updateMarketChart(String date) throws Exception {
 		
-		MarketCurrentData marketCurrentData = marketDao.retrieveCurrentMarketData();
+		MarketCurrentData marketCurrentData = marketDao.retrieveCurrentMarketData(date);
 		XSpreadsheetDocument chartsDocument = loadMarketDocument();
 		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
 

@@ -89,9 +89,7 @@ public class TechnicalAnalysisDao extends AbstractDao {
 		return list;
 	}
 	
-	public TechnicalAnalysisData retrieveCurrentFinancialAnalysisData() throws Exception {
-		
-        String formatDateTime = DateUtils.getLatestEiaReleaseTuesdayDate();
+	public TechnicalAnalysisData retrieveCurrentFinancialAnalysisData(String formatDateTime) throws Exception {
         	    
 		String query = "SELECT * from cftc_forex_view where instrument in ('EURO_FX') and release_week_tuesday = '" + formatDateTime + "'";
 	    

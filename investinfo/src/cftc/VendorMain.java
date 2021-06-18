@@ -354,13 +354,13 @@ public abstract class VendorMain {
 		cftcHistoryService.addCftcReleaseHistory();
 		
 		// updates market chart
-		marketAnalysis.updateMarketChart();
+		marketAnalysis.updateMarketChart(date);
 		
 		// updates ta data
 		cftcFinancialHistoryService.addCftcFinancialHistory();
 				
 		// updates ta chart
-		taAnalysis.updateTaChart();
+		taAnalysis.updateTaChart(date);
 	}
 
 	public void upatePriceOrIndexInSpreadsheet(String date) throws Exception {
