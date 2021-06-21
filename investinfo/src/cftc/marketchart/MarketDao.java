@@ -115,8 +115,10 @@ public class MarketDao extends AbstractDao {
 		}
 	}
 	
-	public MarketCurrentData retrieveCurrentMarketData(String formatDateTime) throws Exception {
-		        
+	public MarketCurrentData retrieveCurrentMarketData(String date) throws Exception {
+		
+        String formatDateTime = DateUtils.getReleaseSundayDate(date);
+        
 		String query = "SELECT instrument, close_price, release_week_tuesday from investing_com_history where instrument in ('USD_INDEX','US10Y', 'SPX500','NASDAQ', 'GOLD', 'DOW30') and week_starting = '" + formatDateTime + "' order by instrument desc";
 	    
 	    CftcQueryCallback<ResultSet, PriceIndexDto> resultSetCallback = resultSet -> {

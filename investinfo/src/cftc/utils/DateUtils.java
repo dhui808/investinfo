@@ -111,32 +111,17 @@ public class DateUtils {
 	}
 	
 	/**
-	 * After 6:00 PM of this week's Friday to 12:00 AM (exclusive) of the next week's Monday, returns
-	 * the date string in yyyyMMdd format of this week's starting Sunday. Otherwise returns the starting Sunday of the last week.  
+	 * Returns the Sunday (week starting day) of the specified Tuesday date.
+	 * 
+	 *  @param date The Tuesday date.
 	 * @return
 	 */
-	public static String getLatestReleaseSundayDate() {
+	public static String getReleaseSundayDate(String tuesday) {
 		
 		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMdd");
-		LocalDate ld = LocalDate.now();
-		LocalDate nextStartingSunday = ld.with(DayOfWeek.SUNDAY);
-		LocalDate thisStartingSunday = nextStartingSunday.minusWeeks(1);
-		
-		LocalDate latestReleaseSunday = null;
-		String dateStr = null;
-		
-		LocalDateTime ldt = LocalDateTime.now();
-		LocalDateTime thisFriday6PM = LocalDate.now().with(DayOfWeek.FRIDAY).atTime(18, 0);
-		int result = ldt.compareTo(thisFriday6PM);
-		if (result >= 0) {
-			//after 6:00 PM this Friday in this week.
-			latestReleaseSunday = thisStartingSunday;
-		} else {
-			latestReleaseSunday = thisStartingSunday.minusWeeks(1);
-		}
-		
-		dateStr = latestReleaseSunday.format(df);
-		System.out.println("latestReleaseSunday:" + dateStr);
+
+		LocalDate localDate = LocalDate.parse(tuesday, df);
+		String dateStr = localDate.minusDays(2).format(df);
 		
 		return dateStr;
 	}
