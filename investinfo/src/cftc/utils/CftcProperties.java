@@ -31,11 +31,13 @@ public class CftcProperties {
 			String pwd = prop.getProperty("password");
 			String databaseName = prop.getProperty("database_name");
 			String yearsNeedAdjusting = prop.getProperty("years_need_adjusting");
+			String investinfoBasePath = prop.getProperty("investinfo_base_path");
  
 			dbMap.put("user", user);
 			dbMap.put("password", pwd);
 			dbMap.put("databaseName", databaseName);
 			dbMap.put("yearsNeedAdjusting", yearsNeedAdjusting);
+			dbMap.put("investinfoBasePath", investinfoBasePath);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,5 +58,9 @@ public class CftcProperties {
 		String years = getCftcProperties().get("yearsNeedAdjusting");
 		
 		return years.split(",");
+	}
+	
+	public static String getInvestinfoBasePath() {
+		return getCftcProperties().get("investinfoBasePath");
 	}
 }

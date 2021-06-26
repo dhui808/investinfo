@@ -137,6 +137,11 @@ public class MarketDao extends AbstractDao {
 		
 		List<PriceIndexDto> list = executeStatementQuery(query, resultSetCallback);
 		
+		if (null == list || 0 == list.size()) {
+			System.out.println("No latest market data yet.");
+			return null;
+		}
+		
 		MarketCurrentData marketCurrentData =  new MarketCurrentData();
 		marketCurrentData.setUsdIndex(list.get(0).price);
 		//one thousandth.

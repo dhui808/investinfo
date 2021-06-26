@@ -17,6 +17,8 @@ import java.util.zip.ZipInputStream;
 
 public class UnzipCftc {
     
+	public static String projectBasePath = CftcProperties.getInvestinfoBasePath();
+	
 	public static void unzipCftcFilesByDate(String date) {
     	
 		String year = date.substring(0, 4);
@@ -31,8 +33,8 @@ public class UnzipCftc {
     public static void unzipCftcFilesYear(String year) {
     	
     	String yearPath = year + "/";
-    	String zipfileFolder =  archiveCftcDirectory;
-    	String outputFolder = cftcSourceDirectory + yearPath;
+    	String zipfileFolder =  projectBasePath + archiveCftcDirectory;
+    	String outputFolder = projectBasePath + cftcSourceDirectory + yearPath;
     	
     	//unzip ng
     	String ngInputFile = zipfileFolder + "fut_disagg_xls_" + year + ".zip";

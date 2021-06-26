@@ -33,41 +33,6 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 	protected PriceIndexDao dao;
 	
 	/**
-	 * Updates data, analysis and charts
-	 * @deprecated
-	 * @throws Exception 
-	 * @throws RuntimeException 
-	 */
-	public void updateDataAnalysisCharts() throws Exception {
-		
-		String year = "" + CURRENT_YEAR;
-		
-		XSpreadsheetDocument sourceDocument = loadCftcSourceDocument(year);
-		XSpreadsheet srcSheet = getSpreadsheet(sourceDocument, 0);
-		
-		List<CftcInstrument> productList = getProductList();
-		
-		for (CftcInstrument cftc : productList) {
-			
-			String destFilePath = cftc.getAnalysisFilePath();
-			String[] filters = cftc.getFilters();
-			
-			XSpreadsheetDocument destDocument = loadDestDocument(destFilePath);
-			
-			updateData(srcSheet, destDocument, filters);
-			
-			XSpreadsheet analysisSheet = updateAnalysis(srcSheet, destDocument, filters);
-			
-			updateCharts(analysisSheet,  destDocument);
-			
-			updateChartsNetLong(destDocument);
-			
-			Lo.save(destDocument);
-			Lo.closeDoc(destDocument);
-		}
-	}
-	
-	/**
 	 * Updates data and analysis
 	 * @throws Exception 
 	 * @throws RuntimeException 
@@ -90,7 +55,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 			String[] filters = cftc.getFilters();
 			XSpreadsheetDocument destDocument = loadDestDocument(destFilePath);
 			updateData(srcSheet, destDocument, filters);
-			updateAnalysis(srcSheet, destDocument, filters);
+			updateAnalysis(destDocument, filters);
 			
 			Lo.save(destDocument);
 			Lo.closeDoc(destDocument);
@@ -244,7 +209,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		destData.setDataArray(xData.getDataArray());
 	}
 	
-	protected XSpreadsheet updateAnalysis(XSpreadsheet srcSheet, XSpreadsheetDocument destDocument, String[] filters) throws Exception {
+	protected XSpreadsheet updateAnalysis(XSpreadsheetDocument destDocument, String[] filters) throws Exception {
 		
 		XSpreadsheet destSheet2 = getSpreadsheet(destDocument, 2);
 		Calc.insertRow(destSheet2, 1);
@@ -260,7 +225,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 	}
 	
 	protected void applyFormula(XCellRangeFormula destRange) throws IndexOutOfBoundsException {
-
+		
 		String[][] formula = destRange.getFormulaArray();
 		for (int col = 0; col < formula[0].length; col++) {
 			formula[0][col] = formula[0][col].substring(0, formula[0][col].length() - 1) + "2";

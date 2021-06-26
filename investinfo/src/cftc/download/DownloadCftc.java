@@ -14,6 +14,8 @@ import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
+import cftc.utils.CftcProperties;
+
 public class DownloadCftc extends AbstractDownload {
 	
 	private static final String cftcURL = "https://www.cftc.gov/files/dea/history/";
@@ -39,22 +41,24 @@ public class DownloadCftc extends AbstractDownload {
 	public static void downloadCftcZipFilesByFilename(boolean forceDownload, String ngfilename, String forexFilename) throws IOException {
 		//download ng
         String ngSourceURL = cftcURL + ngfilename;
+        String projectBasePath = CftcProperties.getInvestinfoBasePath();
+        String cftcDirectory = projectBasePath + targetCftcDirectory;
         
-        boolean ngDownloaded = zipFileDownloaded(ngfilename, targetCftcDirectory);
+        boolean ngDownloaded = zipFileDownloaded(ngfilename, cftcDirectory);
         
         if (!ngDownloaded || forceDownload) {
         	System.out.println("Downloading " + ngfilename + "...");
-        	download(ngSourceURL, targetCftcDirectory);
+        	download(ngSourceURL, cftcDirectory);
         }
         
         //download forex
         String forexSourceURL = cftcURL + forexFilename;
         
-        boolean forexDownloaded = zipFileDownloaded(forexFilename, targetCftcDirectory);
+        boolean forexDownloaded = zipFileDownloaded(forexFilename, cftcDirectory);
         
         if (!forexDownloaded || forceDownload) {
         	System.out.println("Downloading " + forexFilename + "...");
-        	download(forexSourceURL, targetCftcDirectory);
+        	download(forexSourceURL, cftcDirectory);
         }
 	}
 	
@@ -70,7 +74,7 @@ public class DownloadCftc extends AbstractDownload {
 			Date in = new Date(lastModified);
 			LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
 			
-			downloaded = !isNewCftcReleaseAvailable(ldt);
+			downloaded = !needNewDownload(ldt);
 		}
 		
 		System.out.println(zipFilename + " downloaded? " + downloaded);
@@ -78,49 +82,21 @@ public class DownloadCftc extends AbstractDownload {
 		return downloaded;
 	}
 	
-	private static boolean isNewCftcReleaseAvailable(LocalDateTime lastUpdate) {
+	private static boolean needNewDownload(LocalDateTime lastUpdate) {
 		
 		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime previousFriday = now.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
-		LocalDateTime nextFriday = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+		LocalDateTime fridayThisWeek = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY))
+				.withHour(15).withMinute(30).withSecond(5);
 		
-		if (lastUpdate.isBefore(previousFriday)) {
-			//last update date is not Friday
-			return true;
-		} 
-		
-		if (lastUpdate.toLocalDate().isEqual(previousFriday.toLocalDate())) {
-			//last update date is the previous Friday
-			if (lastUpdate.toLocalTime().isBefore(LocalTime.of(15, 31))) {
-				return true;
-			} 
-		}
-		
-		//at this point, last update is the last week's release. Need to check if 
-		//this week's release is available
-		if (now.isBefore(nextFriday)) {
+		if (lastUpdate.isAfter(fridayThisWeek)) {
 			return false;
 		}
 		
-		//today is the next Friday
-		if (now.toLocalDate().isEqual(nextFriday.toLocalDate())) {
-			
-			if (now.toLocalTime().isBefore(LocalTime.of(15, 31))) {
-				return false;
-			} 
-		}
-		
-		//Now it is either after Friday or is Friday after 3:31 PM.
-		if (lastUpdate.isBefore(nextFriday)) {
+		// new release available
+		if (now.isAfter(fridayThisWeek)) {
 			return true;
 		}
 		
-		//last update is this Friday
-		if (lastUpdate.toLocalTime().isBefore(LocalTime.of(15, 31))) {
-			return true;
-		}
-		
-		//last update is already the latest release.
 		return false;
 	}
 }

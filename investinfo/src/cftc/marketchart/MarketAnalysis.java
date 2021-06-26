@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.star.beans.Property;
 import com.sun.star.beans.XPropertySet;
 import com.sun.star.chart2.ScaleData;
 import com.sun.star.chart2.XAxis;
@@ -21,9 +22,11 @@ import com.sun.star.chart2.data.XDataSource;
 import com.sun.star.chart2.data.XLabeledDataSequence;
 import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
+import com.sun.star.sheet.XCellRangeFormula;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCell;
+import com.sun.star.table.XCellRange;
 import com.sun.star.table.XTableCharts;
 import com.sun.star.table.XTableChartsSupplier;
 import com.sun.star.table.XTableRows;
@@ -189,7 +192,9 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		XSpreadsheet chartsDataSheet = getMarketDataSheet(chartsDocument);
 
 		//copy marketCurrentData to charts-data sheet
-		updateMarketChartsDataSheet(marketCurrentData, chartsDataSheet);
+		if (null != marketCurrentData) {
+			updateMarketChartsDataSheet(marketCurrentData, chartsDataSheet);
+		}
 		
 		XSpreadsheet chartsSheet = getMarketChartsSheet(chartsDocument);
 		updateMarketChartsSheet(chartsSheet);
@@ -360,7 +365,17 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		String chartsFilePath = getMarketChartsFilePath();
 		XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
 		XSpreadsheet destSheet3 = getSpreadsheet(chartsDocument, 0);
-		int row = getNumberOfRows(destSheet3);
+		int row = 1 + getNumberOfRows(destSheet3); //new row is not added yet
+		
+		//XCell cell = Calc.getCell(destSheet3, 0, row - 1);
+		//cell.setFormula(cftcDate.substring(2));
+		
+		com.sun.star.table.XCellRange dcRange3 = destSheet3.getCellRangeByName("A" + row);
+		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
+				dcRange3);
+		Object[][] xFormulaArray0 = new String[1][1];
+		xFormulaArray0[0][0] = cftcDate.substring(2);
+		crFormula.setDataArray(xFormulaArray0);
 		
 		for (CftcInstrument cftc : productList) {
 			String instrument = cftc.getInstrumentName();

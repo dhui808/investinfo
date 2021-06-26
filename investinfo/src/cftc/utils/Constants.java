@@ -13,7 +13,7 @@ public class Constants {
 	public static final String preanalysisUrl = PROJECT_URL + "preanalysis/";
 	public static final String productsUrl = PROJECT_URL + "products/";
 	public static final String cftcSourceUrl = PROJECT_URL + "staging/cftc/";
-	public static final String cftcSourceDirectory = "../staging/cftc/";
+	public static final String cftcSourceDirectory = "/staging/cftc/";
 	public static final String stagingEiaUrl = PROJECT_URL + "staging/eia/";
 	public static final String stagingEiaDirectory = "../staging/eia/";
 	public static final String inventoryUrl = PROJECT_URL + "inventory/";
@@ -23,8 +23,8 @@ public class Constants {
 	public static final String templateUrl = PROJECT_URL + "investinfo/templates/";
 	public static final String backupFilePath = "../preanalysis/price.json";
 	public static final int CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
-	public static final String targetCftcDirectory = "../download/cftc/";
-	public static final String archiveCftcDirectory = "../download/cftc/";
+	public static final String targetCftcDirectory = "/download/cftc/";
+	public static final String archiveCftcDirectory = "/download/cftc/";
 	public static final String ngZipFilename = "fut_disagg_xls_" + CURRENT_YEAR + ".zip";
 	public static final String forexZipFilename = "fut_fin_xls_" + CURRENT_YEAR + ".zip";
 	public static final String NG_HISTORY_XLS_FILENAME = "ngshistory.xls";
