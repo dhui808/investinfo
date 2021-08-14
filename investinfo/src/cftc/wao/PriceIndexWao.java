@@ -1,6 +1,7 @@
 package cftc.wao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import cftc.model.InstrumentName;
 import cftc.vendor.VendorName;
 
 public abstract class PriceIndexWao {
@@ -15,6 +17,14 @@ public abstract class PriceIndexWao {
 	protected abstract AbstractHtmlExtractor getHtmlExtractor();
 	
 	protected List<VendorWebModel> vendorProductsModels;
+	
+	private static List<String> datasetList = new ArrayList<String>(3);
+	
+	static {
+		datasetList.add(InstrumentName.DOW30.name());
+		datasetList.add(InstrumentName.SPX500.name());
+		datasetList.add(InstrumentName.NASDAQ.name());
+	}
 	
 	public PriceIndexWao() throws JsonParseException, JsonMappingException, IOException {
 		loadVendorProducts();
@@ -50,7 +60,7 @@ public abstract class PriceIndexWao {
 		for (String key : productUrlMap.keySet()) {
 			String instrument = key.toUpperCase();
 			String url = baseUrl + productUrlMap.get(key);
-			String price = htmlExtractor.fetchPriceOrIndexFromUrl(url);
+			String price = datasetList.contains(instrument)? htmlExtractor.fetchPriceOrIndexFromUrlByDataSet(url) : htmlExtractor.fetchPriceOrIndexFromUrl(url);
 			priceMap.put(instrument, Double.valueOf(price.replace(",", "")));
 		}
 		

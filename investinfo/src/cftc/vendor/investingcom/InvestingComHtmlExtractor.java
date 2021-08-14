@@ -1,6 +1,7 @@
 package cftc.vendor.investingcom;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -53,7 +54,7 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 	
 	public  String fetchUsdIndex() throws IOException {
 		
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/quotes/us-dollar-index");
+		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/us-dollar-index");
 	}
 	
 	public String fetchCadFutures() throws IOException {
@@ -68,17 +69,17 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 	
 	public String fetchSPX500Index() throws IOException {
 		
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/indices/us-spx-500");
+		return fetchPriceOrIndexFromUrlByDataSet("https://www.investing.com/indices/us-spx-500");
 	}
 
 	public String fetchNASDAQIndex() throws IOException {
 		
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/indices/nasdaq-composite");
+		return fetchPriceOrIndexFromUrlByDataSet("https://www.investing.com/indices/nasdaq-composite");
 	}
 	
 	public String fetchDow30Index() throws IOException {
 		
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/indices/us-30");
+		return fetchPriceOrIndexFromUrlByDataSet("https://www.investing.com/indices/us-30");
 	}
 	
 	public String fetchUs10YFutures() throws IOException {
@@ -90,6 +91,15 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 		
 		Document doc = Jsoup.connect(url).get();
 		Element content = doc.getElementById("last_last");
+		String price = content.text();
+				
+		return price;
+	}
+	
+	public String fetchPriceOrIndexFromUrlByDataSet(String url) throws IOException {
+		
+		Document doc = Jsoup.connect(url).get();
+		Element content = doc.getElementsByAttributeValue("data-test", "instrument-price-last").get(0);
 		String price = content.text();
 				
 		return price;

@@ -8,6 +8,7 @@ import cftc.model.InstrumentName;
 public abstract class AbstractHtmlExtractor {
 
 	public abstract String fetchPriceOrIndexFromUrl(String url) throws IOException;
+	public abstract String fetchPriceOrIndexFromUrlByDataSet(String url) throws IOException;
 	public abstract String fetchPriceOrIndex(String instrument) throws IOException;
 	public abstract String fetchPriceOrIndex(String instrument, boolean currentPrice) throws IOException;
 	

@@ -1,6 +1,8 @@
 # Usage
 To build the application:
 
+from parent folder, run mvn package
+
 1. Create two symbolic links to "C:/Program Files/LibreOffice/program/classes"
 2. from jloputility, 
 mvn clean install
