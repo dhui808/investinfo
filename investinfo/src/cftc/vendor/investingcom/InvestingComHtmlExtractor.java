@@ -39,17 +39,17 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 	
 	public String fetchNgPrice() throws IOException {
 				
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/commodities/natural-gas");
+		return fetchPriceOrIndexFromUrlByDataSet("https://www.investing.com/commodities/natural-gas");
 	}
 	
 	public String fetchOilLightSweetPrice() throws IOException {
 				
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/commodities/crude-oil");
+		return fetchPriceOrIndexFromUrlByDataSet("https://www.investing.com/commodities/crude-oil");
 	}
 	
 	public String fetchGoldPrice() throws IOException {
 		
-		return fetchPriceOrIndexFromUrl("https://www.investing.com/commodities/gold");
+		return fetchPriceOrIndexFromUrlByDataSet("https://www.investing.com/commodities/gold");
 	}
 	
 	public  String fetchUsdIndex() throws IOException {

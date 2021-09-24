@@ -24,6 +24,9 @@ public abstract class PriceIndexWao {
 		datasetList.add(InstrumentName.DOW30.name());
 		datasetList.add(InstrumentName.SPX500.name());
 		datasetList.add(InstrumentName.NASDAQ.name());
+		datasetList.add(InstrumentName.NG.name());
+		datasetList.add(InstrumentName.OIL.name());
+		datasetList.add(InstrumentName.GOLD.name());
 	}
 	
 	public PriceIndexWao() throws JsonParseException, JsonMappingException, IOException {
