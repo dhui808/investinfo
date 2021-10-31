@@ -36,6 +36,7 @@ import cftc.AbstractCftcAnalysis;
 import cftc.InvestInfoException;
 import cftc.dao.PriceIndexDao;
 import cftc.model.CftcInstrument;
+import cftc.model.InstrumentName;
 import cftc.model.ProductList;
 import cftc.utils.CftcException;
 import cftc.utils.DateUtils;
@@ -380,7 +381,9 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		for (CftcInstrument cftc : productList) {
 			String instrument = cftc.getInstrumentName();
 			Double price = priceMap.get(instrument);
-			
+			if (InstrumentName.US10Y.name().equals(instrument)) {
+				price *= 10.0;
+			}
 			Calc.setVal(destSheet3, getChartsPriceCellName(row, instrument), price);
 			
 			System.out.println(cftc.getInstrumentName() + " : " + price);
