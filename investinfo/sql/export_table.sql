@@ -1,0 +1,1 @@
+mysqldump -uroot -p financial_products investing_com_history --where release_week_tuesday='20211102' > mydb20211102.sql
