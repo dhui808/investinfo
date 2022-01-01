@@ -27,6 +27,8 @@ public abstract class PriceIndexWao {
 		datasetList.add(InstrumentName.NG.name());
 		datasetList.add(InstrumentName.OIL.name());
 		datasetList.add(InstrumentName.GOLD.name());
+		datasetList.add(InstrumentName.USD_CAD.name());
+		datasetList.add(InstrumentName.EURO_FX.name());
 	}
 	
 	public PriceIndexWao() throws JsonParseException, JsonMappingException, IOException {
@@ -54,6 +56,7 @@ public abstract class PriceIndexWao {
 			if (v.getVendorName().toUpperCase().equals(vendorName.name())) {
 				productUrlMap = v.getProducts();
 				baseUrl = v.getBaseUrl();
+				
 				break;
 			}
 		}
