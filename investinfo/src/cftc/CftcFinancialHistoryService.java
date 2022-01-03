@@ -48,7 +48,7 @@ public class CftcFinancialHistoryService extends AbstractCftcAnalysis {
 
 	private void updateCftcFinancial(String year, boolean currentOnly) throws Exception {
 		
-		UnzipCftc.unzipCftcFilesYear(year);
+		UnzipCftc.unzipCftcFilesYear(year, false);
 
 		XSpreadsheetDocument sourceDocument = loadCftcSourceDocument(year);
 		XSpreadsheet srcSheet = getSpreadsheet(sourceDocument, 0);

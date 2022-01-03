@@ -195,7 +195,7 @@ public abstract class PriceAndIndexHistoryService {
 	
 	private void adjustPriceHistory(String year, List<CftcInstrument> productList) throws Exception {
 		
-		UnzipCftc.unzipCftcFilesYear(year);
+		UnzipCftc.unzipCftcFilesYear(year, false);
 		
 		CftcDao cftcDao = new CftcDao();
 		

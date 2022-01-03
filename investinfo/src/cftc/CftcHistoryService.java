@@ -52,7 +52,7 @@ public class CftcHistoryService extends AbstractCftcAnalysis {
 	
 	public void updateCftcReleaseHistory(String year) throws Exception {
 		
-		UnzipCftc.unzipCftcFilesYear(year);
+		UnzipCftc.unzipCftcFilesYear(year, false);
 
 		XSpreadsheetDocument sourceDocument = loadCftcSourceDocument(year);
 		XSpreadsheet srcSheet = getSpreadsheet(sourceDocument, 0);

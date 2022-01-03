@@ -333,7 +333,7 @@ public abstract class VendorMain {
 	public void updateAll(boolean forceDownload, String date) throws Exception {
 
 		DownloadCftc.downloadCftcZipFiles(forceDownload, date);
-		UnzipCftc.unzipCftcFilesByDate(date);
+		UnzipCftc.unzipCftcFilesByDate(date,forceDownload);
 
 		// load the latest inventory into the database
 		updateCommodityInventoryHistory();
@@ -394,7 +394,7 @@ public abstract class VendorMain {
 	public void addSheet(CftcInstrument cftc, String year) throws Exception {
 
 		DownloadCftc.downloadCftcZipFilesByYear(false, year);
-		UnzipCftc.unzipCftcFilesYear(year);
+		UnzipCftc.unzipCftcFilesYear(year, false);
 
 		AddYearSheet addPreviousYearSheet = InstrumentCategoryVisitable.accept(cftc.getCategory(),
 				visitorAddPreviousYearSheet);
@@ -440,7 +440,7 @@ public abstract class VendorMain {
 	public void addSheetByYear(String year) throws Exception {
 
 		DownloadCftc.downloadCftcZipFilesByYear(false, year);
-		UnzipCftc.unzipCftcFilesYear(year);
+		UnzipCftc.unzipCftcFilesYear(year, false);
 
 		if (("" + CURRENT_YEAR).equals(year)) {
 			addPreviousYearSheetCommodity.addDataAnalysis(year);
@@ -599,7 +599,7 @@ public abstract class VendorMain {
 	private void addCftcProduct(CftcInstrument cftc) throws Exception {
 
 		DownloadCftc.downloadCftcZipFiles(false);
-		UnzipCftc.unzipCurrentYearCftcFiles();
+		UnzipCftc.unzipCurrentYearCftcFiles(false);
 		String year = "" + CURRENT_YEAR;
 
 		AbstractProductDocumentHandler productDocumentHanlder = getProductDocumentHandler(cftc.getCategory().name());

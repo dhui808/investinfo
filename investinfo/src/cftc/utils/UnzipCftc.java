@@ -19,18 +19,18 @@ public class UnzipCftc {
     
 	public static String projectBasePath = CftcProperties.getInvestinfoBasePath();
 	
-	public static void unzipCftcFilesByDate(String date) {
+	public static void unzipCftcFilesByDate(String date, boolean forceDownload) {
     	
 		String year = date.substring(0, 4);
-    	unzipCftcFilesYear(year);
+    	unzipCftcFilesYear(year,forceDownload);
     }
 
-    public static void unzipCurrentYearCftcFiles() {
+    public static void unzipCurrentYearCftcFiles(boolean forceDownload) {
     	
-    	unzipCftcFilesYear("" + CURRENT_YEAR);
+    	unzipCftcFilesYear("" + CURRENT_YEAR, forceDownload);
     }
 
-    public static void unzipCftcFilesYear(String year) {
+    public static void unzipCftcFilesYear(String year, boolean forceDownload) {
     	
     	String yearPath = year + "/";
     	String zipfileFolder =  projectBasePath + archiveCftcDirectory;
@@ -38,7 +38,7 @@ public class UnzipCftc {
     	
     	//unzip ng
     	String ngInputFile = zipfileFolder + "fut_disagg_xls_" + year + ".zip";
-    	boolean ngNeedUnzip = needUnzipFile(CFTC_COMMODITY_FILE, outputFolder, ngInputFile, year);
+    	boolean ngNeedUnzip = needUnzipFile(CFTC_COMMODITY_FILE, outputFolder, ngInputFile, year, forceDownload);
     	if (ngNeedUnzip) {
     		UnzipCftc.unzipIt(ngInputFile, outputFolder);
     	} else {
@@ -47,7 +47,7 @@ public class UnzipCftc {
     	
     	//unzip forex
     	String forexInputFile = zipfileFolder + "fut_fin_xls_" + year + ".zip";
-    	boolean forexNeedUnzip = needUnzipFile(CFTC_FOREX_FILE, outputFolder, forexInputFile, year);
+    	boolean forexNeedUnzip = needUnzipFile(CFTC_FOREX_FILE, outputFolder, forexInputFile, year, forceDownload);
     	if (forexNeedUnzip) {
     		UnzipCftc.unzipIt(forexInputFile, outputFolder);
     	} else {
@@ -55,7 +55,7 @@ public class UnzipCftc {
     	}
     }
     
-    private static boolean needUnzipFile(String inFile, String outputFolder, String zipFilePath, String year) {
+    private static boolean needUnzipFile(String inFile, String outputFolder, String zipFilePath, String year, boolean forceDownload) {
     	
     	boolean fileExists = fileExists(inFile, outputFolder);
     	if (!fileExists) return true;
@@ -76,7 +76,7 @@ public class UnzipCftc {
     	}
     	
     	// if it is the first week of the year, we need to download file.
-    	if ( 1 == LocalDate.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)) {
+    	if ( 1 == LocalDate.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) && forceDownload) {
     		return true;
     	}
     	
