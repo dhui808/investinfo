@@ -177,16 +177,12 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 
 	private XSpreadsheet getMarketSheet(XSpreadsheetDocument chartsDocument, int index) {
 		
-		try {
-			XSpreadsheet chartsDataSheet = getSpreadsheet(chartsDocument, index);
-			return chartsDataSheet;
-		} catch (IndexOutOfBoundsException | WrappedTargetException e) {
-			e.printStackTrace();
-			throw new InvestInfoException("Error in getSpreadsheet().");
-		}
+		XSpreadsheet chartsDataSheet = getSpreadsheet(chartsDocument, index);
+		
+		return chartsDataSheet;
 	}
 	
-	public void updateMarketChart(String date) throws Exception {
+	public void updateMarketChart(String date) {
 		
 		MarketCurrentData marketCurrentData = marketDao.retrieveCurrentMarketData(date);
 		XSpreadsheetDocument chartsDocument = loadMarketDocument();
@@ -298,13 +294,19 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		return newDataRange;
 	}
 	
-	private void updateMarketChartsDataSheet(MarketCurrentData marketCurrentData, XSpreadsheet chartsDataSheet) throws Exception {
+	private void updateMarketChartsDataSheet(MarketCurrentData marketCurrentData, XSpreadsheet chartsDataSheet) {
 		
 		int rows = getNumberOfRows(chartsDataSheet);
 		Object[][] xFormulaArray0 = createFormulaArray(marketCurrentData);
 
-		com.sun.star.table.XCellRange destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, rows,
-				maxColumnIndex - 1, rows);
+		com.sun.star.table.XCellRange destHeaderCellRange = null;
+		try {
+			destHeaderCellRange = chartsDataSheet.getCellRangeByPosition(0, rows,
+					maxColumnIndex - 1, rows);
+		} catch (IndexOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		com.sun.star.sheet.XCellRangeData crFormula = Lo.qi(com.sun.star.sheet.XCellRangeData.class,
 				destHeaderCellRange);
 
@@ -348,7 +350,7 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		return productsUrl + "market-charts.ods";
 	}
 
-	public void upatePriceOrIndexInSpreadsheet(VendorName vendor, String date) throws Exception {
+	public void upatePriceOrIndexInSpreadsheet(VendorName vendor, String date) {
 		
 		List<CftcInstrument> productList = getProductList();
 		
@@ -412,5 +414,15 @@ public class MarketAnalysis extends AbstractCftcAnalysis {
 		}
 		
 		return col + row;
+	}
+
+	public void addMarketChart(VendorName vendor, String year) {
+		
+		String tablename = vendor.getPriceHistoryTablename();
+		List<String> releaseDateList = dao.retrieveReleaseDates(tablename, year);
+		
+		releaseDateList.forEach(date -> {
+			updateMarketChart(date);
+		});
 	}
 }

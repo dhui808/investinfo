@@ -161,16 +161,13 @@ public class TechnicalAnalysis extends AbstractCftcAnalysis {
 
 	private XSpreadsheet getTaSheet(XSpreadsheetDocument chartsDocument, int index) {
 		
-		try {
-			XSpreadsheet chartsDataSheet = getSpreadsheet(chartsDocument, index);
-			return chartsDataSheet;
-		} catch (IndexOutOfBoundsException | WrappedTargetException e) {
-			e.printStackTrace();
-			throw new InvestInfoException("Error in getTaSheet().");
-		}
+		XSpreadsheet chartsDataSheet = getSpreadsheet(chartsDocument, index);
+		
+		return chartsDataSheet;
+
 	}
 	
-	public void updateTaChart(String date) throws Exception {
+	public void updateTaChart(String date) {
 		
 		TechnicalAnalysisData marketCurrentData = marketDao.retrieveCurrentFinancialAnalysisData(date);
 		XSpreadsheetDocument chartsDocument = loadTaDocument();
@@ -186,7 +183,7 @@ public class TechnicalAnalysis extends AbstractCftcAnalysis {
 		Lo.closeDoc(chartsDocument);
 	}
 	
-	private void appendTechanicalAnalysisChartsDataSheet(TechnicalAnalysisData marketData, XSpreadsheet chartsDataSheet) throws Exception {
+	private void appendTechanicalAnalysisChartsDataSheet(TechnicalAnalysisData marketData, XSpreadsheet chartsDataSheet) {
 
 		Object[][] xFormulaArray0 = createFormulaArray(marketData);
 		int row = 1 + getNumberOfRows(chartsDataSheet);
@@ -357,5 +354,16 @@ public class TechnicalAnalysis extends AbstractCftcAnalysis {
 
 	protected String getChartsPriceCellName(int row) {
 		return "B" + row;
+	}
+
+	public void addTaChart(VendorName vendor, String year) {
+		
+		String tablename = vendor.getPriceHistoryTablename();
+		List<String> releaseDateList = dao.retrieveReleaseDates(tablename, year);
+		
+		releaseDateList.forEach(date -> {
+			updateTaChart(date);
+		});
+		
 	}
 }

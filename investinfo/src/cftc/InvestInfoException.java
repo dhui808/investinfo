@@ -7,4 +7,8 @@ public class InvestInfoException extends RuntimeException {
 	public InvestInfoException(String errMsg) {
 		super(errMsg);
 	}
+	
+	public InvestInfoException(Exception e) {
+		super(e);
+	}
 }

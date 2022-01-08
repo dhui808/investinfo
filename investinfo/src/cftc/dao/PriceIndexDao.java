@@ -116,7 +116,7 @@ public abstract class PriceIndexDao extends AbstractDao {
 	 * @return Map of instrument to price or index
 	 * @throws Exception 
 	 */
-	public Map<String, Double> retrievePriceIndex(String tablename, String cftcDate) throws Exception {
+	public Map<String, Double> retrievePriceIndex(String tablename, String cftcDate){
 		
 		String query = "SELECT instrument, close_price from " + tablename + " where release_week_tuesday = " + cftcDate;
 	    
@@ -172,6 +172,22 @@ public abstract class PriceIndexDao extends AbstractDao {
             
         return updateDate;
 	}
+	
+	public List<String> retrieveReleaseDates(String tablename, String year) {
+		
+		String query = "SELECT release_week_tuesday from " + tablename + " where instrument = 'USD_INDEX' and release_week_tuesday like '" + year + "%'";
+	    
+	    CftcQueryCallback<ResultSet, String> resultSetCallback = resultSet -> {
+	    	
+	    	String releaseDate = resultSet.getString("release_week_tuesday");
+			
+			return releaseDate;
+		};
+		
+		List<String> list = executeStatementQuery(query, resultSetCallback);
+
+        return list;
+	}	
 	
 	public void updateFirstCtfcReleaseDate(String historyTablename, String firstReleaseDate, String firstReleaseTuesdayDate, String instrument) throws Exception {
 

@@ -360,7 +360,7 @@ public abstract class VendorMain {
 		cftcFinancialHistoryService.addCftcFinancialHistory();
 				
 		// updates ta chart
-		taAnalysis.updateTaChart(date);
+		taAnalysis.updateTaChart(date);	
 	}
 
 	public void upatePriceOrIndexInSpreadsheet(String date) throws Exception {
@@ -458,6 +458,18 @@ public abstract class VendorMain {
 
 		updateSheetInventory.updateInventory(year);
 		updateSheetPriceIndex.updatePriceOrIndex(year);
+		
+		//add cftc release history
+		cftcHistoryService.addCftcReleaseHistory();
+		
+		// updates market chart
+		marketAnalysis.addMarketChart(vendorName, year);
+		
+		// updates ta data
+		cftcFinancialHistoryService.addCftcFinancialHistory();
+				
+		// updates ta chart
+		taAnalysis.addTaChart(vendorName, year);	
 	}
 
 	public void addSheetInventory(String year) throws Exception {

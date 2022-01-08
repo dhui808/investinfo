@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import cftc.InvestInfoException;
 import cftc.utils.CftcProperties;
 
 public class AbstractDao {
@@ -58,7 +59,7 @@ public class AbstractDao {
 		return list.get(0);
 	}
 
-	protected <T> List<T> executeStatementQuery(String query, CftcQueryCallback<ResultSet, T> resultSetCallback) throws Exception {
+	protected <T> List<T> executeStatementQuery(String query, CftcQueryCallback<ResultSet, T> resultSetCallback)  {
 		
 		Connection connect = null;
 	    Statement statement = null;
@@ -81,7 +82,7 @@ public class AbstractDao {
             return list;
             
         } catch (Exception e) {
-            throw e;
+            throw new InvestInfoException(e);
         } finally {
         	close(resultSet, statement, connect);
         }

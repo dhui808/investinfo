@@ -9,6 +9,8 @@ import com.sun.star.beans.PropertyValue;
 import com.sun.star.container.NoSuchElementException;
 import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XNameAccess;
+import com.sun.star.io.IOException;
+import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
@@ -66,7 +68,7 @@ public abstract class AbstractCftcAnalysis {
 	 * 
 	 * @return The XSpreadsheetDocument interface of the document.
 	 */
-	protected XSpreadsheetDocument loadDestDocument(String destFilePath) throws Exception {
+	protected XSpreadsheetDocument loadDestDocument(String destFilePath) {
 		com.sun.star.beans.PropertyValue[] propertyValue = new com.sun.star.beans.PropertyValue[2];
 		propertyValue[0] = new com.sun.star.beans.PropertyValue();
 		propertyValue[0].Name = "Hidden";
@@ -77,8 +79,13 @@ public abstract class AbstractCftcAnalysis {
 	
 		System.out.println("Load dest document " + destFilePath);
 		
-		XComponent destXComponent = LO.aLoader.loadComponentFromURL(destFilePath, "_default", 0,
-				propertyValue);
+		XComponent destXComponent;
+		try {
+			destXComponent = LO.aLoader.loadComponentFromURL(destFilePath, "_default", 0,
+					propertyValue);
+		} catch (IllegalArgumentException | IOException e) {
+			throw new InvestInfoException(e);
+		}
 	
 		return UnoRuntime.queryInterface(XSpreadsheetDocument.class, destXComponent);
 	}
@@ -105,14 +112,20 @@ public abstract class AbstractCftcAnalysis {
 		return UnoRuntime.queryInterface(XSpreadsheetDocument.class, destXComponent);
 	}
 	
-	protected XSpreadsheet getSpreadsheet(XSpreadsheetDocument xDocument, int nIndex)
-			throws IndexOutOfBoundsException, WrappedTargetException {
+	protected XSpreadsheet getSpreadsheet(XSpreadsheetDocument xDocument, int nIndex) {
 		// Collection of sheets
 		XSpreadsheets xSheets = xDocument.getSheets();
 		XSpreadsheet xSheet = null;
 
 		XIndexAccess xSheetsIA = UnoRuntime.queryInterface(XIndexAccess.class, xSheets);
-		xSheet = UnoRuntime.queryInterface(XSpreadsheet.class, xSheetsIA.getByIndex(nIndex));
+		
+		Object o = null;
+		try {
+			o = xSheetsIA.getByIndex(nIndex);
+		} catch (IndexOutOfBoundsException | WrappedTargetException e) {
+			throw new InvestInfoException(e);
+		}
+		xSheet = UnoRuntime.queryInterface(XSpreadsheet.class, o);
 
 		return xSheet;
 	}

@@ -115,7 +115,7 @@ public class MarketDao extends AbstractDao {
 		}
 	}
 	
-	public MarketCurrentData retrieveCurrentMarketData(String date) throws Exception {
+	public MarketCurrentData retrieveCurrentMarketData(String date) {
 		
         String formatDateTime = DateUtils.getReleaseSundayDate(date);
         
