@@ -18,7 +18,7 @@ public class NgNewYork extends Energy {
 
 	public String[] getFilters() {
 		
-		return new String[] {"NATURAL GAS - NEW YORK MERCANTILE EXCHANGE"};
+		return new String[] {"NATURAL GAS - NEW YORK MERCANTILE EXCHANGE", "NAT GAS NYME - NEW YORK MERCANTILE EXCHANGE"};
 	}
 	
 	public String getInventoryHistoryXlsFilename() {

@@ -22,7 +22,7 @@ public class OilLightSweet extends Energy {
 	
 	public String[] getFilters() {
 		
-		return new String[] {"CRUDE OIL, LIGHT SWEET - NEW YORK MERCANTILE EXCHANGE"};
+		return new String[] {"CRUDE OIL, LIGHT SWEET - NEW YORK MERCANTILE EXCHANGE", "WTI-PHYSICAL - NEW YORK MERCANTILE EXCHANGE"};
 	}
 	
 	public String getInventoryHistoryXlsFilename() {

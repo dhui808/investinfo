@@ -16,7 +16,7 @@ public class Us10YearNotes extends Forex {
 
 	public String[] getFilters() {
 		
-		return new String[]{"10-YEAR U.S. TREASURY NOTES - CHICAGO BOARD OF TRADE"};
+		return new String[]{"10-YEAR U.S. TREASURY NOTES - CHICAGO BOARD OF TRADE", "UST 10Y NOTE - CHICAGO BOARD OF TRADE"};
 	}
 
 	public String getInstrumentName() {

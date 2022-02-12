@@ -16,7 +16,7 @@ public class Dow30 extends Forex {
 
 	public String[] getFilters() {
 		
-		return new String[]{"DOW JONES INDUSTRIAL AVG- x $5 - CHICAGO BOARD OF TRADE"};
+		return new String[]{"DOW JONES INDUSTRIAL AVG- x $5 - CHICAGO BOARD OF TRADE", "DJIA x $5 - CHICAGO BOARD OF TRADE"};
 	}
 
 	public String getInstrumentName() {

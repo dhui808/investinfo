@@ -16,7 +16,7 @@ public class UsdIndex extends Forex {
 
 	public String[] getFilters() {
 		
-		return new String[]{"U.S. DOLLAR INDEX - ICE FUTURES U.S."};
+		return new String[]{"U.S. DOLLAR INDEX - ICE FUTURES U.S.", "USD INDEX - ICE FUTURES U.S."};
 	}
 
 	public String getInstrumentName() {

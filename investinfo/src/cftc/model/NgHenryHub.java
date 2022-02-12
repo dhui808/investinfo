@@ -30,7 +30,7 @@ public class NgHenryHub extends Energy {
 	
 	public String[] getFilters() {
 		
-		return new String[] {"NATURAL GAS HENRY LD1", "NATURAL GAS ICE HENRY HUB"};
+		return new String[] {"NATURAL GAS HENRY LD1", "NATURAL GAS ICE HENRY HUB", "NAT GAS ICE LD1 - ICE FUTURES ENERGY DIV"};
 	}
 
 	public String getInstrumentName() {
