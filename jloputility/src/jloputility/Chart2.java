@@ -1066,7 +1066,7 @@ public class Chart2
     int degree = 1;
     if (getCurveType(curve) != LINEAR)
       degree = 2;   // assumes POLYNOMIAL trend has degree == 2
-    curveCalc.setRegressionProperties(degree, false, 0, 2);
+    curveCalc.setRegressionProperties(degree, false, 0, 2, 1);//DH, 20220617, added the 5th argument
       //  degree, forceIntercept, interceptValue, period (for moving average)
 
 
