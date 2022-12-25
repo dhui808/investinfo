@@ -92,7 +92,9 @@ public abstract class UpdateSheetPriceIndex extends AbstractHandleYearSheet {
 				// in this case, price goes to the next column to the right and the the inverse of the price occupies 
 				//the original the price column
 				array[i][1] = price;
-				BigDecimal bd = new BigDecimal(1 / price).setScale(4, RoundingMode.HALF_UP);
+				int multilier = cftc.getInverseMultiplier();
+				int precision = cftc.getPricePrecision();
+				BigDecimal bd = new BigDecimal(multilier / price).setScale(precision, RoundingMode.HALF_UP);
 				array[i][0] = bd.doubleValue();
 			} else {
 				array[i][1] = "";

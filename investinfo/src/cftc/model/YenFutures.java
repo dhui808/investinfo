@@ -27,6 +27,9 @@ public class YenFutures extends Forex {
 		return true;
 	}
 	
+	public int getInverseMultiplier() {
+		return 10000;
+	}
 	public int getPricePrecision() {
 		return 2;
 	}

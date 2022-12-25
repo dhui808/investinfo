@@ -129,7 +129,8 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 					// in this case, price goes to the next column to the right and the the inverse of the price occupies 
 					//the original the price column
 					Calc.setVal(destSheet3, getChartsInverseRatioCellName(row), price);
-					BigDecimal bd = new BigDecimal(1 / price);
+					int multilier = cftc.getInverseMultiplier();
+					BigDecimal bd = new BigDecimal(multilier / price);
 					bd = bd.setScale(cftc.getPricePrecision(), RoundingMode.HALF_UP);
 					Calc.setVal(destSheet3, getChartsPriceCellName(row), bd.doubleValue());
 				}

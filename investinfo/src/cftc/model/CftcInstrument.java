@@ -30,6 +30,16 @@ public abstract class CftcInstrument {
 		return false;
 	}
 	
+	/**
+	 * If needInverseRatio() is true, returns a multiplier for calculating the inverse ratio.
+	 * Needed for JPYUSD.
+	 * 
+	 * @return multiplier.
+	 */
+	public int getInverseMultiplier() {
+		return 1;
+	}
+	
 	public int getPricePrecision() {
 		return 2;
 	}
