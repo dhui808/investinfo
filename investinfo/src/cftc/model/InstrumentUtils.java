@@ -36,6 +36,9 @@ public class InstrumentUtils {
 		case "EURO_FX":
 			cftc = new CftcInstrument[] {new EuroFutures()};
 			break;
+		case "USD_JPY":
+			cftc = new CftcInstrument[] {new YenFutures()};
+			break;
 		case "SPX500":
 			cftc = new CftcInstrument[] {new SPX500()};
 			break;

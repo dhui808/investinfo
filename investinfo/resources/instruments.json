@@ -1,5 +1,5 @@
 {
-	"forex": ["USD_CAD","USD_INDEX", "EURO_FX", "US10Y"],
+	"forex": ["USD_CAD","USD_INDEX", "EURO_FX", "US10Y", "USD_JPY"],
 	"energy":["NG","OIL"],
 	"metal":["GOLD"]
 }

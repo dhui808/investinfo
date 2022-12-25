@@ -7,6 +7,7 @@ public enum InvestingComHistoryDataUrl {
 	USD_INDEX("https://www.investing.com/currencies/us-dollar-index-historical-data"),
 	USD_CAD("https://www.investing.com/currencies/usd-cad-historical-data"),
 	EURO_FX("https://www.investing.com/currencies/eur-usd-historical-data"),
+	USD_JPY("https://www.investing.com/currencies/usd-jpy-historical-data"),
 	SPX500("https://www.investing.com/indices/us-spx-500-historical-data"),
 	NASDAQ("https://www.investing.com/indices/nasdaq-composite-historical-data"),
 	DOW30("https://www.investing.com/indices/us-30-historical-data"),

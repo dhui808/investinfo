@@ -29,6 +29,7 @@ public abstract class PriceIndexWao {
 		datasetList.add(InstrumentName.GOLD.name());
 		datasetList.add(InstrumentName.USD_CAD.name());
 		datasetList.add(InstrumentName.EURO_FX.name());
+		datasetList.add(InstrumentName.USD_JPY.name());
 	}
 	
 	public PriceIndexWao() throws JsonParseException, JsonMappingException, IOException {

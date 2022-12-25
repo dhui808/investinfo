@@ -6,6 +6,7 @@ drop table investing_com_staging_ng;
 drop table investing_com_staging_usd_index;
 drop table investing_com_staging_usd_cad;
 drop table investing_com_staging_euro_fx;
+drop table investing_com_staging_usd_jpy;
 drop table investing_com_staging_spx500;
 drop table investing_com_staging_nasdaq;
 drop table investing_com_staging_dow30;
@@ -25,6 +26,7 @@ create table  investing_com_history (release_week_tuesday char(8) not null, inst
     PARTITION USD_INDEX VALUES IN('USD_INDEX'),
     PARTITION USD_CAD VALUES IN('USD_CAD'),
     PARTITION EURO_FX VALUES IN('EURO_FX'),
+    PARTITION USD_JPY VALUES IN('USD_JPY'),
     PARTITION SPX500 VALUES IN('SPX500'),
     PARTITION NASDAQ VALUES IN('NASDAQ'),
     PARTITION DOW30 VALUES IN('DOW30'),
@@ -37,6 +39,7 @@ create table investing_com_staging_gold (date_str varchar(12), price varchar(12)
 create table investing_com_staging_usd_index (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_usd_cad (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_euro_fx (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
+create table investing_com_staging_usd_jpy (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_spx500 (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_nasdaq (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
 create table investing_com_staging_dow30 (date_str varchar(12), price varchar(12), open varchar(12), high varchar(12), low varchar(12), vol varchar(12), change_percentage varchar(12));
@@ -57,6 +60,9 @@ ALTER TABLE investing_com_history ADD PARTITION (PARTITION DOW30 VALUES IN('DOW3
 
 # add us10y partition
 ALTER TABLE investing_com_history ADD PARTITION (PARTITION US10Y VALUES IN('US10Y'));
+
+# add usd_jpy partition
+ALTER TABLE investing_com_history ADD PARTITION (PARTITION USD_JPY VALUES IN('USD_JPY'));
 
 create table eia_staging_ng (week_ending varchar(8),  inventory int);
 create table eia_staging_oil (week_ending varchar(8),  inventory int);

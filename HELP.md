@@ -83,7 +83,7 @@ run
 	
 	5.3 Update the latest price/index to current year all instrument sheets (run p)
 	
-	5.4 Update price/index for a specific year fo all instrument sheets (run -year 2018 p)
+	5.4 Update price/index for a specific year for all instrument sheets (run -year 2018 p)
 	
 	5.5 Adjust CFTC release date (run -year 2013 -adjust p)
 	

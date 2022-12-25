@@ -8,6 +8,7 @@ public enum InstrumentName {
 	USD_INDEX(InstrumentCategory.FOREX),
 	USD_CAD(InstrumentCategory.FOREX),
 	EURO_FX(InstrumentCategory.FOREX),
+	USD_JPY(InstrumentCategory.FOREX),
 	SPX500(InstrumentCategory.FOREX),
 	NASDAQ(InstrumentCategory.FOREX),
 	DOW30(InstrumentCategory.FOREX),

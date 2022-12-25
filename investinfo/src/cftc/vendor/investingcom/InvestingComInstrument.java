@@ -10,6 +10,7 @@ public enum InvestingComInstrument {
 	USD_INDEX(InstrumentName.USD_INDEX.name(), InvestingComFilename.USD_INDEX.getCsvName(), InvestingComTablename.USD_INDEX.getTablename(), InvestingComTablename.HISTORY.getTablename()),
 	USD_CAD(InstrumentName.USD_CAD.name(), InvestingComFilename.USD_CAD.getCsvName(), InvestingComTablename.USD_CAD.getTablename(), InvestingComTablename.HISTORY.getTablename()),
 	EURO_FX(InstrumentName.EURO_FX.name(), InvestingComFilename.EURO_FX.getCsvName(), InvestingComTablename.EURO_FX.getTablename(), InvestingComTablename.HISTORY.getTablename()),
+	USD_JPY(InstrumentName.USD_JPY.name(), InvestingComFilename.USD_JPY.getCsvName(), InvestingComTablename.USD_JPY.getTablename(), InvestingComTablename.HISTORY.getTablename()),	
 	SPX500(InstrumentName.SPX500.name(), InvestingComFilename.SPX500.getCsvName(), InvestingComTablename.SPX500.getTablename(), InvestingComTablename.HISTORY.getTablename()),
 	NASDAQ(InstrumentName.NASDAQ.name(), InvestingComFilename.NASDAQ.getCsvName(), InvestingComTablename.NASDAQ.getTablename(), InvestingComTablename.HISTORY.getTablename()),
 	DOW30(InstrumentName.DOW30.name(), InvestingComFilename.DOW30.getCsvName(), InvestingComTablename.DOW30.getTablename(), InvestingComTablename.HISTORY.getTablename()),

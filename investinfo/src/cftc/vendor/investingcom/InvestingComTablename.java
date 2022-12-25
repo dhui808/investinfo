@@ -7,6 +7,7 @@ public enum InvestingComTablename {
 	USD_INDEX("investing_com_staging_usd_index"),
 	USD_CAD("investing_com_staging_usd_cad"),
 	EURO_FX("investing_com_staging_euro_fx"),
+	USD_JPY("investing_com_staging_usd_jpy"),
 	SPX500("investing_com_staging_spx500"),
 	NASDAQ("investing_com_staging_nasdaq"),
 	DOW30("investing_com_staging_dow30"),

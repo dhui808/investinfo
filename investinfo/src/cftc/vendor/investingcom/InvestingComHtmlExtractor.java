@@ -29,6 +29,7 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 			case "USD_INDEX": return fetchUsdIndex();
 			case "USD_CAD": return fetchCadFutures();
 			case "EURO_FX": return fetchEuroFutures();
+			case "USD_JPY": return fetchYenFutures();
 			case "SPX500": return fetchSPX500Index();
 			case "NASDAQ": return fetchNASDAQIndex();
 			case "DOW30": return fetchDow30Index();
@@ -67,6 +68,11 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/eur-usd");
 	}
 	
+	public String fetchYenFutures() throws IOException {
+		
+		return fetchPriceOrIndexFromUrl("https://www.investing.com/currencies/usd-jpy");
+	}
+
 	public String fetchSPX500Index() throws IOException {
 		
 		return fetchPriceOrIndexFromUrlByDataSet("https://www.investing.com/indices/us-spx-500");

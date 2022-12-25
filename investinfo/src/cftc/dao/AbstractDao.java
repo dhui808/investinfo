@@ -38,7 +38,8 @@ public class AbstractDao {
 			statement = connect.createStatement();
 			for (String query : queries ) {
 				System.out.println("query=" + query);
-				statement.executeUpdate(query);
+				int count = statement.executeUpdate(query);
+				System.out.println(count + " records loaded.");
 			}
 			
 		} catch (Exception e) {
