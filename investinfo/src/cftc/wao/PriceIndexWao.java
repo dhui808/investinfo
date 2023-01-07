@@ -21,15 +21,15 @@ public abstract class PriceIndexWao {
 	private static List<String> datasetList = new ArrayList<String>(3);
 	
 	static {
-		datasetList.add(InstrumentName.DOW30.name());
-		datasetList.add(InstrumentName.SPX500.name());
-		datasetList.add(InstrumentName.NASDAQ.name());
-		datasetList.add(InstrumentName.NG.name());
-		datasetList.add(InstrumentName.OIL.name());
-		datasetList.add(InstrumentName.GOLD.name());
-		datasetList.add(InstrumentName.USD_CAD.name());
-		datasetList.add(InstrumentName.EURO_FX.name());
-		datasetList.add(InstrumentName.USD_JPY.name());
+		//datasetList.add(InstrumentName.DOW30.name());
+		//datasetList.add(InstrumentName.SPX500.name());
+		//datasetList.add(InstrumentName.NASDAQ.name());
+		//datasetList.add(InstrumentName.NG.name());
+		//datasetList.add(InstrumentName.OIL.name());
+		//datasetList.add(InstrumentName.GOLD.name());
+		//datasetList.add(InstrumentName.USD_CAD.name());
+		//datasetList.add(InstrumentName.EURO_FX.name());
+		//datasetList.add(InstrumentName.USD_JPY.name());
 	}
 	
 	public PriceIndexWao() throws JsonParseException, JsonMappingException, IOException {
@@ -67,7 +67,7 @@ public abstract class PriceIndexWao {
 		for (String key : productUrlMap.keySet()) {
 			String instrument = key.toUpperCase();
 			String url = baseUrl + productUrlMap.get(key);
-			String price = datasetList.contains(instrument)? htmlExtractor.fetchPriceOrIndexFromUrlByDataSet(url) : htmlExtractor.fetchPriceOrIndexFromUrl(url);
+			String price = htmlExtractor.fetchPriceOrIndexFromUrl(url);
 			priceMap.put(instrument, Double.valueOf(price.replace(",", "")));
 		}
 		
