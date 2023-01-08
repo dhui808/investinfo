@@ -408,6 +408,8 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	private void updateChartByName(XSpreadsheet chartsSheet, String chartName, String year, String baseYear) {
 		XChartDocument chartDoc = Chart2.getChartDoc(chartsSheet, chartName);
 
+		XDataProvider dp = chartDoc.getDataProvider();
+		
 		XDataSeries[] ds = Chart2.getDataSeries(chartDoc);
 
 		for (int i = 0; i < ds.length; i++) {
@@ -423,7 +425,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 			
 			String valuesRange = xDSValues.getSourceRangeRepresentation().replace(baseYear, year);
 			String labelRange = xDSLabel.getSourceRangeRepresentation().replace(baseYear, year);
-			XDataProvider dp = chartDoc.getDataProvider();
+			
 			XDataSequence dataSeq = dp.createDataSequenceByRangeRepresentation(valuesRange);
 			XDataSequence labelSeq = dp.createDataSequenceByRangeRepresentation(labelRange);
 			XPropertySet dsProps = Lo.qi(XPropertySet.class, dataSeq);
@@ -431,19 +433,19 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 			
 			xLabeledDS0.setValues(dataSeq);
 			xLabeledDS0.setLabel(labelSeq);
-
-			// categories
-			XAxis axis = Chart2.getAxis(chartDoc, Chart2.X_AXIS, 0);
-			ScaleData sd = axis.getScaleData();
-			XLabeledDataSequence cat = sd.Categories;
-			XDataSequence catValues = cat.getValues();
-			String catValuesRange = catValues.getSourceRangeRepresentation().replace(baseYear, year);
-			XDataSequence catDataSeq = dp.createDataSequenceByRangeRepresentation(catValuesRange);
-			XPropertySet catDsProps = Lo.qi(XPropertySet.class, catDataSeq);
-			Props.setProperty(catDsProps, "Role", "categories"); // specify data role (type)
-			
-			cat.setValues(catDataSeq);
 		}
+		
+		// categories
+		XAxis axis = Chart2.getAxis(chartDoc, Chart2.X_AXIS, 0);
+		ScaleData sd = axis.getScaleData();
+		XLabeledDataSequence cat = sd.Categories;
+		XDataSequence catValues = cat.getValues();
+		String catValuesRange = catValues.getSourceRangeRepresentation().replace(baseYear, year);
+		XDataSequence catDataSeq = dp.createDataSequenceByRangeRepresentation(catValuesRange);
+		XPropertySet catDsProps = Lo.qi(XPropertySet.class, catDataSeq);
+		Props.setProperty(catDsProps, "Role", "categories"); // specify data role (type)
+		
+		cat.setValues(catDataSeq);
 	}
 
 	/**
