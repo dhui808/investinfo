@@ -102,14 +102,14 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 		return price;
 	}
 	
-//	public String fetchPriceOrIndexFromUrlByDataSet(String url) throws IOException {
-//		
-//		Document doc = Jsoup.connect(url).get();
-//		Element content = doc.getElementsByAttributeValue("data-test", "instrument-price-last").get(0);
-//		String price = content.text();
-//				
-//		return price;
-//	}
+	public String fetchPriceOrIndexFromUrlByDataSet(String url) throws IOException {
+		
+		Document doc = Jsoup.connect(url).get();
+		Element content = doc.getElementsByAttributeValue("data-test", "instrument-price-last").get(0);
+		String price = content.text();
+				
+		return price;
+	}
 	
 	public String fetchLastWeekPriceOrIndexFromUrl(String url, boolean currentPrice) throws IOException {
 		
