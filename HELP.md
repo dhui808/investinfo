@@ -4,6 +4,8 @@ To build the application:
 from parent folder, run mvn package
 
 1. Create two symbolic links to "C:/Program Files/LibreOffice/program/classes"
+	mklink /J "C:\research\github\investinfo\jloputility\lib" "C:/Program Files/LibreOffice/program/classes"
+	mklink /J "C:\research\github\investinfo\investinfo\lib" "C:/Program Files/LibreOffice/program/classes"
 2. from jloputility, 
 mvn clean install
 3. from investinfo,
@@ -19,7 +21,7 @@ mysqld --local_infile=1
 
 2. Run any of the commands as listed in README.md
 
-cd C:\Users\danny.hui\research\github\cftc\cftc
+cd C:\research\github\investinfo\investinfo
 
 run
 
