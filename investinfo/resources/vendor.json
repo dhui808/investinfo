@@ -10,7 +10,7 @@
 			"usd_cad": "/currencies/usd-cad-chart",
 			"euro_fx": "/currencies/eur-usd-chart",
 			"usd_jpy": "/currencies/usd-jpy-chart",
-			"us10y": "/rates-bonds/u.s.-10-year-bond-yield",
+			"us10y": "/rates-bonds/u.s.-10-year-bond-yield-streaming-chart",
 			"dow30": "/indices/us-30-chart",
 			"nasdaq": "/indices/nasdaq-composite-chart",
 			"spx500": "/indices/us-spx-500-chart"

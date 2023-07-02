@@ -20,10 +20,6 @@ public abstract class PriceIndexWao {
 	
 	private static List<String> datasetList = new ArrayList<String>(3);
 	
-	static {
-		datasetList.add(InstrumentName.US10Y.name());
-	}
-	
 	public PriceIndexWao() throws JsonParseException, JsonMappingException, IOException {
 		loadVendorProducts();
 	}
