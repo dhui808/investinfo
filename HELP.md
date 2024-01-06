@@ -119,13 +119,18 @@ run
 
 	10.1 -v investing_com
 
-11. Charts
+11. Skip Download and unzip steps
+
+	11.1 -s or skipDownloadAndUnzip
+	run -s 2024 as
+	
+12. Charts
 		11.1 export chart for an instrument (run -instrument gold -year 2018 chart)
 		
-12. Market charts
-	12.1 Create Marcket charts from scratch (run mc)
+13. Market charts
+	13.1 Create Marcket charts from scratch (run mc)
 
-13. Update technical analysis
+14. Update technical analysis
 
 	13.1 Add technical analysis data for a spacific year (run -year 2018 ta)
 	

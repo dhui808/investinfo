@@ -116,6 +116,14 @@ public abstract class VendorMain {
 			date = argList.get(idxDate + 1);
 		}
 
+		// Skip download and unzip steps
+		boolean skipDownloadAndUnzip = false;
+		if (argList.contains("-s") || argList.contains("-skipDownloadAndUnzip")) {
+			skipDownloadAndUnzip = true;
+		}
+		
+		System.out.println("skipDownloadAndUnzip? " + skipDownloadAndUnzip);
+		
 		if (null != instrument && null != category) {
 			System.out.println("Should not specify both instrument and category.");
 			return;
@@ -171,7 +179,7 @@ public abstract class VendorMain {
 			} else if (null != category) {
 				addSheetByCategoryYear(category, year);
 			} else {
-				addSheetByYear(year);
+				addSheetByYear(year, skipDownloadAndUnzip);
 			}
 
 			return;
@@ -326,15 +334,17 @@ public abstract class VendorMain {
 
 		System.out.println("update all, force download? " + forceDownload);
 		String cftcDate = (null == date) ? DateUtils.getCurrentWeekTuesdayDate() : date;
-
-		updateAll(forceDownload, cftcDate);
+		
+		updateAll(forceDownload, cftcDate, skipDownloadAndUnzip);
 	}
 
-	public void updateAll(boolean forceDownload, String date) throws Exception {
+	public void updateAll(boolean forceDownload, String date, boolean skipDownloadAndUnzip) throws Exception {
 
-		DownloadCftc.downloadCftcZipFiles(forceDownload, date);
-		UnzipCftc.unzipCftcFilesByDate(date,forceDownload);
-
+		if (false == skipDownloadAndUnzip) {
+			DownloadCftc.downloadCftcZipFiles(forceDownload, date);
+			UnzipCftc.unzipCftcFilesByDate(date,forceDownload);
+		}
+		
 		// load the latest inventory into the database
 		updateCommodityInventoryHistory();
 
@@ -437,11 +447,13 @@ public abstract class VendorMain {
 		}
 	}
 
-	public void addSheetByYear(String year) throws Exception {
+	public void addSheetByYear(String year, boolean skipDownloadAndUnzip) throws Exception {
 
-		DownloadCftc.downloadCftcZipFilesByYear(false, year);
-		UnzipCftc.unzipCftcFilesYear(year, false);
-
+		if (false == skipDownloadAndUnzip) {
+			DownloadCftc.downloadCftcZipFilesByYear(false, year);
+			UnzipCftc.unzipCftcFilesYear(year, false);
+		}
+		
 		if (("" + CURRENT_YEAR).equals(year)) {
 			addPreviousYearSheetCommodity.addDataAnalysis(year);
 			addPreviousYearSheetCommodity.addDataChartsCurrentYear(year);

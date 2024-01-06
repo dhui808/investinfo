@@ -18,7 +18,25 @@ public abstract class PriceIndexWao {
 	
 	protected List<VendorWebModel> vendorProductsModels;
 	
-	private static List<String> datasetList = new ArrayList<String>(3);
+	private static List<String> datasetList = new ArrayList<String>(7);
+	
+	static {
+		datasetList.add(InstrumentName.NG.name());
+		datasetList.add(InstrumentName.OIL.name());
+		datasetList.add(InstrumentName.GOLD.name());
+		datasetList.add(InstrumentName.US10Y.name());
+		datasetList.add(InstrumentName.DOW30.name());
+		datasetList.add(InstrumentName.SPX500.name());
+		datasetList.add(InstrumentName.NASDAQ.name());
+	}
+	
+	private static List<String> datasetList2 = new ArrayList<String>(3);
+	
+	static {
+		datasetList2.add(InstrumentName.EURO_FX.name());
+		datasetList2.add(InstrumentName.USD_CAD.name());
+		datasetList2.add(InstrumentName.USD_JPY.name());
+	}
 	
 	public PriceIndexWao() throws JsonParseException, JsonMappingException, IOException {
 		loadVendorProducts();
@@ -59,6 +77,8 @@ public abstract class PriceIndexWao {
 			
 			if (datasetList.contains(instrument)) {
 				price = htmlExtractor.fetchPriceOrIndexFromUrlByDataSet(url);
+			} else if (datasetList2.contains(instrument)) {
+				price = htmlExtractor.fetchPriceOrIndexFromUrlByDataSetSpan(url);
 			} else {
 				price = htmlExtractor.fetchPriceOrIndexFromUrl(url);
 			}

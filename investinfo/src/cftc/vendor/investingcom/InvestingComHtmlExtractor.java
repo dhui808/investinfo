@@ -105,8 +105,19 @@ public class InvestingComHtmlExtractor extends AbstractHtmlExtractor {
 	public String fetchPriceOrIndexFromUrlByDataSet(String url) throws IOException {
 		
 		Document doc = Jsoup.connect(url).get();
-		Element content = doc.getElementsByAttributeValue("data-test", "instrument-price-last").get(0);
-		String price = content.text();
+		Elements content = doc.getElementsByAttributeValue("data-test", "instrument-header-details");
+		Element div = content.get(0).child(0).child(0);
+		String price = div.text();
+				
+		return price;
+	}
+
+	public String fetchPriceOrIndexFromUrlByDataSetSpan(String url) throws IOException {
+		
+		Document doc = Jsoup.connect(url).get();
+		Elements content = doc.getElementsByAttributeValue("data-test", "instrument-header-details");
+		Element div = content.get(0).child(0).child(1);
+		String price = div.text();
 				
 		return price;
 	}

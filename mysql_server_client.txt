@@ -43,3 +43,4 @@ replace into investing_com_history (release_week_tuesday, instrument, week_start
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'SP500', '20220306','4201.5');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'NASDAQ',	'20220306','13292.0');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'DOW30',	'20220306','32925.0');
+
