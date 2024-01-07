@@ -101,7 +101,9 @@ run
 	
 	3.1 Manual (run -f -date 20190702) - (after 2:00 PM Sunday and before 6:00 PM Friday)
 	
-	3.3 Scheduler -TODO
+	3.3 Manual (run -s) Skip download and unzip (must ceate staging file manually)
+	
+	3.4 Scheduler -TODO
 	
 7. Delete row for a specific date of the current year for all instruments (run d 181211)
 
