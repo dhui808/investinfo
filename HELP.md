@@ -55,6 +55,8 @@ run
 	
 	2.4 Add sheets for all instruments for the new year (run -year 2021 addsheet)
 	
+	2.5 Add sheets for all instruments for the new year, skip download and unzip (run -s -year 2024 addsheet)
+	
 3. Delete sheets
 
 	6.1 Delete sheets for a specific year for an instruments (run -instrument gold -year 2017 rs)

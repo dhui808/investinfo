@@ -4,13 +4,16 @@ import static cftc.utils.Constants.*;
 
 import java.util.List;
 
+import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
+import com.sun.star.chart.ChartDataRowSource;
 import com.sun.star.chart2.ScaleData;
 import com.sun.star.chart2.XAxis;
 import com.sun.star.chart2.XChartDocument;
 import com.sun.star.chart2.XDataSeries;
 import com.sun.star.chart2.data.XDataProvider;
 import com.sun.star.chart2.data.XDataSequence;
+import com.sun.star.chart2.data.XDataSink;
 import com.sun.star.chart2.data.XDataSource;
 import com.sun.star.chart2.data.XLabeledDataSequence;
 import com.sun.star.lang.IndexOutOfBoundsException;
@@ -18,6 +21,7 @@ import com.sun.star.sheet.XCellRangeData;
 import com.sun.star.sheet.XCellRangeFormula;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
+import com.sun.star.table.CellRangeAddress;
 import com.sun.star.table.XCellRange;
 import com.sun.star.table.XTableCharts;
 import com.sun.star.table.XTableChartsSupplier;
@@ -395,17 +399,18 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	protected void updateChartsSheet(XSpreadsheetDocument chartsDocument, String year, String baseYear) {
 
 		XSpreadsheet chartsSheet = getChartsSpreadsheetByYear(chartsDocument, year);
-
+		XSpreadsheet chartsDataSheet = getChartsDataSpreadsheetByYear(chartsDocument, year);
+		
 		XTableChartsSupplier chartsSupplier = Lo.qi(XTableChartsSupplier.class, chartsSheet);
 		XTableCharts tableCharts = chartsSupplier.getCharts();
 		String[] chartNames = tableCharts.getElementNames();
 
 		for (String chartName : chartNames) {
-			updateChartByName(chartsSheet, chartName, year, baseYear);
+			updateChartByName(chartsSheet, chartsDataSheet, chartName, year, baseYear);
 		}
 	}
 	
-	private void updateChartByName(XSpreadsheet chartsSheet, String chartName, String year, String baseYear) {
+	private void updateChartByName(XSpreadsheet chartsSheet, XSpreadsheet chartsDataSheet, String chartName, String year, String baseYear) {
 		XChartDocument chartDoc = Chart2.getChartDoc(chartsSheet, chartName);
 
 		XDataProvider dp = chartDoc.getDataProvider();
@@ -433,8 +438,11 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 			
 			xLabeledDS0.setValues(dataSeq);
 			xLabeledDS0.setLabel(labelSeq);
+			
+			XDataSink dataSink = Lo.qi(XDataSink.class, dsi);
+			dataSink.setData(xLabeledDS);
 		}
-		
+			
 		// categories
 		XAxis axis = Chart2.getAxis(chartDoc, Chart2.X_AXIS, 0);
 		ScaleData sd = axis.getScaleData();
