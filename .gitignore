@@ -10,3 +10,4 @@ charts/**/*.png
 **/target/
 **/.settings/
 setup.bat
+note.txt

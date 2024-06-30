@@ -29,7 +29,10 @@ public class TestCharts extends AbstractCftcAnalysis {
 		TestCharts testCharts = new TestCharts();
 		try {
 			LO.connect();
+			System.out.println("LO.connect() OK");
 			testCharts.listCharts();
+		} catch (Throwable e) {
+			e.printStackTrace();
 		} finally {
 			LO.disconnect();
 		}
@@ -39,7 +42,7 @@ public class TestCharts extends AbstractCftcAnalysis {
 
 	public void listCharts() throws Exception {
 		String productsUrl = cftc.utils.Constants.productsUrl;
-		String chartsFilePath = productsUrl + "ng-ny-charts.ods";
+		String chartsFilePath = productsUrl + "ng-newyork-charts.ods";
 		
 		XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
 		XSpreadsheet destSheet3 = getSpreadsheet(chartsDocument,3);

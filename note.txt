@@ -63,3 +63,6 @@ Convert Date format from Excel
 run -instrument usd_jpy -load  -history p
 Ok
 run -allyears -instrument USD_JPY adddoc
+
+LibreOffice jars (libreoffice.jar, officebean.jar and unoloader.jar) jave to be added to the project Library tab directly, instead of as part of a user library like LibreOffice603, which worked before.
+
