@@ -40,7 +40,38 @@ replace into investing_com_history (release_week_tuesday, instrument, week_start
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'USD_CAD',	'20220306','1.2743');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'EURO_FX',	'20220306','1.0909');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'US10Y', 		'20220306','1.997');
-replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'SP500', '20220306','4201.5');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'SPX500', '20220306','4201.5');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'NASDAQ',	'20220306','13292.0');
 replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20220308',   'DOW30',	'20220306','32925.0');
+
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'OIL',  		'20241013','69.22');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'NG',   		'20241013','2.258');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'GOLD', 		'20241013','2718.0000');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'USD_INDEX', '20241013','103.307');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'USD_CAD',	'20241013','1.3800');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'USD_JPY',	'20241013','149.52');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'EURO_FX',	'20241013','1.0866');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'US10Y', 		'20241013','4.075');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'SPX500', '20241013','5864.67');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'NASDAQ',	'20241013','18489.55');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241015',   'DOW30',	'20241013','43275.91');
+
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'OIL',  		'20241020','71.78');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'NG',   		'20241020','2.560');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'GOLD', 		'20241020','2742.2000');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'USD_INDEX', '20241020','104.132');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'USD_CAD',	'20241020','1.3891');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'USD_JPY',	'20241020','152.30');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'EURO_FX',	'20241020','1.0793');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'US10Y', 		'20241020','4.232');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'SPX500', '20241020','5808.12');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'NASDAQ',	'20241020','18518.61');
+replace into investing_com_history (release_week_tuesday, instrument, week_starting, close_price) values ('20241022',   'DOW30',	'20241020','42114.40');
+
+replace into eia_history (release_week_tuesday, instrument, week_ending, inventory) values ('20241015',   'NG',  		'20241011',3705);
+replace into eia_history (release_week_tuesday, instrument, week_ending, inventory) values ('20241015',   'OIL',  		'20241011',420550);
+
+replace into eia_history (release_week_tuesday, instrument, week_ending, inventory) values ('20241022',   'NG',  		'20241018',3785);
+replace into eia_history (release_week_tuesday, instrument, week_ending, inventory) values ('20241022',   'OIL',  		'20241018',426024);
+
 

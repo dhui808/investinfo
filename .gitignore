@@ -11,3 +11,4 @@ charts/**/*.png
 **/.settings/
 setup.bat
 note.txt
+.idea/
