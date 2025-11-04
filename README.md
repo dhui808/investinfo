@@ -10,6 +10,7 @@ Commodity Futures Trading Commission (CFTC) (www.cftc.gov).
 # Build
 Import Maven project into Eclipse
 Import User Libraries
+mvn clean
 mvn package
 
 # How to run InvestInfo application?
