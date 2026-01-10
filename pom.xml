@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>investinfo</groupId>
-  <artifactId>investinfoparent</artifactId>
+  <artifactId>investinfo</artifactId>
   <version>1.0.0</version>
   <name>investinfo</name>
   <description>Information for futures investment</description>
   <packaging>pom</packaging>
   
   <modules>
-  	<module>investinfo</module>
+  	<module>investing</module>
   	<module>jloputility</module>
   </modules>
 </project>

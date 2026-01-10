@@ -20,7 +20,7 @@ public class Constants {
 	public static final String inventoryDirectory = "../inventory/";
 	public static final String chartsUrl = PROJECT_URL + "charts/";
 	public static final String chartsDirectory = "../charts/";
-	public static final String templateUrl = PROJECT_URL + "investinfo/templates/";
+	public static final String templateUrl = PROJECT_URL + "investing/templates/";
 	public static final String backupFilePath = "../preanalysis/price.json";
 	public static final int CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 	public static final String targetCftcDirectory = "/download/cftc/";
@@ -37,7 +37,7 @@ public class Constants {
 	public static final String STAGING_INVESTING_COM_PATH = PROJECT_PATH + "/staging/investing_com";
     public static final String VENDOR_FILE_PATH = "resources/vendor.json";
     public static final String INSTRUMENTS_FILE_PATH = "resources/instruments.json";
-	public static final String GENERATED_FOLDER_PATH = PROJECT_URL + "investinfo/generated";
+	public static final String GENERATED_FOLDER_PATH = PROJECT_URL + "investing/generated";
 	public static final String BASE_YEAR = "" + CURRENT_YEAR;
 	public static final String TEMPLATE_BASE_YEAR = "2018";
 	public static final String DATA_SHEET = "_data";

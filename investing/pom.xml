@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>investinfo</groupId>
-	<artifactId>investinfo</artifactId>
+	<artifactId>investing</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	

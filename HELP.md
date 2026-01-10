@@ -5,7 +5,7 @@ from parent folder, run mvn package
 
 1. Create two symbolic links to "C:/Program Files/LibreOffice/program/classes"  
 	mklink /J "C:\research\github\investinfo\jloputility\lib" "C:/Program Files/LibreOffice/program/classes"  
-	mklink /J "C:\research\github\investinfo\investinfo\lib" "C:/Program Files/LibreOffice/program/classes"
+	mklink /J "C:\research\github\investinfo\investing\lib" "C:/Program Files/LibreOffice/program/classes"
 2. from jloputility, 
 mvn clean install
 3. from investinfo,

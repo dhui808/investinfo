@@ -192,6 +192,7 @@ public abstract class AddYearSheet extends AbstractHandleYearSheet {
 	}
 	
 	private XSpreadsheet insertSheet(XSpreadsheetDocument destDocument, String name, int idx) {
+		System.out.println("Insert sheet " + name + ", inde " + idx);
 		XSpreadsheet destDataSheet = Calc.insertSheet(destDocument, name, (short) idx);
 		return destDataSheet;
 	}
