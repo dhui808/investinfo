@@ -1,4 +1,7 @@
-# Usage
+## LibreOffice References
+[LibreOffice References](https://flywire.github.io/lo-p/01%20Part%201%20Basics.html)  
+
+## Usage
 To build the application:
 
 from parent folder, run mvn package
