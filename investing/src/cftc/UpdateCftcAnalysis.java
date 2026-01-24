@@ -7,6 +7,16 @@ import java.util.Map;
 
 import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
+import com.sun.star.beans.XPropertySet;
+import com.sun.star.chart2.ScaleData;
+import com.sun.star.chart2.XAxis;
+import com.sun.star.chart2.XChartDocument;
+import com.sun.star.chart2.XDataSeries;
+import com.sun.star.chart2.data.XDataProvider;
+import com.sun.star.chart2.data.XDataSequence;
+import com.sun.star.chart2.data.XDataSink;
+import com.sun.star.chart2.data.XDataSource;
+import com.sun.star.chart2.data.XLabeledDataSequence;
 import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
@@ -15,6 +25,8 @@ import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XCellRange;
+import com.sun.star.table.XTableCharts;
+import com.sun.star.table.XTableChartsSupplier;
 import com.sun.star.table.XTableRows;
 import com.sun.star.uno.UnoRuntime;
 
@@ -26,7 +38,9 @@ import cftc.vendor.VendorName;
 
 import static cftc.utils.Constants.*;
 import jloputility.Calc;
+import jloputility.Chart2;
 import jloputility.Lo;
+import jloputility.Props;
 
 public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 	
@@ -89,6 +103,7 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 			XSpreadsheetDocument chartsDocument = loadDestDocument(chartsFilePath);
 			updateCharts(analysisSheet, chartsDocument);
 			updateChartsNetLong(chartsDocument);
+			updateChartsDataRange(chartsDocument);
 			
 			Lo.save(chartsDocument);
 			Lo.closeDoc(chartsDocument);
@@ -254,6 +269,74 @@ public abstract class UpdateCftcAnalysis extends AbstractCftcAnalysis {
 		return analysisSheet;
 	}
 
+	/**
+	 * Update the chart data range so it won't increment by one each time a new row is inserted.
+	 * 
+	 * @param year
+	 */
+	private void updateChartsDataRange(XSpreadsheetDocument chartsDocument) {
+
+		String year = "" + CURRENT_YEAR;
+		XSpreadsheet chartsSheet = getChartsSpreadsheetByYear(chartsDocument, year);
+		
+		XTableChartsSupplier chartsSupplier = Lo.qi(XTableChartsSupplier.class, chartsSheet);
+		XTableCharts tableCharts = chartsSupplier.getCharts();
+		String[] chartNames = tableCharts.getElementNames();
+
+		for (String chartName : chartNames) {
+			updateChartDataRangeByName(chartsSheet, chartName);
+		}
+	}
+	
+	private void updateChartDataRangeByName(XSpreadsheet chartsSheet, String chartName) {
+		XChartDocument chartDoc = Chart2.getChartDoc(chartsSheet, chartName);
+
+		XDataProvider dp = chartDoc.getDataProvider();
+		
+		XDataSeries[] ds = Chart2.getDataSeries(chartDoc);
+
+		for (int i = 0; i < ds.length; i++) {
+			
+			XDataSeries dsi = ds[i];
+			
+			// y values
+			XDataSource xDataSource = (XDataSource) UnoRuntime.queryInterface(XDataSource.class, dsi);
+			XLabeledDataSequence[] xLabeledDS = xDataSource.getDataSequences();
+			XLabeledDataSequence xLabeledDS0 = xLabeledDS[0];
+			XDataSequence xDSValues = xLabeledDS0.getValues();
+			
+			String valuesRange = updateDataRange(xDSValues.getSourceRangeRepresentation());
+			
+			XDataSequence dataSeq = dp.createDataSequenceByRangeRepresentation(valuesRange);
+			XPropertySet dsProps = Lo.qi(XPropertySet.class, dataSeq);
+			Props.setProperty(dsProps, "Role", "values-y"); // specify data role (type)
+			
+			xLabeledDS0.setValues(dataSeq);
+			
+			XDataSink dataSink = Lo.qi(XDataSink.class, dsi);
+			dataSink.setData(xLabeledDS);
+		}
+			
+		// categories
+		XAxis axis = Chart2.getAxis(chartDoc, Chart2.X_AXIS, 0);
+		ScaleData sd = axis.getScaleData();
+		XLabeledDataSequence cat = sd.Categories;
+		XDataSequence catValues = cat.getValues();
+		String catValuesRange = updateDataRange(catValues.getSourceRangeRepresentation());
+		XDataSequence catDataSeq = dp.createDataSequenceByRangeRepresentation(catValuesRange);
+		XPropertySet catDsProps = Lo.qi(XPropertySet.class, catDataSeq);
+		Props.setProperty(catDsProps, "Role", "categories"); // specify data role (type)
+		
+		cat.setValues(catDataSeq);
+	}
+	
+	// keep the dataRange $54 always.
+	private String updateDataRange(String dataRange) {
+		String s = dataRange.substring(dataRange.lastIndexOf('$'));
+
+		return dataRange.replace(s, "$54");
+	}
+	
 	protected void updateChartsNetLong(XSpreadsheetDocument destDocument) throws Exception {
 		
 		XSpreadsheet destSheet3 = getSpreadsheet(destDocument, 0);
